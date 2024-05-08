@@ -1,0 +1,87 @@
+.action-button{
+  display: inline-flex;
+  padding: 4px;
+  margin-left: 5px
+}
+
+.action-button a{
+  margin-left: 5px
+}
+/*accordion CSS
+=================================================*/
+.faq-accordion {
+  -webkit-box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.08);
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.faq-accordion .accordion {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.faq-accordion .accordion .accordion-item {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.faq-accordion .accordion .accordion-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq-accordion .accordion .accordion-item .accordion-title {
+  display: block;
+  padding: 12px 20px 12px 51px;
+  text-decoration: none;
+  color: #0e314c;
+  position: relative;
+  border-bottom: 1px solid #ffffff;
+  background: #f5f9ff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.faq-accordion .accordion .accordion-item .accordion-title i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  text-align: center;
+  height: 100%;
+  background: #44ce6f;
+  color: #ffffff;
+}
+
+.faq-accordion .accordion .accordion-item .accordion-title i::before {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  font-size: 15px;
+}
+
+.faq-accordion .accordion .accordion-item .accordion-title.active {
+  border-bottom-color: #e1e1e1;
+}
+
+.faq-accordion .accordion .accordion-item .accordion-title.active i::before {
+  content: "\f10f";
+}
+
+.faq-accordion .accordion .accordion-item .accordion-content {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  padding: 15px 0 0;
+  line-height: 1.9;
+}
+
+.faq-accordion .accordion .accordion-item .accordion-content.show {
+  display: block;
+}
+

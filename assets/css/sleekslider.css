@@ -1,0 +1,41 @@
+/***** Sleek Slider *****/
+.sleekslider { width: 100%; height: 500px; position: relative; display: block; overflow: hidden;}
+.sleekslider .slide{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat;
+background-position: center center; -moz-background-size: cover; -o-background-size: cover; -webkit-background-size: cover;
+background-size: cover;}
+.sleekslider .slide.active { z-index: 3; }
+.sleekslider .slide-container{ position: absolute; top: 0; left: 0; height: 100%; width: 100%; padding: 40px; text-align: center;}
+.sleekslider .slide-content{ z-index: 50; display: inline-block; z-index: 50; }
+
+/***** Navigation Arrows *****/
+.nav-split .icon-wrap{ position: relative; font-size: 30px; display: block; line-height: 50px; text-align: center; height: 50px; width: 70px;}
+.nav-split h3::before{ background: none;}
+.nav-split div{ position: absolute; top: 0; width: 227px; height: 100%; -webkit-transition: -webkit-transform 0.3s 0.3s; transition: transform 0.3s 0.3s; -webkit-perspective: 1000px; perspective: 1000px; }
+.nav-split a { position: absolute; top: 50%; display: block; outline: none; text-align: left; z-index: 1000; -webkit-transform: translateY(-50%); transform: translateY(-50%); }
+.nav-split a svg { display: block; margin: 0 auto; padding: 0;}
+.nav-split a.prev{ left: 0; text-align: right;}
+.nav-split a.prev::before{ content: ""; background: url(../images/banner/arrow-right.png) no-repeat; height: 10px; width: 29px; position: absolute; bottom: -10px; right: 0;}
+.nav-split a.prev div{ z-index: -1; left: 76px; -webkit-transform: translateX(-100%); transform: translateX(-100%); }
+.nav-split a.prev div h3{ text-align: right;}
+.nav-split a.prev:hover svg.icon { -webkit-transform: translateX(-100%); transform: translateX(-100%); }
+.nav-split a.next{ right: 0; }
+.nav-split a.next::before{ content: ""; background: url(../images/banner/arrow-left.png) no-repeat; height: 10px; width: 29px; position: absolute; bottom: -10px; left: 0;}
+.nav-split a.next div { z-index: -1; right: 0; text-align: right; -webkit-transform: translateX(100%); transform: translateX(100%);}
+.nav-split a:hover svg.icon { -webkit-transition-delay: 0s; transition-delay: 0s; }
+.nav-split a:hover div { -webkit-transform: translateX(0); transform: translateX(0); }
+.nav-split h3 { position: absolute; bottom: 100%; margin: 0; color: #fff; }
+.nav-split img { position: absolute; top: 0; left: 0; border: 2px solid #fff;}
+.nav-split .icon-wrap{ background: #ff6000;
+    color: #fff;}
+.nav-split .icon-wrap:hover{ color: #fff;}
+
+/***** Pagination *****/
+.sleekslider-pagination { position: absolute; bottom: 20%; text-align: center; width: 100%; z-index: 10; }
+.sleekslider-pagination span { width: 12px; height: 12px; display: inline-block; background-color: transparent; box-shadow: inset 0 0 0 2px white; -webkit-transition: box-shadow 0.3s ease; transition: box-shadow 0.3s ease; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%; margin: 5px; cursor: pointer; }
+.sleekslider-pagination span.current { box-shadow: inset 0 0 0 8px white; }
+.sleekslider-pagination span:hover { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6); }
+
+/***** Slide Content *****/
+.sleekslider h1{ color: #fff; margin: 0; text-align: left;}
+.sleekslider h1 img{ width: 100%;}
+.sleekslider h1 span{ display: block; font-size: 36px;  padding: 0 0 0 178px;}
