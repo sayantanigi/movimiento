@@ -12,26 +12,26 @@ $getSetting = $this->db->query("SELECT * from options")->result_array();
                             <div class="footer__widget-head mb-22">
                                 <div class="footer__logo">
                                     <a href="<?= base_url() ?>home">
-                                        <img src="assets/img/footerlogo.png" alt="">
+                                        <img src="<?= base_url() ?>assets/img/footerlogo.png" alt="">
                                     </a>
                                 </div>
                             </div>
                             <div class="footer__widget-body">
                                 <div class="footer__social">
                                     <ul>
-                                        <li><a href="#"><i class="social_facebook"></i></a></li>
-                                        <li><a href="#" class="tw"><i class="social_twitter"></i></a></li>
-                                        <li><a href="#" class="pin"><i class="social_pinterest"></i></a></li>
+                                        <li><a href="<?= $getSetting[3]['option_value']?>"><i class="social_facebook"></i></a></li>
+                                        <li><a href="<?= $getSetting[2]['option_value']?>" class="tw"><i class="social_twitter"></i></a></li>
+                                        <li><a href="<?= $getSetting[18]['option_value']?>" class="pin"><i class="social_pinterest"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="footer__link my-4">
                                 <ul>
                                     <li><a href="<?= base_url()?>community">Community</a></li>
-                                    <li><a href="affiliates.html">Affiliates</a></li>
-                                    <li><a href="careers.html">Careers</a></li>
-                                    <li><a href="privacy.html">Privacy</a></li>
-                                    <li><a href="instructor.html">Become a Instructor</a></li>
+                                    <li><a href="#">Affiliates</a></li>
+                                    <li><a href="#">Careers</a></li>
+                                    <li><a href="#">Privacy</a></li>
+                                    <li><a href="<?= base_url()?>register">Become a Instructor</a></li>
                                     <li><a href="<?= base_url()?>contact">Contact</a></li>
                                 </ul>
                             </div>

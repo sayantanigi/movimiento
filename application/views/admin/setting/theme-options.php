@@ -147,12 +147,12 @@ function get_option($fname) {
                         <h3 class="box-title">Footer Setting</h3>
                     </div>
                     <br>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="col-sm-2 control-label">Linkedin Link</label>
                         <div class="col-sm-8">
                             <input type="text" name="linked" value="<?= get_option('linked'); ?>" placeholder="" class="form-control input-sm" />
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Facebook Link</label>
                         <div class="col-sm-8">
@@ -166,12 +166,12 @@ function get_option($fname) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Instagram Link</label>
+                        <label class="col-sm-2 control-label">Pinterest Link</label>
                         <div class="col-sm-8">
                             <input type="text" name="insta" value="<?= get_option('insta'); ?>" placeholder="" class="form-control input-sm" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="col-sm-2 control-label">Youtube Link</label>
                         <div class="col-sm-8">
                             <input type="text" name="youtube" value="<?= get_option('youtube'); ?>" placeholder="" class="form-control input-sm" />
@@ -188,7 +188,7 @@ function get_option($fname) {
                         <div class="col-sm-8">
                             <input type="text" name="play_store_link" value="<?= get_option('play_store_link'); ?>" placeholder="" class="form-control input-sm" />
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class="col-sm-2">&nbsp;</label>
                         <div class="col-sm-5">
