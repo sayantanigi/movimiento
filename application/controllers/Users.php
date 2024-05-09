@@ -100,7 +100,7 @@ class Users extends CI_Controller {
 		$user_id = $this->session->userdata('user_id');
 		$oldImage = $this->input->post('old_image');
 		$email = $this->input->post('email');
-		$first_name = $this->testInput($this->input->post('first_name'));
+		$full_name = $this->testInput($this->input->post('first_name'));
 		//$last_name = $this->testInput($this->input->post('last_name'));
 		$phone_full = $this->input->post('phone_full');
 		$phone_code = $this->input->post('phone_code');
@@ -113,14 +113,14 @@ class Users extends CI_Controller {
 		}
 		$where = array('id' => @$user_id);
 		$mydata = array(
-			'fname' => $first_name, 
-			'email' => $email, 
-			'phone' => $this->input->post('phone'), 
-			'phone_full' => $phone_full, 
+			'full_name' => $full_name,
+			'email' => $email,
+			'phone' => $this->input->post('phone'),
+			'phone_full' => $phone_full,
 			'skills' => $this->input->post('skills'),
-			'phone_code' => $phone_code, 
-			'phone_country' => $phone_country, 
-			'phone_st_country' => $phone_st_country, 
+			'phone_code' => $phone_code,
+			'phone_country' => $phone_country,
+			'phone_st_country' => $phone_st_country,
 			'user_bio' => $this->input->post('user_bio')
 		);
 		//print_r($mydata); die();
@@ -137,7 +137,7 @@ class Users extends CI_Controller {
 				$error = array('error' => $this->upload->display_errors());
 				$msg = '["' . $error['error'] . '", "error", "#e50914"]';
 			} else {
-				// Uploaded file data 
+				// Uploaded file data
 				$fileData = $this->upload->data();
 				$mydata['image'] = $fileData['file_name'];
 			}
@@ -324,7 +324,7 @@ class Users extends CI_Controller {
 		$checkcartProduct = $this->db->query("SELECT * FROM cart WHERE user_id = '".$_POST["user_id"]."' AND product_id = '".$_POST["pid"]."' AND size = '".$_POST["size"]."'")->row();
 		if(!empty($checkcartProduct)) {
 			$finalquantity = $checkcartProduct->quantity + $_POST["quantity"];
-			$finalPrice = $finalquantity * $_POST["price"]; 
+			$finalPrice = $finalquantity * $_POST["price"];
 			$this->db->query("UPDATE cart SET quantity = '".$finalquantity."', price = '".$finalPrice."' WHERE user_id = '".$_POST["user_id"]."' AND product_id = '".$_POST["pid"]."' AND size = '".$_POST["size"]."'");
 			echo '1';
 		} else {
@@ -366,30 +366,30 @@ class Users extends CI_Controller {
 	}
 	public function savecheckoutData1() {
 		$data = array(
-			'billing_first_name' => $_POST['billing_first_name'], 
-			'billing_last_name' => $_POST['billing_last_name'], 
-			'billing_company_name' => $_POST['billing_company_name'], 
-			'billing_address1' => $_POST['billing_address1'], 
-			'billing_address2' => $_POST['billing_address2'], 
-			'billing_city' => $_POST['billing_city'], 
-			'billing_state' => $_POST['billing_state'], 
-			'billing_country' => $_POST['billing_country'], 
-			'billing_postcode' => $_POST['billing_postcode'], 
+			'billing_first_name' => $_POST['billing_first_name'],
+			'billing_last_name' => $_POST['billing_last_name'],
+			'billing_company_name' => $_POST['billing_company_name'],
+			'billing_address1' => $_POST['billing_address1'],
+			'billing_address2' => $_POST['billing_address2'],
+			'billing_city' => $_POST['billing_city'],
+			'billing_state' => $_POST['billing_state'],
+			'billing_country' => $_POST['billing_country'],
+			'billing_postcode' => $_POST['billing_postcode'],
 			'billing_email' => $_POST['billing_email'],
-			'billing_phone' => $_POST['billing_phone'], 
-			'shiptodifferentadd' => $_POST['shiptodifferentadd'], 
-			'shipping_first_name' => $_POST['shipping_first_name'], 
-			'shipping_last_name' => $_POST['shipping_last_name'], 
-			'shipping_company_name' => $_POST['shipping_company_name'], 
-			'shipping_address1' => $_POST['shipping_address1'], 
-			'shipping_address2' => $_POST['shipping_address2'], 
-			'shipping_city' => $_POST['shipping_city'], 
-			'shipping_state' => $_POST['shipping_state'], 
-			'shipping_country' => $_POST['shipping_country'], 
-			'shipping_postcode' => $_POST['shipping_postcode'], 
-			'shipping_email' => $_POST['shipping_email'], 
-			'shipping_phone' => $_POST['shipping_phone'], 
-			'order_note' => $_POST['order_note'], 
+			'billing_phone' => $_POST['billing_phone'],
+			'shiptodifferentadd' => $_POST['shiptodifferentadd'],
+			'shipping_first_name' => $_POST['shipping_first_name'],
+			'shipping_last_name' => $_POST['shipping_last_name'],
+			'shipping_company_name' => $_POST['shipping_company_name'],
+			'shipping_address1' => $_POST['shipping_address1'],
+			'shipping_address2' => $_POST['shipping_address2'],
+			'shipping_city' => $_POST['shipping_city'],
+			'shipping_state' => $_POST['shipping_state'],
+			'shipping_country' => $_POST['shipping_country'],
+			'shipping_postcode' => $_POST['shipping_postcode'],
+			'shipping_email' => $_POST['shipping_email'],
+			'shipping_phone' => $_POST['shipping_phone'],
+			'order_note' => $_POST['order_note'],
 			'user_id' => $_POST['user_id']
 		);
 		$insert_id = $this->Commonmodel->add_details('user_address', $data);
@@ -398,7 +398,7 @@ class Users extends CI_Controller {
 				'user_id' => $_POST['user_id'],
 				'user_addressid' => $insert_id,
 				'txn_id' => $_POST['Reference'],
-				'order_item' => $_POST['order_item'], 
+				'order_item' => $_POST['order_item'],
 				'cart_subtotal' => $_POST['subtotal'],
 				'shipping' => $_POST['shipping'],
 				'tax' => $_POST['tax'],

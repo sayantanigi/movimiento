@@ -45,12 +45,24 @@ $route['translate_uri_dashes'] = TRUE;
 /*------------FrontEnd Routes----------*/
 $route['home'] = "Home/index";
 $route['register'] = 'home/register';
+$route['email-verification/(:any)'] = "home/emailVerification/$1";
 $route['login'] = 'home/login';
 $route['community'] = 'home/community';
 $route['community_details'] = 'home/community_details';
 $route['contact'] = 'home/contact';
+$route['student-dashboard'] = 'Users/index';
+$route['enrolled-courses'] = 'Users/enrolledCourse';
+$route['purchase-list'] = 'Users/purchaseList';
+$route['profile'] = 'Users/profile';
+$route['reviews'] = 'Users/reviews';
+$route['edit-profile'] = 'Users/editProfile';
+$route['logout'] = 'Users/logout';
+$route['consultant-dashboard'] = 'supercontrol/home';
 
 
+/*------------Admin Routes------------*/
+$route['admin'] = 'admin/users';
+$route['dashboard'] = 'admin/dashboard/index';
 
 
 
@@ -105,24 +117,12 @@ $route['contact'] = 'home/contact';
 // $route['course-detail/(:any)'] = "home/courseDetail/$1";
 // $route['course-enrollment/(:any)'] = "home/courseEnrollment/$1";
 // $route['success/(:any)'] = "home/success/$1";
-// $route['email-verification/(:any)'] = "home/emailVerification/$1";
 // $route['login/(:any)'] = 'home/login/$1';
 // $route['forgot-password'] = "home/forgotPassword";
 // $route['otp-verification/(:any)'] = "home/verifyOtp/$1";
-// $route['student-dashboard'] = 'Users/index';
-// $route['profile'] = 'Users/profile';
-// $route['edit-profile'] = 'Users/editProfile';
-// $route['enrolled-courses'] = 'Users/enrolledCourse';
 // $route['event-booked'] = 'Users/eventBooked';
-// $route['purchase-list'] = 'Users/purchaseList';
 // $route['product-order-list'] = 'Users/productOrderList';
-// $route['reviews'] = 'Users/reviews';
-// $route['logout'] = 'Users/logout';
-// $route['consultant-dashboard'] = 'supercontrol/home';
 // $route['search-query'] = 'Home/search_query';
 // $route['unsubscribe/(:any)'] = 'Home/unsubscribe/$1';
 // $route['newsletterEmailSend'] = 'Home/newsletterEmailSend';
-/*------------Admin Routes------------*/
-$route['admin'] = 'admin/users';
-$route['dashboard'] = 'admin/dashboard/index';
 //$route['powerspeech'] = 'admin/homecourse/powerspeech';

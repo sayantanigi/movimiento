@@ -20,7 +20,7 @@ $optionsList = $this->db->query($getOptionsSql)->result(); ?>
 <body>
     <div class="container" style="margin-top:100px;">
         <div class="col-sm-6 col-sm-offset-3">
-            <h2 class="start"><img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width : 100% !important;"></h2>
+            <h2 class="start"><img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width : 100% !important; background: #fff;"></h2>
             <div class="box">
                 <div class="box-header">
                     <h4 class="box-title"><b>Secure Login</b></h4>
@@ -55,8 +55,7 @@ $optionsList = $this->db->query($getOptionsSql)->result(); ?>
         </div>
     </div>
     </div>
-    <div class="footer text-center" style="position: fixed; bottom: 0; width: 100%;"> Copyright &copy;
-        <?php echo date('Y'); ?>.
+    <div class="footer text-center" style="position: fixed; bottom: 0; width: 100%;"> Copyright &copy; <?php echo date('Y'); ?> Movimiento Latino University. All Rights Reserved.
     </div>
 </body>
 </html>

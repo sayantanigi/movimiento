@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,7 +44,8 @@
     <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
     <style>
     span.logo-lg h2 {margin-top: 7px !important;}
-    .content-wrapper{min-height: 648px; overflow-x: hidden; overflow-y: scroll; height: 500px;}
+    .content-wrapper{min-height: 682px !important; overflow-x: hidden; overflow-y: scroll; height: 500px;}
+    .wrapper {position: initial;}
     </style>
     <?php
         $aid = $this->session->userdata('userid');
@@ -61,12 +61,12 @@
             <a href="<?= admin_url('dashboard') ?>" class="logo" style="padding: 0px !important;">
                 <span class="logo-mini">
                     <h2 class="start" style="margin-top:10px;">
-                        <img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width:128px;">
+                        <img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width:128px;background: #fff;">
                     </h2>
                 </span>
                 <span class="logo-lg" style="background: #222d32;">
                     <h2 class="start" style="margin-top: 0px !important;">
-                        <img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width:100%; height: 50px;">
+                        <img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width:100%; height: 50px;background: #fff;">
                     </h2>
                 </span>
             </a>
@@ -115,7 +115,7 @@
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
-                <ul class="sidebar-menu" data-widget="tree" style="height: 600px; overflow-y: scroll; scrollbar-width: thin; scrollbar-color: #3c8dbc white;">
+                <ul class="sidebar-menu" data-widget="tree" style="height: 600px;">
                     <li class="header">MAIN NAVIGATION</li>
                     <li class="<?= ($tab == 'dashboard') ? 'active' : ''; ?>">
                         <a href="<?= site_url('dashboard') ?>">
@@ -125,20 +125,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_poster' || $tab == 'poster') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-newspaper-o"></i>
-                            <span>Ad</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_poster') ? 'active' : ''; ?>"><a href="<?= admin_url('poster/add') ?>"><i class="fa fa-circle"></i> Add poster</a></li>
-                            <li class="<?= ($tab == 'poster') ? 'active' : ''; ?>"><a href="<?= admin_url('poster') ?>"><i class="fa fa-circle"></i> Poster Lists</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_banner' || $tab == 'banner') ? 'active' : ''; ?>">
+                    <!-- <li class="treeview <?= ($tab == 'add_banner' || $tab == 'banner') ? 'active' : ''; ?>">
                         <a href="javascript:void(0);">
                             <i class="fa fa-picture-o"></i>
                             <span>Banner</span>
@@ -154,20 +141,7 @@
                                 <a href="<?= admin_url('banner') ?>"><i class="fa fa-circle"></i> Banner Lists</a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_blog' || $tab == 'blog') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-newspaper-o"></i>
-                            <span>Blog</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_blog') ? 'active' : ''; ?>"><a href="<?= admin_url('blog/add') ?>"><i class="fa fa-circle"></i> Add Blog</a></li>
-                            <li class="<?= ($tab == 'blog') ? 'active' : ''; ?>"><a href="<?= admin_url('blog') ?>"><i class="fa fa-circle"></i> Blog Lists</a></li>
-                        </ul>
-                    </li>
+                    </li> -->
                     <li class="treeview <?= ($tab == 'add_cms' || $tab == 'cms') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-cog"></i>
@@ -181,45 +155,6 @@
                             <li class="<?= ($tab == 'cms') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('cms') ?>"><i class="fa fa-circle"></i> CMS Lists</a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_conference' || $tab == 'conference') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-newspaper-o"></i>
-                            <span>Conference</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_conference') ? 'active' : ''; ?>"><a href="<?= admin_url('conference/add') ?>"><i class="fa fa-circle"></i> Add Conference</a></li>
-                            <li class="<?= ($tab == 'conference') ? 'active' : ''; ?>"><a href="<?= admin_url('conference') ?>"><i class="fa fa-circle"></i> Conference Lists</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'cert_apply' || $tab == 'rv_cont' || $tab == 'contacts' || $tab == 'cert_contacts' || $tab == 'contacts_stay') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-envelope"></i>
-                            <span>Contact</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <!-- <li class="<?= ($tab == 'cert_apply') ? 'active' : ''; ?>"><a href="<?= admin_url('contacts/certificate_apply') ?>"><i class="fa fa-circle"></i> Applied For Certificate</a></li>
-                            <li class="<?= ($tab == 'rv_cont') ? 'active' : ''; ?>"><a href="<?= admin_url('contacts/view_review') ?>"><i class="fa fa-circle"></i> Review</a></li> -->
-                            <li class="<?= ($tab == 'contacts') ? 'active' : ''; ?> ">
-                                <a href="<?= admin_url('contacts') ?>"><i class="fa fa-circle"></i> <span>Contact Form</span></a>
-                            </li>
-                            <!-- <li class="<?= ($tab == 'contacts_stay') ? 'active' : ''; ?> ">
-                                <a href="<?= admin_url('contacts/stay_with_us') ?>"><i class="fa fa-circle"></i>
-                                    <span>Consult With Us</span>
-                                </a>
-                            </li>
-                            <li class="<?= ($tab == 'cert_contacts') ? 'active' : ''; ?> ">
-                                <a href="<?= admin_url('contacts/certificate_review') ?>">
-                                    <i class="fa fa-circle"></i> <span>Certificate Verification List</span>
-                                </a>
-                            </li> -->
                         </ul>
                     </li>
                     <li class="treeview <?= ($tab == 'add_mode' || $tab == 'mode_list' || $tab == 'add_level' || $tab == 'level_list' || $tab == 'add_comp' || $tab == 'comp_list' || $tab == 'cat_list' || $tab == 'v_chapter' || $tab == 'ad_chapter' || $tab == 'v_mat' || $tab == 'ad_comp_chapter' || $tab == 'v_comp_chapter' || $tab == 'add_cat') ? 'active' : ''; ?>">
@@ -263,86 +198,6 @@
                             </li> -->
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_email_templete' || $tab == 'email_templete') ? 'active' : ''; ?> ">
-                        <a href="#">
-                            <i class="fa fa-user"></i>
-                            <span>Email Template</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-right pull-right"></i>
-                                </span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_email_templete') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('email_templete/add') ?>"><i class="fa fa-circle"></i> Add Email Template</a>
-                            </li>
-                            <li class="<?= ($tab == 'email_templete') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('email_templete') ?>"><i class="fa fa-circle"></i>Email Template Lists</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="<?= ($tab == 'email_list') ? 'active' : ''; ?>">
-                        <a href="<?= admin_url('settings/email_list') ?>"><i class="fa fa-circle"></i> Email List</a>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_event' || $tab == 'event') ? 'active' : ''; ?> ">
-                        <a href="#">
-                            <i class="fa fa-user"></i>
-                            <span>Event</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-right pull-right"></i>
-                                </span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_event') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('event/add') ?>"><i class="fa fa-circle"></i> Add Event</a>
-                            </li>
-                            <li class="<?= ($tab == 'event') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('event') ?>"><i class="fa fa-circle"></i> Event Lists</a>
-                            </li>
-                            <li class="<?= ($tab == 'purchased_events') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('event/purchased_events') ?>"><i class="fa fa-circle"></i> Purchased Event Lists</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'faqs') ? 'active' : ''; ?> ">
-                        <a href="#">
-                            <i class="fa fa-user"></i>
-                            <span>FAQ</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-right pull-right"></i>
-                                </span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_faq') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('faqs/add') ?>"><i class="fa fa-circle"></i> Add Faq</a>
-                            </li>
-                            <li class="<?= ($tab == 'faqs') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('faqs') ?>"><i class="fa fa-circle"></i> Faq Lists</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'programme_forum' || $tab == 'add_programme_forum') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-book"></i>
-                            <span>Forum </span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_programme_forum') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('programme/add') ?>"><i class="fa fa-circle"></i> Add programme Forum</a>
-                            </li>
-                            <li class="<?= ($tab == 'programme_forum') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('programme') ?>"><i class="fa fa-circle"></i> Programme Forum</a>
-                            </li>
-                        </ul>
-                    </li>
                     <li class="treeview <?= ($tab == 'add_homecourse' || $tab == 'homecourse' || $tab == 'powerspeech') ? 'active' : ''; ?>">
                         <a href="javascript:void(0);">
                             <i class="fa fa-home"></i>
@@ -363,19 +218,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_intervenants' || $tab == 'intervenants') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-newspaper-o"></i>
-                            <span>Intervenant</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_intervenants') ? 'active' : ''; ?>"><a href="<?= admin_url('intervenants/add') ?>"><i class="fa fa-circle"></i> Add Intervenants</a></li>
-                            <li class="<?= ($tab == 'intervenants') ? 'active' : ''; ?>"><a href="<?= admin_url('intervenants') ?>"><i class="fa fa-circle"></i> IUntervenants Lists</a></li>
-                        </ul>
-                    </li>
                     <li class="treeview <?= ($tab == 'add_member' || $tab == 'members') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-users"></i>
@@ -393,54 +235,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'maknine' || $tab == 'add_maknine') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-book"></i>
-                            <span>Makutano 09 </span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_maknine') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('maknine/add') ?>"><i class="fa fa-circle"></i> Add Maknine</a>
-                            </li>
-                            <li class="<?= ($tab == 'maknine') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('maknine') ?>"><i class="fa fa-circle"></i> Maknine</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_newsletter' || $tab == 'newsletter') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-newspaper-o"></i>
-                            <span>Newsletter</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_newsletter') ? 'active' : ''; ?>"><a href="<?= admin_url('newsletter/add') ?>"><i class="fa fa-circle"></i> Add Newsletter</a></li>
-                            <li class="<?= ($tab == 'newsletter') ? 'active' : ''; ?>"><a href="<?= admin_url('newsletter') ?>"><i class="fa fa-circle"></i> Newsletter Lists</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_product_cat' || $tab == 'product_cat_list' || $tab == 'add_product' || $tab == 'products') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-book"></i>
-                            <span>Portfolio </span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_portfolio') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('portfolio/add') ?>"><i class="fa fa-circle"></i> Add portfolio </a>
-                            </li>
-                            <li class="<?= ($tab == 'portfolio_list') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('portfolio') ?>"><i class="fa fa-circle"></i> Portfolio Lists</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_product_cat' || $tab == 'product_cat_list' || $tab == 'add_product' || $tab == 'products') ? 'active' : ''; ?>">
+                    <!-- <li class="treeview <?= ($tab == 'add_product_cat' || $tab == 'product_cat_list' || $tab == 'add_product' || $tab == 'products') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-book"></i>
                             <span>Product </span>
@@ -465,56 +260,9 @@
                                 <a href="<?= admin_url('products/purchased_products') ?>"><i class="fa fa-circle"></i> Purchased Products Lists</a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'programme_forum' || $tab == 'add_programme_forum') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-book"></i>
-                            <span>Programme Sejour </span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_programme_sejour') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('programme_sejour/add') ?>"><i class="fa fa-circle"></i> Add programme Sejour</a>
-                            </li>
-                            <li class="<?= ($tab == 'programme_sejour') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('programme_sejour') ?>"><i class="fa fa-circle"></i> Programme Sejour</a>
-                            </li>
-                        </ul>
-                    </li>
+                    </li> -->
                     <li class="<?= ($tab == 'add_service' || $tab == 'service') ? 'active' : ''; ?>">
                         <a href="<?= admin_url('settings') ?>"><i class="fa fa-wrench"></i> Settings</a>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_thematiques' || $tab == 'thematiques') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-newspaper-o"></i>
-                            <span>Thematiques</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_thematiques') ? 'active' : ''; ?>"><a href="<?= admin_url('thematiques/add') ?>"><i class="fa fa-circle"></i> Add Thematiques</a></li>
-                            <li class="<?= ($tab == 'thematiques') ? 'active' : ''; ?>"><a href="<?= admin_url('thematiques') ?>"><i class="fa fa-circle"></i> Thematiques Lists</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'youth_activity' || $tab == 'add_youth_activity') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-book"></i>
-                            <span>Youth Activity </span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_youth_activity') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('youth_activity/add') ?>"><i class="fa fa-circle"></i> Add youth activity </a>
-                            </li>
-                            <li class="<?= ($tab == 'youth_activity') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('youth_activity') ?>"><i class="fa fa-circle"></i> Youth Activity</a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
             </section>
@@ -523,13 +271,11 @@
         <div class="content-wrapper">
             <?php $this->load->view($main); ?>
         </div>
-        <footer class="main-footer">
-            <strong>Copyright &copy;
-                <?= date('Y') ?> <a href="https://techg.igiapp.com/makutano">Makutano</a>.
-            </strong> All rights reserved.
-        </footer>
-        <div class="control-sidebar-bg"></div>
     </div>
+    <footer class="main-footer" style="text-align: center">
+        <strong>Copyright &copy; <?= date('Y') ?> <a href="https://techg.igiapp.com/movimiento">Movimiento</a></strong> Latino University. All Rights Reserved.
+    </footer>
+    <div class="control-sidebar-bg"></div>
     <style>
         .red {color: #dc3545;}#output_image {width: 60px;height: 60px;object-fit: cover;border: 1px solid #ccc;padding: 2px;border-radius: 5px;margin-top: 0;}.error {width: 100%;margin-top: .25rem;font-size: .875em;color: #dc3545;}.invalid-feedback {width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;font-weight: 500;}.is-invalid {border-color: #dc3545 !important;}.truncate {width: 150px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.truncate_desc {width: 200px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.truncate_name {width: 100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.checkbox.checbox-switch label, .checkbox-inline.checbox-switch {display: inline-block;position: relative;padding-left: 0;}.checkbox.checbox-switch label input, .checkbox-inline.checbox-switch input {display: none;}.checkbox.checbox-switch label span, .checkbox-inline.checbox-switch span {width: 35px;border-radius: 20px;height: 18px;border: 1px solid #dbdbdb;background-color: rgb(255, 255, 255);border-color: rgb(223, 223, 223);box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;display: inline-block;vertical-align: middle;margin-right: 5px;}.checkbox.checbox-switch label span:before, .checkbox-inline.checbox-switch span:before {display: inline-block;width: 16px;height: 16px;border-radius: 50%;background: rgb(255, 255, 255);content: " ";top: 0;position: relative;left: 0;transition: all 0.3s ease;box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);}.checkbox.checbox-switch label>input:checked+span:before, .checkbox-inline.checbox-switch>input:checked+span:before {left: 17px;}.checkbox.checbox-switch label>input:checked+span, .checkbox-inline.checbox-switch>input:checked+span {background-color: rgb(180, 182, 183);border-color: rgb(180, 182, 183);box-shadow: rgb(180, 182, 183) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch label>input:checked:disabled+span, .checkbox-inline.checbox-switch>input:checked:disabled+span {background-color: rgb(220, 220, 220);border-color: rgb(220, 220, 220);box-shadow: rgb(220, 220, 220) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch label>input:disabled+span, .checkbox-inline.checbox-switch>input:disabled+span {background-color: rgb(232, 235, 238);border-color: rgb(255, 255, 255);}.checkbox.checbox-switch label>input:disabled+span:before, .checkbox-inline.checbox-switch>input:disabled+span:before {background-color: rgb(248, 249, 250);border-color: rgb(243, 243, 243);box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);}.checkbox.checbox-switch.switch-light label>input:checked+span, .checkbox-inline.checbox-switch.switch-light>input:checked+span {background-color: rgb(248, 249, 250);border-color: rgb(248, 249, 250);box-shadow: rgb(248, 249, 250) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-dark label>input:checked+span, .checkbox-inline.checbox-switch.switch-dark>input:checked+span {background-color: rgb(52, 58, 64);border-color: rgb(52, 58, 64);box-shadow: rgb(52, 58, 64) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-dark label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-dark>input:checked:disabled+span {background-color: rgb(100, 102, 104);border-color: rgb(100, 102, 104);box-shadow: rgb(100, 102, 104) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-success label>input:checked+span, .checkbox-inline.checbox-switch.switch-success>input:checked+span {background-color: rgb(40, 167, 69);border-color: rgb(40, 167, 69);box-shadow: rgb(40, 167, 69) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-success label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-success>input:checked:disabled+span {background-color: rgb(153, 217, 168);border-color: rgb(153, 217, 168);box-shadow: rgb(153, 217, 168) 0px 0px 0px 8px inset;}.checkbox.checbox-switch.switch-danger label>input:checked+span, .checkbox-inline.checbox-switch.switch-danger>input:checked+span {background-color: rgb(200, 35, 51);border-color: rgb(200, 35, 51);box-shadow: rgb(200, 35, 51) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-danger label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-danger>input:checked:disabled+span {background-color: rgb(216, 119, 129);border-color: rgb(216, 119, 129);box-shadow: rgb(216, 119, 129) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-primary label>input:checked+span, .checkbox-inline.checbox-switch.switch-primary>input:checked+span {background-color: rgb(0, 105, 217);border-color: rgb(0, 105, 217);box-shadow: rgb(0, 105, 217) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-primary label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-primary>input:checked:disabled+span {background-color: rgb(109, 163, 221);border-color: rgb(109, 163, 221);box-shadow: rgb(109, 163, 221) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-info label>input:checked+span, .checkbox-inline.checbox-switch.switch-info>input:checked+span {background-color: rgb(23, 162, 184);border-color: rgb(23, 162, 184);box-shadow: rgb(23, 162, 184) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-info label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-info>input:checked:disabled+span {background-color: rgb(102, 192, 206);border-color: rgb(102, 192, 206);box-shadow: rgb(102, 192, 206) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-warning label>input:checked+span, .checkbox-inline.checbox-switch.switch-warning>input:checked+span {background-color: rgb(255, 193, 7);border-color: rgb(255, 193, 7);box-shadow: rgb(255, 193, 7) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-warning label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-warning>input:checked:disabled+span {background-color: rgb(226, 195, 102);border-color: rgb(226, 195, 102);box-shadow: rgb(226, 195, 102) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}
     </style>

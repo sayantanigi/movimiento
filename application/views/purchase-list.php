@@ -43,84 +43,103 @@ if (!empty($active_data)) {
     $activeCourse = $active_data->activeCourse;
 }
 ?>
-<main>
-    <section class="pt-100 pb-145">
-        <div class="container">
-            <div class="rbt-dashboard-content-wrapper">
-                <div class="rbt-tutor-information">
-                    <div class="rbt-tutor-information-left d-flex align-items-center">
-                        <div class="thumbnail rbt-avatars size-lg">
-                            <?php if (!empty($userDetails->image)) { ?>
-                                <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
-                            <?php } else { ?>
-                                <img src="images/no-user.png" alt="">
-                            <?php } ?>
-                        </div>
-                        <div class="tutor-content">
-                            <h5 class="title h4 fw-bold">
-                                <?= $userDetails->fname ?>
-                            </h5>
-                            <ul class="listRbt mt--5">
-                                <li><i class="far fa-book-alt"></i>
-                                    <?php echo @$ctn_enrolment; ?> Courses Enroled
-                                </li>
-                                <li><i class="far fa-file-certificate"></i>
-                                    <?php echo count($courseArray); ?> Certificate
-                                </li>
-                            </ul>
+<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="assets/img/page-title/page-title-2.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="page__title-wrapper mt-100">
+                <h3 class="page__title">Order History</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="<?= base_url()?>home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Order History</li>
+                    </ol>
+                </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="pt-100 pb-145">
+    <div class="container">
+        <div class="rbt-dashboard-content-wrapper">
+            <div class="rbt-tutor-information">
+                <div class="rbt-tutor-information-left d-flex align-items-center">
+                    <div class="thumbnail rbt-avatars size-lg">
+                        <?php if (!empty($userDetails->image)) { ?>
+                            <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
+                        <?php } else { ?>
+                            <img src="images/no-user.png" alt="">
+                        <?php } ?>
+                    </div>
+                    <div class="tutor-content">
+                        <h5 class="title h4 fw-bold text-white">
+                            <?= ucwords($userDetails->full_name) ?>
+                        </h5>
+                        <ul class="listRbt mt--5">
+                            <li><i class="far fa-book-alt"></i>
+                                <?php echo @$ctn_enrolment; ?> Courses Enroled
+                            </li>
+                            <li><i class="far fa-file-certificate"></i>
+                                <?php echo count($courseArray); ?> Certificate
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <?php $this->load->view('leftbar_dash'); ?>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold text-uppercase">Order History</h2>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="rbt-table table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Course Name</th>
+                                        <th>Date</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <?php
+                                    if(!empty($orders)) {
+                                        foreach ($orders as $key => $value) {
+                                    ?>
+                                    <tr>
+                                        <th>#<?php echo @$value->order_id; ?></th>
+                                        <td><?php echo @$value->title; ?></td>
+                                        <td><?php echo date("jS F Y, H:i", strtotime(@$value->enrollment_date)); ?></td>
+                                        <td>
+                                            <?php if(@$value->enrollment_price == '0') {
+                                                echo "Free";
+                                            } else {
+                                                echo '$'.number_format(@$value->enrollment_price,2);
+                                            }
+                                            ?>
+                                        </td>
+                                        <td><span class="badge bg-success rounded-pill fw-normal"><?php echo ucWords(strtolower(@$value->payment_status)); ?></span>
+                                        </td>
+                                    </tr>
+                                    <?php } } else { ?>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center">
+                                            <div class="dashboard-table__text">No record available!</div>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <?php $this->load->view('leftbar_dash'); ?>
-                <div class="col-lg-8">
-                    <div class="card bg-dark shadow">
-                        <div class="card-body p-4">
-                            <h2 class="h5 fw-bold text-uppercase">Order History</h2>
-                            <hr>
-                            <div class="table-responsive">
-                                <table class="rbt-table table table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th>Order ID</th>
-                                            <th>Course Name</th>
-                                            <th>Date</th>
-                                            <th>Price</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <?php 
-                                        if(!empty($orders)) {
-                                            foreach ($orders as $key => $value) {
-                                        ?>
-                                        <tr>
-                                            <th>#<?php echo @$value->order_id; ?></th>
-                                            <td><?php echo @$value->title; ?></td>
-                                            <td><?php echo date("jS F Y, H:i", strtotime(@$value->enrollment_date)); ?></td>
-                                            <td>
-                                                <?php if(@$value->enrollment_price == '0') {
-                                                    echo "Free";
-                                                } else {
-                                                    echo '$'.number_format(@$value->enrollment_price,2);
-                                                }
-                                                ?>
-                                            </td>
-                                            <td><span class="badge bg-success rounded-pill fw-normal"><?php echo ucWords(strtolower(@$value->payment_status)); ?></span>
-                                            </td>
-                                        </tr>
-                                        <?php } } else { ?>
-                                        <tr>
-                                            <td colspan="5" style="text-align: center">
-                                                <div class="dashboard-table__text">No record available!</div>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+</section>

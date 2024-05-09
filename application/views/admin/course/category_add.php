@@ -24,7 +24,22 @@
                                             <input type="text" name="frm[category_name]" value="<?= $course->category_name ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter category Name">
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Category Sub Title</label>
+                                            <input type="text" name="frm[category_subtitle]" value="<?= $course->category_subtitle ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter category Sub Title">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Category Image</label>
+                                            <input type="file" name="category_image" class="form-control" id="exampleInputEmail1">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="box-footer">

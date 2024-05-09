@@ -47,98 +47,113 @@ $data = array(
     'courseArray' => count($courseArray)
 );
 ?>
-<main>
-    <section class="pt-100 pb-145">
-        <div class="container">
-            <div class="rbt-dashboard-content-wrapper">
-                <div class="rbt-tutor-information">
-                    <div class="rbt-tutor-information-left d-flex align-items-center">
-                        <div class="thumbnail rbt-avatars size-lg">
-                            <?php if (!empty($userDetails->image)) { ?>
-                                <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
-                            <?php } else { ?>
-                                <img src="images/no-user.png" alt="">
-                            <?php } ?>
-                        </div>
-                        <div class="tutor-content">
-                            <h5 class="title h4 fw-bold">
-                                <?= $userDetails->fname ?>
-                            </h5>
-                            <ul class="listRbt mt--5">
-                                <li><i class="far fa-book-alt"></i>
-                                    <?php echo @$ctn_enrolment; ?> Courses Enroled
-                                </li>
-                                <li><i class="far fa-file-certificate"></i>
-                                    <?php echo count($courseArray); ?> Certificate
-                                </li>
-                            </ul>
-                        </div>
+<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="assets/img/page-title/page-title-2.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="page__title-wrapper mt-100">
+                <h3 class="page__title">Student Profile</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="<?= base_url()?>home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Student Profile</li>
+                    </ol>
+                </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="pt-100 pb-145">
+    <div class="container">
+        <div class="rbt-dashboard-content-wrapper">
+            <div class="rbt-tutor-information">
+                <div class="rbt-tutor-information-left d-flex align-items-center">
+                    <div class="thumbnail rbt-avatars size-lg">
+                        <?php if (!empty($userDetails->image)) { ?>
+                            <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
+                        <?php } else { ?>
+                            <img src="images/no-user.png" alt="">
+                        <?php } ?>
+                    </div>
+                    <div class="tutor-content">
+                        <h5 class="title h4 fw-bold text-white">
+                            <?= ucwords($userDetails->full_name) ?>
+                        </h5>
+                        <ul class="listRbt mt--5">
+                            <li><i class="far fa-book-alt"></i>
+                                <?php echo @$ctn_enrolment; ?> Courses Enroled
+                            </li>
+                            <li><i class="far fa-file-certificate"></i>
+                                <?php echo count($courseArray); ?> Certificate
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <?php $this->load->view('leftbar_dash'); ?>
-                <div class="col-lg-8">
-                    <div class="card bg-dark shadow">
-                        <div class="card-body p-4">
-                            <h2 class="h5 fw-bold text-uppercase">My Profile</h2>
-                            <hr>
-                            <div class="rbt-profile-row row row--15 mt-3">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="fw-bold">Registration Date:</div>
-                                </div>
-                                <div class="col-lg-8 col-md-8">
-                                    <div class="rbt-profile-content b2">
-                                        <?php echo date("F jS, Y H:i", strtotime(@$user->created_at)); ?>
-                                    </div>
+        </div>
+        <div class="row">
+            <?php $this->load->view('leftbar_dash'); ?>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold text-uppercase">My Profile</h2>
+                        <hr>
+                        <div class="rbt-profile-row row row--15 mt-3">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="fw-bold">Registration Date:</div>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <div class="rbt-profile-content b2">
+                                    <?php echo date("F jS, Y H:i", strtotime(@$user->created_at)); ?>
                                 </div>
                             </div>
-                            <div class="rbt-profile-row row row--15 mt-3">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="fw-bold">Full Name:</div>
-                                </div>
-                                <div class="col-lg-8 col-md-8">
-                                    <div class="rbt-profile-content b2">
-                                        <?php echo @$user->fname; ?>
-                                    </div>
+                        </div>
+                        <div class="rbt-profile-row row row--15 mt-3">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="fw-bold">Full Name:</div>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <div class="rbt-profile-content b2">
+                                    <?php echo @$user->full_name; ?>
                                 </div>
                             </div>
-                            <div class="rbt-profile-row row row--15 mt-3">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="fw-bold">Email:</div>
-                                </div>
-                                <div class="col-lg-8 col-md-8">
-                                    <div class="rbt-profile-content b2">
-                                        <?php echo @$user->email; ?>
-                                    </div>
+                        </div>
+                        <div class="rbt-profile-row row row--15 mt-3">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="fw-bold">Email:</div>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <div class="rbt-profile-content b2">
+                                    <?php echo @$user->email; ?>
                                 </div>
                             </div>
-                            <div class="rbt-profile-row row row--15 mt-3">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="fw-bold">Phone Number:</div>
-                                </div>
-                                <div class="col-lg-8 col-md-8">
-                                    <div class="rbt-profile-content b2">
-                                        <?php echo @$user->phone; ?>
-                                    </div>
+                        </div>
+                        <div class="rbt-profile-row row row--15 mt-3">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="fw-bold">Phone Number:</div>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <div class="rbt-profile-content b2">
+                                    <?php echo @$user->phone; ?>
                                 </div>
                             </div>
-                            <div class="rbt-profile-row row row--15 mt-3">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="fw-bold">Skill/Occupation:</div>
-                                </div>
-                                <div class="col-lg-8 col-md-8">
-                                    <div class="rbt-profile-content b2"><?php echo @$user->skills; ?></div>
-                                </div>
+                        </div>
+                        <div class="rbt-profile-row row row--15 mt-3">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="fw-bold">Skill/Occupation:</div>
                             </div>
-                            <div class="rbt-profile-row row row--15 mt-3">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="fw-bold">Biography:</div>
-                                </div>
-                                <div class="col-lg-8 col-md-8">
-                                    <div class="rbt-profile-content b2">
-                                        <?php echo @$user->user_bio; ?>
-                                    </div>
+                            <div class="col-lg-8 col-md-8">
+                                <div class="rbt-profile-content b2"><?php echo @$user->skills; ?></div>
+                            </div>
+                        </div>
+                        <div class="rbt-profile-row row row--15 mt-3">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="fw-bold">Biography:</div>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <div class="rbt-profile-content b2">
+                                    <?php echo @$user->user_bio; ?>
                                 </div>
                             </div>
                         </div>

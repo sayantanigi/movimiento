@@ -15,19 +15,11 @@ class Home extends CI_Controller {
 	}
 	public function index() {
 		$data = array('title' => 'Home','page' => 'home');
-        $getBannerSql = "SELECT * FROM `banner` WHERE `status` = '1' ORDER BY `id` DESC";
-        $data['banners'] = $this->db->query($getBannerSql)->result();
-        $getHomeCourseListSql = "SELECT * from `homecourse` WHERE `status` = '1' ORDER BY `id` DESC limit 3";
-        $data['home_list'] = $this->db->query($getHomeCourseListSql);
-        $getPowerSpeechSql = "SELECT * from `powerspeech` WHERE `id` = '1'";
-        $data['power_speech'] = $this->db->query($getPowerSpeechSql)->row();
-        $getcourselistsql = "SELECT * from `courses` WHERE `status` = '1' ORDER BY `id` DESC limit 6";
-        $data['list'] = $this->Commonmodel->fetch_all_join($getcourselistsql);
-        $getReviewSql = "SELECT `courses`.`id`, `courses`.`title`, `users`.`id`,`users`.`fname`, `users`.`lname`, `users`.`email`, `users`.`image`, `course_reviews`.`review_id`, `course_reviews`.`review_message` FROM `course_reviews` JOIN `courses` ON `courses`.`id` = `course_reviews`.`course_id` JOIN `users` ON `users`.`id` = `course_reviews`.`user_id` GROUP BY `users`.`id` ORDER BY `course_reviews`.`review_date` DESC";
-        $data['student_review'] = $this->db->query($getReviewSql)->result();
-        $getPartnerListSql = "SELECT * from `gallery` WHERE `status` = '1' ORDER BY `id` DESC";
-        $data['partners'] = $this->Commonmodel->fetch_all_join($getPartnerListSql);
-		$this->load->view('header', $data);
+        $getCategotyListSql = "SELECT * from `sm_category` ORDER BY `id` DESC";
+        $data['category_list'] = $this->db->query($getCategotyListSql)->result_array();
+        $getcourselistsql = "SELECT * from `courses` WHERE `status` = '1' ORDER BY `id` DESC limit 12";
+        $data['course_list'] = $this->Commonmodel->fetch_all_join($getcourselistsql);
+        $this->load->view('header', $data);
 		$this->load->view('home');
 		$this->load->view('footer');
 	}
@@ -40,6 +32,97 @@ class Home extends CI_Controller {
 		$this->load->view('register');
 		$this->load->view('footer');
 	}
+    public function studentRegistration() {
+        $email = $this->input->post('email');
+        $full_name = $this->testInput($this->input->post('full_name'));
+        $userType = $this->input->post('user_type');
+        $check_email = $this->db->get_where('users', array('email' => $email))->num_rows();
+        if ($check_email > 0) {
+            $this->session->set_flashdata('error', 'The email id you are trying to use is already registered. Please login, or create a new account using a unique email address!');
+            redirect(base_url('register'), 'refresh');
+        }
+        $otp = $this->generate_otp(6);
+        if ($check_email == 0) {
+            $data = array(
+				'currency' => 'USD',
+				'currency_symbol' => '$',
+                'full_name' => $full_name,
+                'email' => $email,
+                'password' => base64_encode($this->input->post('password')),
+                'otp' => $otp,
+				'email_verified' => '0',
+				'status' => '0',
+                'userType' => $userType,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+            //insert code
+            $lastId = $this->db->insert('users', $data);
+            $userid = $this->db->insert_id();
+			if($userid) {
+				$subject = 'Verify Your Email Address From Movimiento';
+				$activationURL = base_url() . "email-verification/" . urlencode(base64_encode($otp));
+                $getOptionsSql = "SELECT * FROM `options`";
+                $optionsList = $this->db->query($getOptionsSql)->result();
+                $admEmail = $optionsList[8]->option_value;
+                $address = $optionsList[6]->option_value;
+                //$imagePath = base_url().'uploads/logo/Logo-movimiento-inblock.png';
+				$message = "
+                <body>
+                    <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
+                        <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
+                            <img src='cid:Logo' style='width: 220px; float: right; margin-top: 0'>
+                            <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento</span></h3>
+                            <p style='font-size: 14px;'>Dear ".$full_name.",</p>
+                            <p style='font-size: 14px;'>Thank you for registration on <strong style='font-weight:bold;'>Movimiento</strong>.</p>
+                            <p style='font-size: 14px;margin: 0 0 18px 0;'>Please click on the below activation link to verify your email address.</p>
+                            <p style='font-size: 14px; margin: 0px;'><a href=" . $activationURL . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
+                            <p style='font-size:40px;'></p>
+                            <p style='font-size: 14px;margin: 0;list-style: none'>Sincerly</p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>movimiento</b></p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
+                        </div>
+                        <table style='width: 100%;'>
+                            <tr>
+                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento. All rights reserved.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </body>";
+				require 'vendor/autoload.php';
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->CharSet = 'UTF-8';
+                    $mail->SetFrom('admin@gmail.com', 'movimiento');
+                    $mail->AddAddress($email);
+                    $mail->IsHTML(true);
+                    $mail->Subject = $subject;
+                    $mail->AddEmbeddedImage('uploads/logo/logo.PNG', 'Logo');
+                    $mail->Body = $message;
+                    $mail->IsSMTP();
+                    //Send mail using GMAIL server
+                    $mail->Host = 'smtp-relay.brevo.com';       // Specify main and backup SMTP servers
+                    $mail->SMTPAuth = true;                          // Enable SMTP authentication
+                    $mail->Username = 'goutampaul@goigi.in';     // SMTP username
+                    $mail->Password = 'b7nNQ4Fk9XdAOcL3';                // SMTP password
+                    $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
+                    $mail->Port = 587;
+                    if(!$mail->send()) {
+                        $msg = "Error sending: " . $mail->ErrorInfo;
+                    } else {
+                        $msg = "An email has been sent to your email address containing an activation link. Please click on the link to activate your account. If you do not click the link your account will remain inactive and you will not receive further emails. If you do not receive the email within a few minutes, please check your spam folder.";
+                    }
+                    $this->session->set_flashdata('success', $msg);
+                } catch (Exception $e) {
+                    $this->session->set_flashdata('message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+                    //$this->session->set_flashdata('message', "Your message could not be sent. Please, try again later.");
+                }
+			} else {
+				$this->session->set_flashdata('error', 'Opps, Try again!');
+			}
+            redirect(base_url('register'), 'refresh');
+        }
+    }
 	public function login($course_id = null) {
         if ($this->session->has_userdata('isLoggedIn') && $this->session->has_userdata('user_id')):
 			redirect(base_url('student-dashboard'),'refresh');
@@ -145,6 +228,42 @@ class Home extends CI_Controller {
             echo $msg = "Oops, Try again!";
         }
 	}
+    public function studentLoginCheck() {
+        $email = $this->input->post('email');
+        $password = base64_encode($this->input->post('password'));
+        $course_id = $this->input->post('course_id');
+        $userValid = $this->User_model->usrLoginCheck($email, $password);
+        if ($userValid) {
+            $user = $this->User_model->getUsrDetails($email);
+			$this->session->set_userdata('isLoggedIn', TRUE);
+            $this->session->set_userdata('user_id', @$user->id);
+            $this->session->set_userdata('first_name', @$user->fname);
+            $this->session->set_userdata('userType', @$user->userType);
+            if(@$user->userType == '1') {
+                if(@$course_id) {
+                    $this->session->set_flashdata('success', 'Logged in successfully.');
+                    redirect(base_url('course-enrollment/'.@$course_id), 'refresh');
+                } else {
+                    $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+                    redirect(base_url('student-dashboard'), 'refresh');
+                }
+            } else {
+                $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+                redirect(base_url('consultant-dashboard'), 'refresh');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Invalid email/password, Please try again!');
+            $data = array(
+				'title' => 'Sign In',
+				'page' => 'login',
+                'course_id' => @$course_id,
+			);
+			$this->load->view('header', $data);
+			$this->load->view('login');
+			$this->load->view('footer');
+        }
+    }
+
 
 
 
@@ -530,109 +649,6 @@ class Home extends CI_Controller {
 		$this->load->view('forgot-password');
 		$this->load->view('footer');
     }
-	public function studentRegistration() {
-        $email = $this->input->post('email');
-        $first_name = $this->testInput($this->input->post('fname'));
-		$last_name = $this->testInput($this->input->post('lname'));
-        $phone_full = $this->input->post('phone_full');
-        $phone_code = $this->input->post('phone_code');
-        $phone_country = $this->input->post('phone_country');
-        $phone_st_country = $this->input->post('phone_st_country');
-        $userType = $this->input->post('user_type');
-        $check_email = $this->db->get_where('users', array('email' => $email))->num_rows();
-        $check_phone = $this->db->get_where('users', array('phone_full' => $phone_full, 'status' => 1))->num_rows();
-        if ($check_email > 0) {
-            $this->session->set_flashdata('error', 'The email id you are trying to use is already registered. Please login, or create a new account using a unique email address!');
-            redirect(base_url('register'), 'refresh');
-        }
-        $otp = $this->generate_otp(6);
-        if ($check_email == 0) {
-            $data = array(
-				'currency' => 'USD',
-				'currency_symbol' => '$',
-                'fname' => $first_name,
-				'lname' => $last_name,
-                'email' => $email,
-                'password' => md5($this->input->post('password')),
-                'phone' => $this->input->post('phone'),
-                'phone_full' => $phone_full,
-                'phone_code' => $phone_code,
-                'phone_country' => $phone_country,
-                'phone_st_country' => $phone_st_country,
-                'otp' => $otp,
-				'email_verified' => '0',
-				'status' => '0',
-                'userType' => $userType,
-                'created_at' => date('Y-m-d H:i:s')
-            );
-            //insert code
-            $lastId = $this->db->insert('users', $data);
-            $userid = $this->db->insert_id();
-			if($userid) {
-				$subject = 'Verify Your Email Address From Makutano';
-				$activationURL = base_url() . "email-verification/" . urlencode(base64_encode($otp));
-                $getOptionsSql = "SELECT * FROM `options`";
-                $optionsList = $this->db->query($getOptionsSql)->result();
-                $admEmail = $optionsList[8]->option_value;
-                $address = $optionsList[6]->option_value;
-                //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-				$message = "
-                <body>
-                    <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
-                        <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
-                            <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                            <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
-                            <p style='font-size: 18px;'>Dear ".$first_name.",</p>
-                            <p style='font-size: 18px;'>Thank you for registration on <strong style='font-weight:bold;'>Makutano</strong>.</p>
-                            <p style='font-size: 18px; margin: 0px;'>Please click on the below activation link to verify your email address.</p>
-                            <p style='font-size: 18px; margin: 0px;'><a href=" . $activationURL . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
-                            <p style='font-size:20px;'></p>
-                            <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                        </div>
-                        <table style='width: 100%;'>
-                            <tr>
-                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                            </tr>
-                        </table>
-                    </div>
-                </body>";
-				require 'vendor/autoload.php';
-                $mail = new PHPMailer(true);
-                try {
-                    $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                    $mail->AddAddress($email);
-                    $mail->IsHTML(true);
-                    $mail->Subject = $subject;
-                    $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-                    $mail->Body = $message;
-                    $mail->IsSMTP();
-                    //Send mail using GMAIL server
-                    $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                    $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                    $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                    $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                    $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port = 587;
-                    if(!$mail->send()) {
-                        $msg = "Error sending: " . $mail->ErrorInfo;
-                    } else {
-                        $msg = "An email has been sent to your email address containing an activation link. Please click on the link to activate your account. If you do not click the link your account will remain inactive and you will not receive further emails. If you do not receive the email within a few minutes, please check your spam folder.";
-                    }
-                    $this->session->set_flashdata('success', $msg);
-                } catch (Exception $e) {
-                    $this->session->set_flashdata('message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-                    //$this->session->set_flashdata('message', "Your message could not be sent. Please, try again later.");
-                }
-			} else {
-				$this->session->set_flashdata('error', 'Opps, Try again!');
-			}
-            redirect(base_url('register'), 'refresh');
-        }
-    }
 	public function emailVerification($otp=null) {
 		if(empty($otp)) {
 			$this->session->set_flashdata('error', 'You have not permission to access this page!');
@@ -667,41 +683,6 @@ class Home extends CI_Controller {
         } else {
             $this->session->set_flashdata('error', 'Sorry! Activation link is expired!');
             redirect(base_url('login'), 'refresh');
-        }
-    }
-	public function studentLoginCheck() {
-        $email = $this->input->post('email');
-        $password = md5($this->input->post('password'));
-        $course_id = $this->input->post('course_id');
-        $userValid = $this->User_model->usrLoginCheck($email, $password);
-        if ($userValid) {
-            $user = $this->User_model->getUsrDetails($email);
-			$this->session->set_userdata('isLoggedIn', TRUE);
-            $this->session->set_userdata('user_id', @$user->id);
-            $this->session->set_userdata('first_name', @$user->fname);
-            $this->session->set_userdata('userType', @$user->userType);
-            if(@$user->userType == '1') {
-                if(@$course_id) {
-                    $this->session->set_flashdata('success', 'Logged in successfully.');
-                    redirect(base_url('course-enrollment/'.@$course_id), 'refresh');
-                } else {
-                    $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
-                    redirect(base_url('student-dashboard'), 'refresh');
-                }
-            } else {
-                $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
-                redirect(base_url('consultant-dashboard'), 'refresh');
-            }
-        } else {
-            $this->session->set_flashdata('error', 'Invalid email/password, Please try again!');
-            $data = array(
-				'title' => 'Sign In',
-				'page' => 'login',
-                'course_id' => @$course_id,
-			);
-			$this->load->view('header', $data);
-			$this->load->view('login');
-			$this->load->view('footer');
         }
     }
 	public function studentPasswordReset() {

@@ -32,7 +32,7 @@ $optionsList = $this->db->query($getOptionsSql)->result();
         <div id="loading-center">
             <div id="loading-center-absolute">
                 <div class="loading-content">
-                    <img class="loading-logo-text" src="<?= base_url() ?>assets/img/logo.png" alt="">
+                    <img class="loading-logo-text" src="<?= base_url() ?>uploads/logo/<?= $optionsList[0]->option_value?>" alt="">
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@ $optionsList = $this->db->query($getOptionsSql)->result();
                         <div class="header__left d-flex">
                             <div class="logo">
                                 <a href="<?= base_url() ?>home">
-                                    <img src="<?= base_url() ?>assets/img/logo.png" alt="logo">
+                                    <img src="<?= base_url() ?>uploads/logo/<?= $optionsList[0]->option_value?>" alt="logo">
                                 </a>
                             </div>
                         </div>
@@ -65,14 +65,22 @@ $optionsList = $this->db->query($getOptionsSql)->result();
                             </div>
                             <div class="main-menu ms-lg-3">
                                 <nav id="mobile-menu">
+                                    <?php
+                                    if(!empty($this->session->userdata('user_id'))) {
+                                        if($this->session->userdata('userType') == '1') { ?>
+                                        <ul>
+                                            <li><a href="<?= base_url()?>student-dashboard" class="e-btn">Dashboard</a></li>
+                                        </ul>
+                                        <?php } else { ?>
+                                        <ul>
+                                            <li><a href="<?= base_url()?>consultant-dashboard" class="e-btn">Dashboard</a></li>
+                                        </ul>
+                                    <?php } } else { ?>
                                     <ul>
-                                        <li>
-                                            <a href="<?= base_url()?>register" class="e-btn">Sign Up</a>
-                                        </li>
-                                        <li>
-                                            <a href="<?= base_url()?>login" class="e-btn">Log In</a>
-                                        </li>
+                                        <li><a href="<?= base_url()?>register" class="e-btn">Sign Up</a></li>
+                                        <li><a href="<?= base_url()?>login" class="e-btn">Log In</a></li>
                                     </ul>
+                                    <?php } ?>
                                 </nav>
                             </div>
                             <div class="sidebar__menu d-xl-none">

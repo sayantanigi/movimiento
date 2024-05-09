@@ -2,9 +2,7 @@
 <div class="col-lg-4 mb-4">
     <div class="rbt-default-sidebar">
         <div class="wrappsidebar">
-            <h2 class="h6 mb-4 text-dark-emphasis">Welcome,
-                <?= $userDetails->fname ?>
-            </h2>
+            <h2 class="h6 mb-4 text-white">Welcome, <?= $userDetails->full_name ?></h2>
             <nav class="mainmenu-nav">
                 <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                     <li>
@@ -25,12 +23,12 @@
                             <span>Enrolled Courses</span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="<?= base_url('event-booked') ?>">
                             <i class="fa fa-calendar"></i>
                             <span>Event Booked</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="<?= base_url('reviews') ?>">
                             <i class="far fa-star"></i>
@@ -43,12 +41,12 @@
                             <span>Order History</span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="<?= base_url('product-order-list')?>">
                             <i class="far fa-shopping-bag"></i>
                             <span>Product Order History</span>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </nav>
             <h4 class="h6 mb-4 text-light mt-4">User</h4>

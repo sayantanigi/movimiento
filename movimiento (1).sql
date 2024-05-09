@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2024 at 04:27 PM
+-- Generation Time: May 09, 2024 at 04:28 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -49487,7 +49487,7 @@ CREATE TABLE `product_order_details` (
   `tax` varchar(45) DEFAULT NULL,
   `order_total` varchar(45) DEFAULT NULL,
   `status` text DEFAULT NULL,
-  `created_date` varchar(100) DEFAULT current_timestamp()
+  `created_date` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

@@ -389,7 +389,7 @@ class Course extends Admin_Controller {
                         $error = array('error' => $this->upload->display_errors());
                         $msg = '["' . $error['error'] . '", "error", "#e50914"]';
                     } else {
-                        // Uploaded file data 
+                        // Uploaded file data
                         $fileData = $this->upload->data();
                         $mydata['video_file'] = $fileData['file_name'];
                     }
@@ -837,13 +837,29 @@ class Course extends Admin_Controller {
         if ($this->form_validation->run()) {
             $formdata = $this->input->post('frm');
             $formdata['id'] = $id;
-            // /$formdata['status'] = 1;
             $slug = $formdata['category_name'];
             if (empty($slug) || $slug == '') {
                 $slug = $formdata['category_name'];
             }
             $slug = strtolower(url_title($slug));
             $formdata['category_link'] = $this->Cms_model->get_unique_url($slug, $id);
+            if ($_FILES['category_image']['name'] != '') {
+                $config['upload_path'] = './uploads/category/';
+                $config['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
+                $config['max_size'] = '*';
+                $config['overwrite'] = false;
+                $config['remove_spaces'] = TRUE;  //it will remove all spaces
+                $config['encrypt_name'] = TRUE;   //it wil encrypte the original file name
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if (!$this->upload->do_upload('category_image')) {
+                    $error = array('error' => $this->upload->display_errors());
+                    $msg = '["' . $error['error'] . '", "error", "#e50914"]';
+                } else {
+                    $fileData = $this->upload->data();
+                    $formdata['category_image'] = $fileData['file_name'];
+                }
+            }
             $id = $this->Course_model->save($formdata, 'sm_category');
             //echo $this->db->last_query();die();
             $this->session->set_flashdata("success", "Category detail updated");
@@ -1129,7 +1145,7 @@ class Course extends Admin_Controller {
                     $error = array('error' => $this->upload->display_errors());
                     $msg = '["' . $error['error'] . '", "error", "#e50914"]';
                 } else {
-                    // Uploaded file data 
+                    // Uploaded file data
                     $fileData = $this->upload->data();
                     $formdata['module_image'] = $fileData['file_name'];
                 }
@@ -1215,7 +1231,7 @@ class Course extends Admin_Controller {
                         $error = array('error' => $this->upload->display_errors());
                         $msg = '["' . $error['error'] . '", "error", "#e50914"]';
                     } else {
-                        // Uploaded file data 
+                        // Uploaded file data
                         $fileData = $this->upload->data();
                         $mydata['video_file'] = $fileData['file_name'];
                     }
@@ -1513,7 +1529,7 @@ class Course extends Admin_Controller {
 
                     }
 
-                 
+
                     $this->db->insert_batch('course_quiz', $basicdata);
                 }
 

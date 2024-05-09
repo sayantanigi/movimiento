@@ -48,7 +48,7 @@
                             <td><img src="<?= @$image ?>" title="<?= $course_v->title ?>" style="width:60px; border:1px solid #ccc; padding:2px;"></td>
                             <td>
                                 <?php
-                                $getUserDetails = $this->db->query("SELECT fname, lname FROM users WHERE id = '".$course_v->user_id."'")->result_array();
+                                $getUserDetails = $this->db->query("SELECT full_name FROM users WHERE id = '".$course_v->user_id."'")->result_array();
                                 if(!empty($getUserDetails)) {
                                     echo $getUserDetails[0]['fname']." ".$getUserDetails[0]['lname'];
                                 } else {
@@ -122,8 +122,8 @@
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="assign_course_<?= $course_v->id ?>">Assign Course</button>
                                     <input type="hidden" id="courseID_<?= $course_v->id ?>" value="<?= $course_v->id ?>" />
                                 </div>
-                                <?php 
-                                if(empty($course_v->assigned_instrustor)) { 
+                                <?php
+                                if(empty($course_v->assigned_instrustor)) {
                                 if(empty($course_v->user_id)) { ?>
                                 <div>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="assign_instructor_<?= $course_v->id ?>" style="margin-top: 10px;">Assign Instructor</button>
@@ -147,9 +147,9 @@
                                     $checkAssignedCourseToUser = $this->db->query("SELECT GROUP_CONCAT(user_id) as user_id FROM course_enrollment where course_enrollment.course_id = $course_v->id")->result_array();
                                     $userList = $checkAssignedCourseToUser[0]['user_id'];
                                     if (!empty($userList)) {
-                                        $getMemberList = $this->db->query("SELECT id, fname, lname FROM users where id NOT IN ($userList) AND email_verified = 1 AND status = 1 AND userType = 1")->result_array();
+                                        $getMemberList = $this->db->query("SELECT id, full_name FROM users where id NOT IN ($userList) AND email_verified = 1 AND status = 1 AND userType = 1")->result_array();
                                     } else {
-                                        $getMemberList = $this->db->query("SELECT id, fname, lname FROM users where email_verified = 1 AND status = 1 AND userType = 1")->result_array();
+                                        $getMemberList = $this->db->query("SELECT id, full_name FROM users where email_verified = 1 AND status = 1 AND userType = 1")->result_array();
                                     }
                                     if (!empty($getMemberList)) { ?>
                                     <div class="modal-body">
@@ -181,9 +181,9 @@
                                     $checkAssignedCourseToUser = $this->db->query("SELECT GROUP_CONCAT(user_id) as user_id FROM course_enrollment where course_enrollment.course_id = $course_v->id")->result_array();
                                     $userList = $checkAssignedCourseToUser[0]['user_id'];
                                     if (!empty($userList)) {
-                                        $getMemberList = $this->db->query("SELECT id, fname, lname FROM users where id NOT IN ($userList) AND email_verified = 1 AND status = 1 AND userType = 1")->result_array();
+                                        $getMemberList = $this->db->query("SELECT id, full_name FROM users where id NOT IN ($userList) AND email_verified = 1 AND status = 1 AND userType = 1")->result_array();
                                     } else {
-                                        $getMemberList = $this->db->query("SELECT id, fname, lname FROM users where email_verified = 1 AND status = 1 AND userType = 2")->result_array();
+                                        $getMemberList = $this->db->query("SELECT id, full_name FROM users where email_verified = 1 AND status = 1 AND userType = 2")->result_array();
                                     }
                                     if (!empty($getMemberList)) { ?>
                                     <div class="modal-body">

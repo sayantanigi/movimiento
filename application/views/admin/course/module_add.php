@@ -36,8 +36,7 @@
                                         <div class="form-group">
                                             <label for="usrImage">Image</label>
                                             <div class="custom-file">
-                                                <input type="file" accept="image/*" class="form-control"
-                                                    name="module_image" id="customFile" onchange="preview_image(event)">
+                                                <input type="file" accept="image/*" class="form-control" name="module_image" id="customFile" onchange="preview_image(event)">
                                             </div>
                                         </div>
                                     </div>
@@ -46,15 +45,11 @@
                                         <img id="output_image" src="<?php echo base_url('images/thumbs.jpg'); ?>" />
                                     </div>
                                 </div>
-
                                 <div class="col-sm-10">
-
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Module Name</label>
-                                            <input type="text" name="frm[name]" value="<?= $course->name ?>"
-                                                class="form-control" id="exampleInputEmail1"
-                                                placeholder="Enter Chapter/Topic Name">
+                                            <input type="text" name="frm[name]" value="<?= $course->name ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter Chapter/Topic Name">
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -70,9 +65,7 @@
                                             </select>
                                         </div>
                                     </div>
-
                                 </div>
-
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
@@ -87,10 +80,8 @@
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
-            <!-- /.box -->
         </div>
     </div>
 </section>

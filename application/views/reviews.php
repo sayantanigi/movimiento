@@ -71,100 +71,119 @@ function timeAgo($time_ago)  {
     endswitch;
 }
 ?>
-<main>
-    <section class="pt-100 pb-145">
-        <div class="container">
-            <div class="rbt-dashboard-content-wrapper">
-                <div class="rbt-tutor-information">
-                    <div class="rbt-tutor-information-left d-flex align-items-center">
-                        <div class="thumbnail rbt-avatars size-lg">
-                            <?php if (!empty($userDetails->image)) { ?>
-                                <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
-                            <?php } else { ?>
-                                <img src="images/no-user.png" alt="">
-                            <?php } ?>
-                        </div>
-                        <div class="tutor-content">
-                            <h5 class="title h4 fw-bold">
-                                <?= $userDetails->fname ?>
-                            </h5>
-                            <ul class="listRbt mt--5">
-                                <li><i class="far fa-book-alt"></i>
-                                    <?php echo @$ctn_enrolment; ?> Courses Enroled
-                                </li>
-                                <li><i class="far fa-file-certificate"></i>
-                                    <?php echo count($courseArray); ?> Certificate
-                                </li>
-                            </ul>
+<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="assets/img/page-title/page-title-2.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="page__title-wrapper mt-100">
+                <h3 class="page__title">Reviews</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="<?= base_url()?>home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Reviews</li>
+                    </ol>
+                </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="pt-100 pb-145">
+    <div class="container">
+        <div class="rbt-dashboard-content-wrapper">
+            <div class="rbt-tutor-information">
+                <div class="rbt-tutor-information-left d-flex align-items-center">
+                    <div class="thumbnail rbt-avatars size-lg">
+                        <?php if (!empty($userDetails->image)) { ?>
+                            <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
+                        <?php } else { ?>
+                            <img src="images/no-user.png" alt="">
+                        <?php } ?>
+                    </div>
+                    <div class="tutor-content">
+                        <h5 class="title h4 fw-bold text-white">
+                            <?= ucwords($userDetails->full_name) ?>
+                        </h5>
+                        <ul class="listRbt mt--5">
+                            <li><i class="far fa-book-alt"></i>
+                                <?php echo @$ctn_enrolment; ?> Courses Enroled
+                            </li>
+                            <li><i class="far fa-file-certificate"></i>
+                                <?php echo count($courseArray); ?> Certificate
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <?php $this->load->view('leftbar_dash'); ?>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold text-uppercase">Reviews</h2>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="rbt-table table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Feedback</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if(!empty($reviews)) {
+                                    foreach ($reviews as $key => $value) {
+                                        if (@$value->image && file_exists('./assets/images/courses/' . @$value->image)) {
+                                            $image = base_url('assets/images/courses/' . @$value->image);
+                                        } else {
+                                            $image = base_url('./images/noimage.jpg');
+                                        }
+                                        $rating = $value->rating;
+                                    ?>
+                                    <tr>
+                                        <th>
+                                            <span class="b3"><a href="javascript:void(0)"><?php echo @$value->review_message; ?></a></span>
+                                        </th>
+                                        <td>
+                                            <div class="rbt-review d-flex">
+                                                <div class="rating me-2">
+                                                <?php
+                                                    echo "<span class='stars'>";
+                                                    for ( $i = 1; $i <= 5; $i++ ) {
+                                                        if ( round( $rating - .25 ) >= $i ) {
+                                                            echo "<i class='fa fa-star'></i>"; //fas fa-star for v5
+                                                        } elseif ( round( $rating + .25 ) >= $i ) {
+                                                            echo "<i class='fa fa-star-half-o'></i>"; //fas fa-star-half-alt for v5
+                                                        } else {
+                                                            echo "<i class='fa fa-star-o'></i>"; //far fa-star for v5
+                                                        }
+                                                    }
+                                                    echo '</span>';
+                                                ?>
+                                                </div>
+                                                <span class="rating-count"><?php echo timeAgo($value->review_date); ?></span>
+                                            </div>
+                                            <p class="b2 text-light mb-0">Good</p>
+                                        </td>
+                                        <td>
+                                            <div class="text-end">
+                                                <!-- <a class="btn btn-outline-primary btn-sm" href="#" title="Edit"><i class="far fa-edit"></i></a> -->
+                                                <a class="btn btn-outline-danger btn-sm" href="javascript:void(0)" title="Delete" onclick="deleteReview(<?= $value->review_id?>)"><i class="far fa-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php } } else  { ?>
+                                        <td class='text-danger' style='text-align: center; color: #fff !important;' colspan='2'>No review found!</td>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <?php $this->load->view('leftbar_dash'); ?>
-                <div class="col-lg-8">
-                    <div class="card bg-dark shadow">
-                        <div class="card-body p-4">
-                            <h2 class="h5 fw-bold text-uppercase">Reviews</h2>
-                            <hr>
-                            <div class="table-responsive">
-                                <table class="rbt-table table table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th>Course</th>
-                                            <th>Feedback</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php 
-                                        if(!empty($reviews)) {
-                                        foreach ($reviews as $key => $value) {
-                                            if (@$value->image && file_exists('./assets/images/courses/' . @$value->image)) {
-                                                $image = base_url('assets/images/courses/' . @$value->image);
-                                            } else {
-                                                $image = base_url('./images/noimage.jpg');
-                                            }
-                                            $rating = $value->rating;
-                                        ?>
-                                        <tr>
-                                            <th>
-                                                <span class="b3"><a href="javascript:void(0)"><?php echo @$value->review_message; ?></a></span>
-                                            </th>
-                                            <td>
-                                                <div class="rbt-review d-flex">
-                                                    <div class="rating me-2">
-                                                    <?php
-                                                        echo "<span class='stars'>";
-                                                        for ( $i = 1; $i <= 5; $i++ ) {
-                                                            if ( round( $rating - .25 ) >= $i ) {
-                                                                echo "<i class='fa fa-star'></i>"; //fas fa-star for v5
-                                                            } elseif ( round( $rating + .25 ) >= $i ) {
-                                                                echo "<i class='fa fa-star-half-o'></i>"; //fas fa-star-half-alt for v5
-                                                            } else {
-                                                                echo "<i class='fa fa-star-o'></i>"; //far fa-star for v5
-                                                            }
-                                                        }
-                                                        echo '</span>';
-                                                    ?>
-                                                    </div>
-                                                    <span class="rating-count"><?php echo timeAgo($value->review_date); ?></span>
-                                                </div>
-                                                <p class="b2 text-light mb-0">Good</p>
-                                            </td>
-                                            <td>
-                                                <div class="text-end">
-                                                    <!-- <a class="btn btn-outline-primary btn-sm" href="#" title="Edit"><i class="far fa-edit"></i></a> -->
-                                                    <a class="btn btn-outline-danger btn-sm" href="javascript:void(0)" title="Delete" onclick="deleteReview(<?= $value->review_id?>)"><i class="far fa-trash"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php } } else  { ?>
-                                            <td class='text-danger' style='text-align: center; color: #fff !important;' colspan='2'>No review found!</td> 
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+</section>

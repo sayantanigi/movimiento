@@ -4,11 +4,12 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Makutano || Course Management</title>
+    <title>Movimiento || Course Management</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
+    <link rel="icon" type="image/x-icon" href="http://localhost/movimiento/assets/img/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="<?php echo base_url(); ?>assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -32,7 +33,7 @@ $optionsList = $this->db->query($getOptionsSql)->result();?>
             <div class="page-logo" style="padding-left: 0px; padding-right: 0px;">
                 <a href="<?php echo base_url(); ?>" target="__blank">
                     <b style="font-family:'Times New Roman', Times, serif; color:#FFF; font-size:18px;">
-                        <img style="height: 45px;width: 210px;" src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value?>">
+                        <img style="height: 45px;width: 210px;background: #fff;" src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value?>">
                     </b>
                 </a>
                 <div class="menu-toggler sidebar-toggler"> </div>
