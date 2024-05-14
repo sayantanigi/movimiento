@@ -58,7 +58,7 @@ $route['reviews'] = 'Users/reviews';
 $route['edit-profile'] = 'Users/editProfile';
 $route['logout'] = 'Users/logout';
 $route['consultant-dashboard'] = 'supercontrol/home';
-
+$route['course-detail/(:any)'] = "home/courseDetail/$1";
 
 /*------------Admin Routes------------*/
 $route['admin'] = 'admin/users';
@@ -114,7 +114,6 @@ $route['dashboard'] = 'admin/dashboard/index';
 // $route['email_unsubscribe/(:any)'] = 'Home/email_unsubscribe';
 // $route['course-list'] = 'home/courseList';
 // $route['consulting'] = 'home/consulting';
-// $route['course-detail/(:any)'] = "home/courseDetail/$1";
 // $route['course-enrollment/(:any)'] = "home/courseEnrollment/$1";
 // $route['success/(:any)'] = "home/success/$1";
 // $route['login/(:any)'] = 'home/login/$1';

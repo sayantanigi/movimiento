@@ -1,3 +1,6 @@
+<style>
+    .zero {color: #ddd !important;}
+</style>
 <main>
     <section class="hero__area hero__height hero__height-2 d-flex align-items-center blue-bg-3 p-relative fix">
         <div class="hero__shape">
@@ -14,9 +17,9 @@
                             </h3>
                             <h4>Unlock a World of Knowledge at Your Fingertips</h4>
                             <div class="hero__search mt-4">
-                                <form action="#">
+                                <form action="<?= base_url('Home/searchData')?>" method="post">
                                     <div class="hero__search-input mb-10">
-                                        <input type="text" placeholder="What do you want to learn?">
+                                        <input type="text" name="search_data" placeholder="What do you want to learn?" value="">
                                         <button type="submit"><i class="fad fa-search"></i></button>
                                     </div>
                                 </form>
@@ -92,8 +95,12 @@
                 <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 grid-item cat1 cat2 cat4">
                     <div class="course__item white-bg mb-30 fix">
                         <div class="course__thumb w-img p-relative fix">
-                            <a href="#">
-                                <img src="assets/img/course/course-1.jpg" alt="">
+                            <a href="<?=base_url('course-detail/'.@$value->id)?>">
+                                <?php if(!empty($value->image)) { ?>
+                                <img src="<?= base_url()?>assets/images/courses/<?= $value->image?>" alt="">
+                                <?php } else { ?>
+                                <img src="assets/images/no-image.png" alt="">
+                                <?php } ?>
                             </a>
                             <div class="course__tag">
                                 <a href="javascript:void(0)"><?= $catname->category_name?></a>
@@ -125,11 +132,11 @@
                                 <span><i class="fas fa-star"></i></span>
                                 <?php } $rate--; } ?>
                                 <?php } else { ?>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
+                                <span><i class="fas fa-star zero"></i></span>
+                                <span><i class="fas fa-star zero"></i></span>
+                                <span><i class="fas fa-star zero"></i></span>
+                                <span><i class="fas fa-star zero"></i></span>
+                                <span><i class="fas fa-star zero"></i></span>
                                 <?php } echo "(0)";
                                 ?>
                                 </div>

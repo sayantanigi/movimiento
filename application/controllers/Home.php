@@ -263,7 +263,22 @@ class Home extends CI_Controller {
 			$this->load->view('footer');
         }
     }
-
+    public function courseDetail($id) {
+		$data = array('title' => 'Course Details', 'page' => 'course');
+        $where = array('id'=> $id);
+		$data['detail'] = $this->Commonmodel->fetch_row('courses', $where);
+		$data['course_id'] = $id;
+		$this->load->view('header', $data);
+		$this->load->view('course-detail');
+		$this->load->view('footer');
+	}
+    public function searchData() {
+        $keyword = $this->input->post('search_data');
+        $data['search_result'] = $this->db->query("SELECT * FROM courses WHERE (title LIKE '%".$keyword."%' OR heading_1 LIKE '%".$keyword."%' OR heading_2 LIKE '%".$keyword."%' OR description LIKE '%".$keyword."%' OR program_overview LIKE '%".$keyword."%' OR objectives LIKE '%".$keyword."%' OR curriculam LIKE '%".$keyword."%' OR career_paths LIKE '%".$keyword."%') AND status = '1'")->result_array();
+        $this->load->view('header', $data);
+		$this->load->view('search_page', $data);
+		$this->load->view('footer', $data);
+    }
 
 
 
@@ -472,15 +487,6 @@ class Home extends CI_Controller {
         }
         echo $html;
     }
-	public function courseDetail($id) {
-		$data = array('title' => 'Course Details', 'page' => 'course');
-        $where = array('id'=> $id);
-		$data['detail'] = $this->Commonmodel->fetch_row('courses', $where);
-		$data['course_id'] = $id;
-		$this->load->view('header', $data);
-		$this->load->view('course-detail');
-		$this->load->view('footer');
-	}
     public function courseEnrollment($course_id = null){
         $user_id = $this->session->userdata('user_id');
         $isLoggedIn = $this->session->userdata('isLoggedIn');
