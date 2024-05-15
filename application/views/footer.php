@@ -44,7 +44,6 @@ $getSetting = $this->db->query("SELECT * from options")->result_array();
                 </div>
             </div>
         </div>
-
     </div>
 </footer>
 <script src="<?= base_url('assets/js/vendor/jquery-3.5.1.min.js') ?>"></script>
@@ -66,62 +65,105 @@ $getSetting = $this->db->query("SELECT * from options")->result_array();
 <script src="<?= base_url('assets/sweetalert/sweetalert.min.js') ?>"></script>
 <script src="<?= base_url('assets/sweetalert/jquery.sweet-alert.custom.js') ?>"></script>
 <script>
-    function deleteReview(id) {
-        swal({
-            title: 'Are you sure want to delete this review?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#36A1EA',
-            cancelButtonColor: '#e50914',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            closeOnConfirm: true,
-            closeOnCancel: true
-        }, function (isConfirm) {
-            if (isConfirm) {
-                window.location.href = '<?= base_url('home/deleteReview/') ?>' + id
-            }
-        });
-    }
-    function subscribe() {
-        var email = $('#user_email').val();
-        if (email.length == 0) {
-            $("#success").show().html("<p style='color: red; margin:0;'>Please enter your email address</p>").fadeIn(2000);
-            setTimeout(function () {
-                $("#success").hide();
-            }, 2000);
-        } else {
-            $.ajax({
-                url: "<?php echo site_url('Home/user_subscribe'); ?>",
-                dataType: "JSON",
-                method: "POST",
-                data: { user_email: email },
-                success: function (data) {
-                    console.log(data);
-                    if (data == 1) {
-                        $("#success").show().html("<p style='color: red; margin:0;'>This email is already exists.</p>").fadeIn(2000);
-                        setTimeout(function () {
-                            location.reload();
-                            $("#success").hide();
-                        }, 4000);
-                    } else if (data == 2) {
-                        $("#success").show().html("<p style='color: green; margin:0;'>Your subscription is successful.</p>").fadeIn(2000);
-                        setTimeout(function () {
-                            $("#success").hide();
-                        }, 4000);
-                        setTimeout(function () {
-                            location.reload();
-                        }, 5500);
-                    } else {
-                        $("#error").show().html("<p style='color: green; margin:0;'>Something went wrong. Please try again.</p>").fadeIn(2000);
-                        setTimeout(function () {
-                            $("#error").hide();
-                        }, 4000);
-                    }
-                }
-            })
+function deleteReview(id) {
+    swal({
+        title: 'Are you sure want to delete this review?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#36A1EA',
+        cancelButtonColor: '#e50914',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        closeOnConfirm: true,
+        closeOnCancel: true
+    }, function (isConfirm) {
+        if (isConfirm) {
+            window.location.href = '<?= base_url('home/deleteReview/') ?>' + id
         }
+    });
+}
+function subscribe() {
+    var email = $('#user_email').val();
+    if (email.length == 0) {
+        $("#success").show().html("<p style='color: red; margin:0;'>Please enter your email address</p>").fadeIn(2000);
+        setTimeout(function () {
+            $("#success").hide();
+        }, 2000);
+    } else {
+        $.ajax({
+            url: "<?php echo site_url('Home/user_subscribe'); ?>",
+            dataType: "JSON",
+            method: "POST",
+            data: { user_email: email },
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    $("#success").show().html("<p style='color: red; margin:0;'>This email is already exists.</p>").fadeIn(2000);
+                    setTimeout(function () {
+                        location.reload();
+                        $("#success").hide();
+                    }, 4000);
+                } else if (data == 2) {
+                    $("#success").show().html("<p style='color: green; margin:0;'>Your subscription is successful.</p>").fadeIn(2000);
+                    setTimeout(function () {
+                        $("#success").hide();
+                    }, 4000);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 5500);
+                } else {
+                    $("#error").show().html("<p style='color: green; margin:0;'>Something went wrong. Please try again.</p>").fadeIn(2000);
+                    setTimeout(function () {
+                        $("#error").hide();
+                    }, 4000);
+                }
+            }
+        })
     }
+}
+$(function() {
+    $('#eye').click(function() {
+        if ($(this).hasClass('fa-eye-slash')) {
+            $(this).removeClass('fa-eye-slash');
+            $(this).addClass('fa-eye');
+            $('#password').attr('type', 'text');
+        } else {
+            $(this).removeClass('fa-eye');
+            $(this).addClass('fa-eye-slash');
+            $('#password').attr('type', 'password');
+        }
+    });
+
+    $('#eye2').click(function() {
+        if ($(this).hasClass('fa-eye-slash')) {
+            $(this).removeClass('fa-eye-slash');
+            $(this).addClass('fa-eye');
+            $('#confirm_password').attr('type', 'text');
+        } else {
+            $(this).removeClass('fa-eye');
+            $(this).addClass('fa-eye-slash');
+            $('#confirm_password').attr('type', 'password');
+        }
+    });
+
+    if($('#otp').val().length == 0) {
+        $('.reset_pass').attr("disabled", 'disabled');
+    }
+    $('#resetFormValidation').submit(function() {
+        var pass = $('#password').val();
+        var conPass = $('#confirm_password').val();
+        if(pass != conPass) {
+            $("#confirm_password").fadeIn().html("Required").css("border","2px solid red");
+            $(".p_check").show()
+            setTimeout(function() {
+                $("#confirm_password").removeAttr("style");
+                $(".p_check").hide()
+            },2000);
+            $("#confirm_password").focus();
+            return false;
+        }
+    })
+});
 </script>
 </body>
 

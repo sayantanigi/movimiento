@@ -17,7 +17,7 @@
                             </h3>
                             <h4>Unlock a World of Knowledge at Your Fingertips</h4>
                             <div class="hero__search mt-4">
-                                <form action="<?= base_url('Home/searchData')?>" method="post">
+                                <form action="<?= base_url('search_data')?>" method="post">
                                     <div class="hero__search-input mb-10">
                                         <input type="text" name="search_data" placeholder="What do you want to learn?" value="">
                                         <button type="submit"><i class="fad fa-search"></i></button>

@@ -58,7 +58,7 @@ $optionsList = $this->db->query($getOptionsSql)->result();
                     <div class="col-xxl-9 col-xl-9 col-lg-8 col-md-10 col-sm-8 col-6">
                         <div class="header__right d-flex justify-content-end align-items-center">
                             <div class="header__search p-relative ml-50 d-none d-md-block">
-                                <form action="<?= base_url('Home/searchData')?>" method="post">
+                                <form action="<?= base_url('search_data')?>" method="post">
                                     <input type="text" name="search_data" placeholder="Search..." value="">
                                     <button type="submit"><i class="fad fa-search"></i></button>
                                 </form>

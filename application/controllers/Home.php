@@ -115,7 +115,6 @@ class Home extends CI_Controller {
                     $this->session->set_flashdata('success', $msg);
                 } catch (Exception $e) {
                     $this->session->set_flashdata('message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-                    //$this->session->set_flashdata('message', "Your message could not be sent. Please, try again later.");
                 }
 			} else {
 				$this->session->set_flashdata('error', 'Opps, Try again!');
@@ -135,6 +134,159 @@ class Home extends CI_Controller {
 		$this->load->view('header', $data);
 		$this->load->view('login');
 		$this->load->view('footer');
+    }
+    public function forgotPassword() {
+        $data = array(
+            'title' => 'Forgot Password',
+            'page' => 'forgotpassword',
+        );
+		$this->load->view('header', $data);
+		$this->load->view('forgot-password');
+		$this->load->view('footer');
+    }
+    public function studentPasswordReset() {
+        $email = $this->input->post('email');
+        $check_email = $this->db->get_where('users', array('email' => $email, 'status' => 1))->num_rows();
+        if ($check_email==0) {
+            $this->session->set_flashdata('error', 'Email not exist!');
+            redirect(base_url('home/forgotPassword'), 'refresh');
+        }
+        $otp = $this->generate_otp(6);
+        if ($check_email>0) {
+            $usr = $this->User_model->getUsrDetails($email);
+            $full_name = $usr->full_name;
+            $user_id = $usr->id;
+            $data = array(
+                'otp' => $otp
+            );
+            $where = array(
+                'id' => $user_id
+            );
+            $this->db->update('users', $data, $where);
+            $this->db->query("UPDATE users SET otp = $otp WHERE id = '".$user_id."'");
+            $subject = 'Password reset from Movimiento';
+            $url = base_url() . "otp-verification/" . urlencode(base64_encode($otp));
+            $getOptionsSql = "SELECT * FROM `options`";
+            $optionsList = $this->db->query($getOptionsSql)->result();
+            $address = $optionsList[6]->option_value;
+            $admEmail = $optionsList[8]->option_value;
+            $message = "
+            <body>
+                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
+                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
+                        <img src='cid:Logo' style='width: 220px; float: right; margin-top: 0'>
+                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento</span></h3>
+                        <p style='font-size: 14px;'>Dear ".$full_name.",</p>
+                        <p style='font-size: 18px;'></p>
+                        <p style='font-size: 18px; margin: 30px;'>Please click on below link to reset your password.</p>
+                        <p style='font-size: 18px; margin: 0px;'><a href=" . $url . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
+                        <p style='font-size:20px;'></p>
+                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
+                    </div>
+                    <table style='width: 100%;'>
+                        <tr>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento. All rights reserved.</td>
+                        </tr>
+                    </table>
+                </div>
+            </body>";
+            $mail = new PHPMailer(true);
+            try {
+                //Server settings
+                $mail->CharSet = 'UTF-8';
+                $mail->SetFrom('admin@gmail.com', 'Movimiento');
+                $mail->AddAddress($email);
+                $mail->IsHTML(true);
+                $mail->AddEmbeddedImage('uploads/logo/logo.png', 'Logo');
+                $mail->Subject = $subject;
+                $mail->Body = $message;
+                $mail->IsSMTP();
+                $mail->Host = 'smtp-relay.brevo.com';       // Specify main and backup SMTP servers
+                $mail->SMTPAuth = true;                     // Enable SMTP authentication
+                $mail->Username = 'sayantan@goigi.in';      // SMTP username
+                $mail->Password = 'NWpyxa3UK2HDPSbs';       // SMTP password
+                $mail->SMTPSecure = 'tls';                  // Enable TLS encryption, `ssl` also accepted
+                $mail->Port = 587;
+                if(!$mail->send()) {
+                    $msg = "Error sending: " . $mail->ErrorInfo;
+                } else {
+                    $msg = "An email has been sent to your email address containing an reset password link. Please click on the link to change your account. If you do not receive the email within a few minutes, please check your spam folder.";
+                }
+                $this->session->set_flashdata('success', $msg);
+            } catch (Exception $e) {
+                $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Opps, Try again!');
+        }
+        redirect(base_url('home/forgotPassword'), 'refresh');
+    }
+    public function verifyOtp($otp=null) {
+        if(empty($otp)) {
+			$this->session->set_flashdata('error', 'You have not permission to access this page!');
+			redirect(base_url('reset-password'), 'refresh');
+		}
+        // $otp = $this->uri->segment(3);
+        $givenotp = base64_decode(urldecode($otp));
+        $sql = "SELECT * FROM `users` WHERE `otp` = '".$givenotp."'";
+        $check = $this->db->query($sql)->num_rows();
+        $data = array(
+            'title' => 'Password reset ',
+            'otp' => $givenotp,
+        );
+        if ($check > 0) {
+            $usr = $this->db->query($sql)->row();
+            $data['user_id'] = $usr->id;
+            $this->load->view('header', $data);
+            $this->load->view('reset-password');
+            $this->load->view('footer');
+        } else {
+            $this->session->set_flashdata('error', 'Sorry! Password reset link is expired!');
+            $this->load->view('header', $data);
+            $this->load->view('reset-password');
+            $this->load->view('footer');
+        }
+    }
+    public function resetPwdCust() {
+        $user_id = $this->input->post('user_id');
+        $otp = base64_decode($this->input->post('otp'));
+        $password = $this->input->post('password');
+        $sql = "SELECT * FROM `users` WHERE `otp` = '".$otp."' AND `id` = '".$user_id."'";
+        $check = $this->db->query($sql)->num_rows();
+        $data = array(
+            'title' => 'Password reset',
+            'otp' => $otp,
+        );
+        if ($check > 0) {
+            $usr = $this->db->query($sql)->row();
+            $field_data = array(
+                'password' => base64_encode($password),
+                'otp' => ''
+            );
+            $where = array(
+                'id'=>$user_id
+            );
+            $result = $this->Commonmodel->update_row('users', $field_data, $where);
+            if ($result) {
+                $this->session->set_flashdata('success', 'Your Password is successfully Updated. You can now login.');
+                $this->load->view('header', $data);
+                $this->load->view('reset-password');
+                $this->load->view('footer');
+            } else {
+                $this->session->set_flashdata('error', 'Sorry! There is error verifying!');
+                $this->load->view('header', $data);
+                $this->load->view('reset-password');
+                $this->load->view('footer');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Sorry! Password reset link is expired!');
+            $this->load->view('header', $data);
+            $this->load->view('reset-password');
+            $this->load->view('footer');
+        }
     }
     public function community() {
 		$this->load->view('header');
@@ -646,15 +798,7 @@ class Home extends CI_Controller {
         }
 	}
 
-	public function forgotPassword() {
-        $data = array(
-            'title' => 'Forgot Password',
-            'page' => 'forgotpassword',
-        );
-		$this->load->view('header', $data);
-		$this->load->view('forgot-password');
-		$this->load->view('footer');
-    }
+
 	public function emailVerification($otp=null) {
 		if(empty($otp)) {
 			$this->session->set_flashdata('error', 'You have not permission to access this page!');
@@ -691,147 +835,9 @@ class Home extends CI_Controller {
             redirect(base_url('login'), 'refresh');
         }
     }
-	public function studentPasswordReset() {
-        $email = $this->input->post('email');
-        $check_email = $this->db->get_where('users', array('email' => $email, 'status' => 1))->num_rows();
-        if ($check_email==0) {
-            $this->session->set_flashdata('error', 'Email not exist!');
-            redirect(base_url('home/forgotPassword'), 'refresh');
-        }
-        $otp = $this->generate_otp(6);
-        if ($check_email>0) {
-            $usr = $this->User_model->getUsrDetails($email);
-            $name = $usr->fname;
-            $user_id = $usr->id;
-            $data = array(
-                'otp' => $otp
-            );
-            $where = array(
-                'id' => $user_id
-            );
-            $this->Commonmodel->update_row('users', $data, $where);
-            $subject = 'Password reset from Makutano';
-            $url = base_url() . "otp-verification/" . urlencode(base64_encode($otp));
-            $getOptionsSql = "SELECT * FROM `options`";
-            $optionsList = $this->db->query($getOptionsSql)->result();
-            //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-            $address = $optionsList[6]->option_value;
-            $admEmail = $optionsList[8]->option_value;
-            $message = "
-            <body>
-                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
-                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
-                        <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
-                        <p style='font-size: 18px;'>Dear ".$name.",</p>
-                        <p style='font-size: 18px;'></p>
-                        <p style='font-size: 18px; margin: 0px;'>Please click on below link to reset your password.</p>
-                        <p style='font-size: 18px; margin: 0px;'><a href=" . $url . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
-                        <p style='font-size:20px;'></p>
-                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                    </div>
-                    <table style='width: 100%;'>
-                        <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                        </tr>
-                    </table>
-                </div>
-            </body>";
-            $mail = new PHPMailer(true);
-            try {
-                //Server settings
-                $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress($email);
-                $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-                $mail->Subject = $subject;
-                $mail->Body = $message;
-                //Send email via SMTP
-                $mail->IsSMTP();
-                //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
-                $mail->send();
-            } catch (Exception $e) {
-                $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-            }
-            $msg = "An email has been sent to your email address containing an password reset link. Please click on the link to reset your password.";
-            $this->session->set_flashdata('success', $msg);
-            redirect(base_url('home/forgotPassword'), 'refresh');
-        }
-    }
-    public function verifyOtp($otp=null) {
-        if(empty($otp)) {
-			$this->session->set_flashdata('error', 'You have not permission to access this page!');
-			redirect(base_url('reset-password'), 'refresh');
-		}
-        // $otp = $this->uri->segment(3);
-        $givenotp = base64_decode(urldecode($otp));
-        $sql = "SELECT * FROM `users` WHERE `otp` = '".$givenotp."'";
-        $check = $this->db->query($sql)->num_rows();
-        $data = array(
-            'title' => 'Password reset ',
-            'otp' => $givenotp,
-        );
-        if ($check > 0) {
-            $usr = $this->db->query($sql)->row();
-            $data['user_id'] = $usr->id;
-            $this->load->view('header', $data);
-            $this->load->view('reset-password');
-            $this->load->view('footer');
-        } else {
-            $this->session->set_flashdata('error', 'Sorry! Password reset link is expired!');
-            $this->load->view('header', $data);
-            $this->load->view('reset-password');
-            $this->load->view('footer');
-        }
-    }
-    public function resetPwdCust() {
-        $user_id = $this->input->post('user_id');
-        $otp = $this->input->post('otp');
-        $password = $this->input->post('password');
-        $sql = "SELECT * FROM `users` WHERE `otp` = '".$otp."' AND `id` = '".$user_id."'";
-        $check = $this->db->query($sql)->num_rows();
-        $data = array(
-            'title' => 'Password reset',
-            'otp' => $otp,
-        );
-        if ($check > 0) {
-            $usr = $this->db->query($sql)->row();
-            $field_data = array(
-                'password' => md5($password),
-                'otp' => ''
-            );
-            $where = array(
-                'id'=>$user_id
-            );
-            $result = $this->Commonmodel->update_row('users', $field_data, $where);
-            if ($result) {
-                $this->session->set_flashdata('success', 'Your Password is successfully Updated. You can now login.');
-                $this->load->view('header', $data);
-                $this->load->view('reset-password');
-                $this->load->view('footer');
-            } else {
-                $this->session->set_flashdata('error', 'Sorry! There is error verifying!');
-                $this->load->view('header', $data);
-                $this->load->view('reset-password');
-                $this->load->view('footer');
-            }
-        } else {
-            $this->session->set_flashdata('error', 'Sorry! Password reset link is expired!');
-            $this->load->view('header', $data);
-            $this->load->view('reset-password');
-            $this->load->view('footer');
-        }
-    }
+
+
+
 	public function generate_otp($length) {
         $characters = '0123456789';
         $charactersLength = strlen($characters);
