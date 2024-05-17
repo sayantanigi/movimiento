@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2024 at 04:27 PM
+-- Generation Time: May 17, 2024 at 06:31 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -48495,6 +48495,55 @@ INSERT INTO `cms` (`id`, `page`, `title`, `meta_title`, `slug`, `meta_descriptio
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `community`
+--
+
+CREATE TABLE `community` (
+  `id` int(11) NOT NULL,
+  `title` text NOT NULL,
+  `slug` text DEFAULT NULL,
+  `uploaded_by` varchar(255) NOT NULL,
+  `cat_id` text NOT NULL,
+  `description` text NOT NULL,
+  `status` enum('1','2') NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_delete` enum('1','2') DEFAULT '1' COMMENT '1=> active/not deleted\n2=> inactive/ deleted'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `community`
+--
+
+INSERT INTO `community` (`id`, `title`, `slug`, `uploaded_by`, `cat_id`, `description`, `status`, `created_at`, `is_delete`) VALUES
+(1, 'Videoask Widget is overlaid with Videoask Widget how to dismiss first?', 'videoask-widget-is-overlaid-with-videoask-widget-how-to-dismiss-first', '', '3', '<p>If you&#39;re seeing two overlapping VideoAsk widgets on your website or app, you might have multiple widgets embedded or some configuration issue causing them to stack up. Here&#39;s a step-by-step guide to help you dismiss the first and prevent this in the future...</p>\r\n\r\n<ol>\r\n	<li>\r\n	<p><strong>Check Your Code</strong>: Ensure that the code snippet for embedding the VideoAsk widget is not duplicated or improperly structured in your site&#39;s HTML or JavaScript files.</p>\r\n	</li>\r\n	<li>\r\n	<p><strong>Unique Widget ID</strong>: If you&#39;re embedding multiple VideoAsk widgets on the same page, each one should have a unique identifier or a unique configuration to distinguish them.</p>\r\n	</li>\r\n	<li>\r\n	<p><strong>Debug Mode</strong>: Enable browser developer tools (usually by pressing&nbsp;<code>F12</code>&nbsp;or&nbsp;<code>Ctrl+Shift+I</code>&nbsp;on your keyboard) and inspect the HTML structure of the page. Look for the widget elements and identify whether they&#39;re duplicated or overlapping.</p>\r\n	</li>\r\n	<li>\r\n	<p><strong>Custom Close Button</strong>: Some widgets include a built-in close button. If you see a close (X) button on one of the widgets, you can manually dismiss it.</p>\r\n	</li>\r\n	<li>\r\n	<p><strong>Modify or Remove the First Widget</strong>:</p>\r\n\r\n	<ul>\r\n		<li>If the widget is created dynamically via JavaScript, ensure only one instance is initialized.</li>\r\n		<li>Adjust or remove the widget that&#39;s intended to be dismissed. You can set the widget&#39;s CSS to&nbsp;<code>display: none</code>&nbsp;temporarily as a quick fix.</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<p><strong>Clear Cache</strong>: Sometimes, the issue might be due to caching. Try clearing your browser cache or disabling caching to see if this resolves the problem.</p>\r\n	</li>\r\n	<li>\r\n	<p><strong>Check for Custom Settings</strong>: If your widget configuration includes settings for delays or triggers, ensure that these aren&#39;t conflicting between the two widgets.</p>\r\n	</li>\r\n	<li>\r\n	<p><strong>Contact Support</strong>: If the issue persists, consider contacting VideoAsk support for further assistance.</p>\r\n	</li>\r\n</ol>\r\n', '1', '2024-05-17 13:50:54', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `community_cat`
+--
+
+CREATE TABLE `community_cat` (
+  `id` int(11) NOT NULL,
+  `category_name` text DEFAULT NULL,
+  `category_subtitle` text DEFAULT NULL,
+  `category_image` text DEFAULT NULL,
+  `status` enum('1','2') DEFAULT '1',
+  `is_delete` enum('1','2') DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `community_cat`
+--
+
+INSERT INTO `community_cat` (`id`, `category_name`, `category_subtitle`, `category_image`, `status`, `is_delete`) VALUES
+(1, 'Art & Design', 'Art & Design', 'b1b9aaea6c0000e5718f160e40c134c0.png', '1', '1'),
+(2, 'Development', 'Development', 'a0a1974a5be23ec652934c09b547fbf1.png', '1', '1'),
+(3, 'Marketing', 'Marketing', '675e30af6be6c0b9322cabe1145f2c32.png', '1', '1');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `conference`
 --
 
@@ -48859,7 +48908,7 @@ CREATE TABLE `courses` (
 
 INSERT INTO `courses` (`id`, `user_id`, `cat_id`, `mode_id`, `level_id`, `title`, `slug`, `heading_1`, `heading_2`, `meta_descr`, `description`, `program_overview`, `objectives`, `curriculam`, `duration`, `career_paths`, `course_fees`, `price`, `price_key`, `course_type`, `course_certificate`, `requirement`, `rating`, `attended`, `image`, `video`, `status`, `created_at`, `assigned_instrustor`) VALUES
 (1, NULL, 3, 1, 1, 'Strategy law and organization Foundation', 'strategy-law-and-organization-foundation', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,', '', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', '1 Year', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n', 'paid', '1999', 'dsfsdfgdfgdfggf', 'Upcoming Courses', 'BOTH', 'Test Requirement', 0, 'Test Attend', 'course-1.jpg', '', 1, '2024-05-09 13:49:19', NULL),
-(2, 2, 6, 1, 2, 'The business Intelligence analyst Course 2022', '', 'This course is an introduction to learning and applying the principles required to solve engineering mechanics problems.   Concepts will be applied in this course from previous courses you have taken in basic math and physics.  The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.', 'This course is an introduction to learning and applying the principles required to solve engineering mechanics problems.   Concepts will be applied in this course from previous courses you have taken in basic math and physics.  The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.', '', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '36 months', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', 'free', '', '', 'Upcoming Courses', 'BOTH', 'Applicable for all', 0, 'Applicable for all', 'course-4.jpg', '', 1, '2024-05-09 14:22:30', NULL);
+(2, 2, 6, 1, 2, 'The business Intelligence analyst Course 2022', 'the-business-intelligence-analyst-course-2022', 'This course is an introduction to learning and applying the principles required to solve engineering mechanics problems.   Concepts will be applied in this course from previous courses you have taken in basic math and physics.  The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.', 'This course is an introduction to learning and applying the principles required to solve engineering mechanics problems.   Concepts will be applied in this course from previous courses you have taken in basic math and physics.  The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.', '', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', '36 months', '<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n\r\n<p>This course is an introduction to learning and applying the principles required to solve engineering mechanics problems. &nbsp; Concepts will be applied in this course from previous courses you have taken in basic math and physics. &nbsp;The course addresses the modeling and analysis of static equilibrium problems with an emphasis on real world engineering applications and problem solving.</p>\r\n', 'free', '', '', 'Upcoming Courses', 'BOTH', 'Applicable for all', 0, 'Applicable for all', 'course-41.jpg', '', 1, '2024-05-09 14:22:30', NULL);
 
 -- --------------------------------------------------------
 
@@ -48880,6 +48929,13 @@ CREATE TABLE `course_enrollment` (
   `payment_status` varchar(255) DEFAULT NULL,
   `transaction_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `course_enrollment`
+--
+
+INSERT INTO `course_enrollment` (`enrollment_id`, `course_id`, `user_id`, `order_id`, `enrollment_date`, `enrollment_price`, `price_cents`, `currency`, `currency_symbol`, `payment_status`, `transaction_id`) VALUES
+(1, 2, 1, NULL, '2024-05-17 13:02:09', '0', '0.00', 'USD', '$', 'COMPLETED', 'txn_1969192294');
 
 -- --------------------------------------------------------
 
@@ -48993,6 +49049,13 @@ CREATE TABLE `course_reviews` (
   `review_status` varchar(255) DEFAULT NULL,
   `review_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `course_reviews`
+--
+
+INSERT INTO `course_reviews` (`review_id`, `course_id`, `user_id`, `rating`, `review_message`, `review_status`, `review_date`) VALUES
+(1, 2, 1, 4, 'My experience with The Business Intelligence Analyst Course 2022 was overwhelmingly positive. The course is well-structured, making complex concepts accessible to learners with varying levels of prior knowledge. The instructors are knowledgeable and provide clear, engaging explanations. The blend of theoretical content and practical exercises ensures a balanced learning experience.', '1', '2024-05-17 16:37:39');
 
 -- --------------------------------------------------------
 
@@ -53961,7 +54024,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `lname`, `email`, `password`, `userType`, `phone`, `phone_full`, `phone_code`, `phone_country`, `phone_st_country`, `skills`, `user_bio`, `image`, `email_verified`, `status`, `otp`, `token`, `currency`, `currency_symbol`, `created_at`) VALUES
-(1, 'sayantan bhakta', NULL, 'student@gmail.com', 'MTIzNDU2', '1', '7854262510', '', 0, '', 0, 'Software Developer', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.', '2546_71.png', 1, 1, '', NULL, 'USD', '$', '2024-05-09 15:10:49'),
+(1, 'sayantan bhakta', NULL, 'sayantan@goigi.in', 'MTExMTEx', '1', '7854262510', '', 0, '', 0, 'Software Developer', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.', '2546_71.png', 1, 1, '', NULL, 'USD', '$', '2024-05-09 15:10:49'),
 (2, 'Demo Instructor', NULL, 'instructor@gmail.com', 'MTIzNDU2', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '', NULL, 'USD', '$', '2024-05-09 19:32:13');
 
 -- --------------------------------------------------------
@@ -54131,6 +54194,18 @@ ALTER TABLE `cities`
 -- Indexes for table `cms`
 --
 ALTER TABLE `cms`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `community`
+--
+ALTER TABLE `community`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `community_cat`
+--
+ALTER TABLE `community_cat`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -54548,6 +54623,18 @@ ALTER TABLE `cms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT for table `community`
+--
+ALTER TABLE `community`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `community_cat`
+--
+ALTER TABLE `community_cat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `conference`
 --
 ALTER TABLE `conference`
@@ -54581,7 +54668,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `course_enrollment`
 --
 ALTER TABLE `course_enrollment`
-  MODIFY `enrollment_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `enrollment_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `course_enrollment_status`
@@ -54617,7 +54704,7 @@ ALTER TABLE `course_resources`
 -- AUTO_INCREMENT for table `course_reviews`
 --
 ALTER TABLE `course_reviews`
-  MODIFY `review_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `review_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `course_syllabus`
