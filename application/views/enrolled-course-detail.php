@@ -42,95 +42,100 @@ $activeCourse = 0;
 if (!empty($active_data)) {
     $activeCourse = $active_data->activeCourse;
 }
-$data = array(
-    'ctn_enrolment' => @$ctn_enrolment,
-    'courseArray' => count($courseArray)
-);
 ?>
-<main>
-    <section class="pt-100 pb-145">
-        <div class="container">
-            <div class="rbt-dashboard-content-wrapper">
-                <div class="rbt-tutor-information">
-                    <div class="rbt-tutor-information-left d-flex align-items-center">
-                        <div class="thumbnail rbt-avatars size-lg">
-                            <?php if (!empty($userDetails->image)) { ?>
-                                <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
-                            <?php } else { ?>
-                                <img src="images/no-user.png" alt="">
-                            <?php } ?>
-                        </div>
-                        <div class="tutor-content">
-                            <h5 class="title h4 fw-bold">
-                                <?= $userDetails->fname ?>
-                            </h5>
-                            <ul class="listRbt mt--5">
-                                <li><i class="far fa-book-alt"></i>
-                                    <?php echo @$ctn_enrolment; ?> Courses Enroled
-                                </li>
-                                <li><i class="far fa-file-certificate"></i>
-                                    <?php echo count($courseArray); ?> Certificate
-                                </li>
-                            </ul>
-                        </div>
+<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="<?= base_url()?>assets/img/page-title/page-title-2.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="page__title-wrapper mt-100">
+                <h3 class="page__title">Enrolled Courses</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="<?= base_url()?>home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Enrolled Courses</li>
+                    </ol>
+                </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="pt-100 pb-145">
+    <div class="container">
+        <div class="rbt-dashboard-content-wrapper">
+            <div class="rbt-tutor-information">
+                <div class="rbt-tutor-information-left d-flex align-items-center">
+                    <div class="thumbnail rbt-avatars size-lg">
+                        <?php if (!empty($userDetails->image)) { ?>
+                            <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
+                        <?php } else { ?>
+                            <img src="images/no-user.png" alt="">
+                        <?php } ?>
+                    </div>
+                    <div class="tutor-content">
+                        <h5 class="title h4 fw-bold text-white">
+                            <?= ucwords($userDetails->full_name) ?>
+                        </h5>
+                        <ul class="listRbt mt--5">
+                            <li><i class="far fa-book-alt"></i>
+                                <?php echo @$ctn_enrolment; ?> Courses Enroled
+                            </li>
+                            <li><i class="far fa-file-certificate"></i>
+                                <?php echo count($courseArray); ?> Certificate
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <?php $this->load->view('leftbar_dash'); ?>
-                <div class="col-lg-8">
-                    <div class="card bg-dark shadow">
-                        <div class="card-body p-4">
-                            <h2 class="h5 fw-bold text-uppercase">
-                            <?php if (@$courses->title) {
-                                echo @$courses->title;
-                            } else {
-                                echo "&#8212;";
-                            } ?> 
-                            </h2>
-                            <hr>
-                            <div class="row g-3">
-                                <div class="col-lg-12 col-md-12 col-sm-6 col-12">
-                                    <div class="rbt-counterup" style="padding: 10px 20px;">
-                                        <div class="inner">
-                                            <h4 style="text-align: justify; font-size: 18px;"><?=@$courses->heading_1?></h4>
-                                            <div class="cstm_crs_cls" style="margin-top: 28px;"><?=@$courses->description?></div>
-                                        </div>
-                                        <ul class="course-doclist" style="margin-top: 30px !important;">
-                                            <?php
-                                            //Get The course Module
-                                            $getModuleSql = "SELECT * FROM `course_modules` WHERE `course_id` = '" . @$courses->course_id . "' ORDER BY `position_order` ASC";
-                                            $module = $this->db->query($getModuleSql)->result();
-                                            $moduleArray = array();
-                                            if(!empty($module)) {
-                                                foreach ($module as $key => $value) {
-                                                    $totalMaterialSql = "SELECT * FROM `course_materials` WHERE `course_id` = '" . @$courses->course_id . "' AND `module` = '" . @$value->id . "'";
-                                                    $totalmaterial = $this->db->query($totalMaterialSql)->num_rows();
-                                                    $getAttemptModuleSql = "SELECT COUNT(*) as attemptModule FROM `course_enrollment_status` where `course_id` = '" . @$courses->course_id . "' and `module` = '".$value->id."' and `enrollment_id` = '".@$courses->enrollment_id."'";
-                                                    $attemptModuleRow = $this->db->query($getAttemptModuleSql)->row();
-                                                    $totalComModule = 0;
-                                                    if(@$totalmaterial==@$attemptModuleRow->attemptModule && @$totalmaterial!='0') {
-                                                        $totalComModule++;
-                                                        $moduleArray[] = $value->id;
-                                                    }
-                                                    // echo "<br> Module = ".$value->id." Tot Mat ".$totalmaterial." attempt module = ".@$attemptModuleRow->attemptModule." Completed = ".$totalComModule;
-                                            ?>
-                                            <li style="background: #015ba4; padding: 10px; margin-bottom: 10px;"> 
-                                                <a href="<?=base_url('users/courseMaterial/'.@$courses->enrollment_id."/".@$value->id)?>">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="flex-fill">
-                                                            <?php echo @$value->name; ?>
-                                                        </div>
-                                                        <span class="downloadModule"><i class="fa fa-arrow-right"></i></span>
-                                                        <?php if (in_array(@$value->id, $moduleArray)) { ?>
-                                                            <span class="downloadModule mr-3 bg-success"><i class="fa fa-check"></i></span>
-                                                        <?php } ?>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <?php } } ?>
-                                        </ul>
+        </div>
+        <div class="row">
+            <?php $this->load->view('leftbar_dash'); ?>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold text-uppercase"><?php if (@$courses->title) {echo @$courses->title;} else {echo "&#8212;";} ?></h2>
+                        <hr>
+                        <div class="row g-3">
+                            <div class="col-lg-12 col-md-12 col-sm-6 col-12">
+                                <div class="rbt-counterup" style="padding: 10px 20px;">
+                                    <div class="inner">
+                                        <h4 style="text-align: justify; font-size: 18px;"><?=@$courses->heading_1?></h4>
+                                        <div class="cstm_crs_cls" style="margin-top: 28px;"><?=@$courses->description?></div>
                                     </div>
+                                    <ul class="course-doclist" style="margin-top: 30px !important;">
+                                        <?php
+                                        //Get The course Module
+                                        $getModuleSql = "SELECT * FROM `course_modules` WHERE `course_id` = '" . @$courses->course_id . "' ORDER BY `position_order` ASC";
+                                        $module = $this->db->query($getModuleSql)->result();
+                                        $moduleArray = array();
+                                        if(!empty($module)) {
+                                            foreach ($module as $key => $value) {
+                                                $totalMaterialSql = "SELECT * FROM `course_materials` WHERE `course_id` = '" . @$courses->course_id . "' AND `module` = '" . @$value->id . "'";
+                                                $totalmaterial = $this->db->query($totalMaterialSql)->num_rows();
+                                                $getAttemptModuleSql = "SELECT COUNT(*) as attemptModule FROM `course_enrollment_status` where `course_id` = '" . @$courses->course_id . "' and `module` = '".$value->id."' and `enrollment_id` = '".@$courses->enrollment_id."'";
+                                                $attemptModuleRow = $this->db->query($getAttemptModuleSql)->row();
+                                                $totalComModule = 0;
+                                                if(@$totalmaterial==@$attemptModuleRow->attemptModule && @$totalmaterial!='0') {
+                                                    $totalComModule++;
+                                                    $moduleArray[] = $value->id;
+                                                }
+                                                // echo "<br> Module = ".$value->id." Tot Mat ".$totalmaterial." attempt module = ".@$attemptModuleRow->attemptModule." Completed = ".$totalComModule;
+                                        ?>
+                                        <li style="background: #015ba4; padding: 10px; margin-bottom: 10px;">
+                                            <a href="<?=base_url('users/courseMaterial/'.@$courses->enrollment_id."/".@$value->id)?>">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="flex-fill">
+                                                        <?php echo @$value->name; ?>
+                                                    </div>
+                                                    <span class="downloadModule"><i class="fa fa-arrow-right"></i></span>
+                                                    <?php if (in_array(@$value->id, $moduleArray)) { ?>
+                                                        <span class="downloadModule mr-3 bg-success"><i class="fa fa-check"></i></span>
+                                                    <?php } ?>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <?php } } ?>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -138,9 +143,9 @@ $data = array(
                 </div>
             </div>
         </div>
-    </section>
-</main>
+    </div>
+</section>
 <style>
-.cstm_crs_cls *{color: #fff; text-align: justify; font-size: 13px; line-height: 16px;}
+.cstm_crs_cls *{color: #000; text-align: justify; font-size: 13px; line-height: 16px;}
 .bg-success{padding: 7px 10px 0px 10px;border-radius: 50px; height: 35px; margin-left: 10px;}
 </style>

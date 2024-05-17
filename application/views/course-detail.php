@@ -77,22 +77,23 @@
                             $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$detail->id."'")->result_array();
                             $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$detail->id."'")->row();
                             if(!empty($rating)) {
-                            $rate = round($totalrate->total/count($rating), 0);
-                            foreach (range(1,5) as $i) {
-                            if($rate > 0) { ?>
-                            <span class="active"><i class="fas fa-star"></i></span>
-                            <?php } else { ?>
-                            <span><i class="fas fa-star"></i></span>
-                            <?php } $rate--; } ?>
-                            <p class="text-white"><?php echo "(".round($totalrate->total/count($rating), 0).")" ?></p>
-                            <?php } else { ?>
-                            <span><i class="fas fa-star"></i></span>
-                            <span><i class="fas fa-star"></i></span>
-                            <span><i class="fas fa-star"></i></span>
-                            <span><i class="fas fa-star"></i></span>
-                            <span><i class="fas fa-star"></i></span>
-                            <?php echo "(0)"; }
-                            ?>
+                                $rate = round($totalrate->total/count($rating), 0);
+                                foreach (range(1,5) as $i) {
+                                    if($rate > 0) {
+                                        echo '<span class="active"><i class="fas fa-star"></i></span>';
+                                    } else {
+                                        echo '<span><i class="fas fa-star zero"></i></span>';
+                                    }  $rate--;
+                                }
+                                echo "(".round($totalrate->total/count($rating), 0).")";
+                            } else {
+                                echo '<span><i class="fas fa-star zero"></i></span>';
+                                echo '<span><i class="fas fa-star zero"></i></span>';
+                                echo '<span><i class="fas fa-star zero"></i></span>';
+                                echo '<span><i class="fas fa-star zero"></i></span>';
+                                echo '<span><i class="fas fa-star zero"></i></span>';
+                                echo "(0)";
+                            } ?>
                         </div>
                     </div>
                 </div>
@@ -426,7 +427,7 @@
                                                 <div class="col-xxl-12 col-lg-12">
                                                     <div class="course__form-input">
                                                         <div class="course__form-input">
-                                                            <select name="star_option" id="star_option">
+                                                            <select name="star_option" id="star_option" class="form-control" style="margin-bottom: 20px">
                                                                 <option>Select Stars</option>
                                                                 <option value="5">5 Stars</option>
                                                                 <option value="4">4 Stars</option>
@@ -624,11 +625,11 @@
                                 </form>
                                 <?php } else { ?>
                                 <div class="btn-part">
-                                    <a href="<?= base_url('login/') ?>" name="enrollment" id="course_activation1"  class="e-btn e-btn-7 w-100">Activate</a>
+                                    <a href="<?= base_url('login/'.$detail->id) ?>" name="enrollment" id="course_activation1"  class="e-btn e-btn-7 w-100">Activate</a>
                                 </div>
                             <?php } } } else if(empty($this->session->userdata('userType'))) { ?>
                                 <div class="btn-part">
-                                    <a href="<?= base_url('login/') ?>" name="enrollment" id="course_activation1"  class="e-btn e-btn-7 w-100">Activate</a>
+                                    <a href="<?= base_url('login/'.$detail->id) ?>" name="enrollment" id="course_activation1"  class="e-btn e-btn-7 w-100">Activate</a>
                                 </div>
                             <?php } ?>
                             </div>
@@ -692,20 +693,27 @@
                                                     <span><i class="far fa-book-alt"></i><?= $count;?> Lesson</span>
                                                 </div>
                                                 <div class="course__rating">
-                                                    <?php
-                                                    echo "<span class='stars'>";
-                                                    for ( $i = 1; $i <= 5; $i++ ) {
-                                                        if ( round( $rating - .25 ) >= $i ) {
-                                                            echo "<i class='icon_star'></i>"; //fas fa-star for v5
-                                                        } elseif ( round( $rating + .25 ) >= $i ) {
-                                                            echo "<i class='icon_star'></i>"; //fas fa-star-half-alt for v5
+                                                <?php
+                                                $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value->id."'")->result_array();
+                                                $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value->id."'")->row();
+                                                if(!empty($rating)) {
+                                                    $rate = round($totalrate->total/count($rating), 0);
+                                                    foreach (range(1,5) as $i) {
+                                                        if($rate > 0) {
+                                                            echo '<span class="active"><i class="fas fa-star"></i></span>';
                                                         } else {
-                                                            echo "<i class='icon_star'></i>"; //far fa-star for v5
-                                                        }
+                                                            echo '<span><i class="fas fa-star zero"></i></span>';
+                                                        }  $rate--;
                                                     }
-                                                    echo @$averageRating;
-                                                    echo '</span>';
-                                                    ?>
+                                                    echo "(".round($totalrate->total/count($rating), 0).")";
+                                                } else {
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo "(0)";
+                                                } ?>
                                                 </div>
                                             </div>
                                             <h3 class="course__title" style="font-size: 18px">
@@ -757,7 +765,9 @@
 <style>
 .blockUI h1 {font-size: 30px;font-weight: 600;color: #fff;margin: 0;}
 .course__teacher-info-3 p a {color: #0e1133 !important;}
-.productListRate span {font-size: 18px !important;}
+.productListRate span {font-size: 15px !important; color: #ddd;}
+.productListRate .active {color: #ff9415 !important;}
+.zero {color: #ddd !important;}
 .course__description ::-webkit-scrollbar {width: 6px;}
 .course__description ::-webkit-scrollbar-track {box-shadow: inset 0 0 5px grey; border-radius: 10px;}
 .course__description ::-webkit-scrollbar-thumb {background: #db3636; border-radius: 10px;}

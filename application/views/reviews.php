@@ -71,6 +71,10 @@ function timeAgo($time_ago)  {
     endswitch;
 }
 ?>
+<style>
+    .zero {color: #ddd !important;}
+    .active { color: #ff9415 !important;}
+</style>
 <section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="assets/img/page-title/page-title-2.jpg">
     <div class="container">
         <div class="row">
@@ -143,30 +147,45 @@ function timeAgo($time_ago)  {
                                         }
                                         $rating = $value->rating;
                                     ?>
-                                    <tr>
-                                        <th>
-                                            <span class="b3"><a href="javascript:void(0)"><?php echo @$value->review_message; ?></a></span>
-                                        </th>
-                                        <td>
-                                            <div class="rbt-review d-flex">
-                                                <div class="rating me-2">
-                                                <?php
-                                                    echo "<span class='stars'>";
-                                                    for ( $i = 1; $i <= 5; $i++ ) {
-                                                        if ( round( $rating - .25 ) >= $i ) {
-                                                            echo "<i class='fa fa-star'></i>"; //fas fa-star for v5
-                                                        } elseif ( round( $rating + .25 ) >= $i ) {
-                                                            echo "<i class='fa fa-star-half-o'></i>"; //fas fa-star-half-alt for v5
-                                                        } else {
-                                                            echo "<i class='fa fa-star-o'></i>"; //far fa-star for v5
-                                                        }
-                                                    }
-                                                    echo '</span>';
-                                                ?>
-                                                </div>
-                                                <span class="rating-count"><?php echo timeAgo($value->review_date); ?></span>
+                                    <tr style="color: #000">
+                                        <td style="width: 200px;">
+                                            <div class="b3">
+                                                <a href="javascript:void(0)">
+                                                    <?php
+                                                    $getCourse = $this->db->query("SELECT * FROM courses WHERE id = '".$value->course_id."'")->row();
+                                                    echo @$getCourse->title; ?>
+                                                </a>
                                             </div>
-                                            <p class="b2 text-light mb-0">Good</p>
+                                        </td>
+                                        <td>
+                                            <span class="b3"><a href="javascript:void(0)"><?php echo @$value->review_message; ?></a></span>
+                                            <div class="rbt-review d-flex">
+                                                <div class="rating me-2" style="width: 200px;">
+                                                <?php
+                                                $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value->course_id."'")->result_array();
+                                                $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value->course_id."'")->row();
+                                                if(!empty($rating)) {
+                                                    $rate = round($totalrate->total/count($rating), 0);
+                                                    foreach (range(1,5) as $i) {
+                                                        if($rate > 0) {
+                                                            echo '<span class="active"><i class="fas fa-star"></i></span>';
+                                                        } else {
+                                                            echo '<span><i class="fas fa-star zero"></i></span>';
+                                                        }  $rate--;
+                                                    }
+                                                    echo "(".round($totalrate->total/count($rating), 0).")";
+                                                } else {
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo "(0)";
+                                                } ?>
+                                                </div>
+                                                <div class="b2 text-light mb-0" style="color: #000 !important">Good</div>
+                                                <div class="rating-count" style=" width: 100%; text-align: end; "><?php echo timeAgo($value->review_date); ?></div>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="text-end">

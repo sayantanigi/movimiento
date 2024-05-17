@@ -125,23 +125,6 @@
                             </span>
                         </a>
                     </li>
-                    <!-- <li class="treeview <?= ($tab == 'add_banner' || $tab == 'banner') ? 'active' : ''; ?>">
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-picture-o"></i>
-                            <span>Banner</span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_banner') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('banner/add') ?>"><i class="fa fa-circle"></i> Add Banner</a>
-                            </li>
-                            <li class="<?= ($tab == 'banner') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('banner') ?>"><i class="fa fa-circle"></i> Banner Lists</a>
-                            </li>
-                        </ul>
-                    </li> -->
                     <li class="treeview <?= ($tab == 'add_cms' || $tab == 'cms') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-cog"></i>
@@ -198,23 +181,26 @@
                             </li> -->
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_homecourse' || $tab == 'homecourse' || $tab == 'powerspeech') ? 'active' : ''; ?>">
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-home"></i>
-                            <span>Home</span>
+                    <li class="treeview <?= ($tab == 'add_comcat' || $tab == 'comcat_list' || $tab == 'add_comm' || $tab == 'comm_list') ? 'active' : ''; ?>">
+                        <a href="#">
+                            <i class="fa fa-book"></i>
+                            <span>Community </span>
                             <span class="pull-right-container">
                                 <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_homecourse') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('homecourse/add') ?>"><i class="fa fa-circle"></i> Add Home Courses</a>
+                            <li class="<?= ($tab == 'add_comcat') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('community/category_add') ?>"><i class="fa fa-circle"></i> Add Category </a>
                             </li>
-                            <li class="<?= ($tab == 'homecourse') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('homecourse') ?>"><i class="fa fa-circle"></i> Home Courses Lists</a>
+                            <li class="<?= ($tab == 'comcat_list') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('community/category') ?>"><i class="fa fa-circle"></i> Category Lists</a>
                             </li>
-                            <li class="<?= ($tab == 'powerspeech') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('homecourse/powerspeech') ?>"><i class="fa fa-circle"></i> Home Middle</a>
+                            <li class="<?= ($tab == 'add_comm') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('community/add_community') ?>"><i class="fa fa-circle"></i> Add Community</a>
+                            </li>
+                            <li class="<?= ($tab == 'comm_list') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('community/community_list') ?>"><i class="fa fa-circle"></i> Community Lists</a>
                             </li>
                         </ul>
                     </li>
@@ -235,7 +221,47 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- <li class="treeview <?= ($tab == 'add_product_cat' || $tab == 'product_cat_list' || $tab == 'add_product' || $tab == 'products') ? 'active' : ''; ?>">
+                    <li class="<?= ($tab == 'add_service' || $tab == 'service') ? 'active' : ''; ?>">
+                        <a href="<?= admin_url('settings') ?>"><i class="fa fa-wrench"></i> Settings</a>
+                    </li>
+                    <!-- <li class="treeview <?= ($tab == 'add_banner' || $tab == 'banner') ? 'active' : ''; ?>">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-picture-o"></i>
+                            <span>Banner</span>
+                            <span class="pull-right-container">
+                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="<?= ($tab == 'add_banner') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('banner/add') ?>"><i class="fa fa-circle"></i> Add Banner</a>
+                            </li>
+                            <li class="<?= ($tab == 'banner') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('banner') ?>"><i class="fa fa-circle"></i> Banner Lists</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview <?= ($tab == 'add_homecourse' || $tab == 'homecourse' || $tab == 'powerspeech') ? 'active' : ''; ?>">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-home"></i>
+                            <span>Home</span>
+                            <span class="pull-right-container">
+                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="<?= ($tab == 'add_homecourse') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('homecourse/add') ?>"><i class="fa fa-circle"></i> Add Home Courses</a>
+                            </li>
+                            <li class="<?= ($tab == 'homecourse') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('homecourse') ?>"><i class="fa fa-circle"></i> Home Courses Lists</a>
+                            </li>
+                            <li class="<?= ($tab == 'powerspeech') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('homecourse/powerspeech') ?>"><i class="fa fa-circle"></i> Home Middle</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview <?= ($tab == 'add_product_cat' || $tab == 'product_cat_list' || $tab == 'add_product' || $tab == 'products') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-book"></i>
                             <span>Product </span>
@@ -261,9 +287,6 @@
                             </li>
                         </ul>
                     </li> -->
-                    <li class="<?= ($tab == 'add_service' || $tab == 'service') ? 'active' : ''; ?>">
-                        <a href="<?= admin_url('settings') ?>"><i class="fa fa-wrench"></i> Settings</a>
-                    </li>
                 </ul>
             </section>
         </aside>

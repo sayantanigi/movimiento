@@ -1,5 +1,5 @@
 <section class="page__title-area page__title-height page__title-overlay d-flex align-items-center"
-    data-background="assets/img/page-title/page-title-2.jpg">
+    data-background="<?= base_url()?>assets/img/page-title/page-title-2.jpg">
     <div class="container">
         <div class="row">
             <div class="col-xxl-12">
@@ -7,7 +7,7 @@
                     <h3 class="page__title">Log In</h3>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="<?= base_url()?>">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Log In</li>
                         </ol>
                     </nav>
@@ -16,13 +16,18 @@
         </div>
     </div>
 </section>
+<?php
+$actualLink = $_SERVER["REQUEST_URI"];
+$actualLink = explode("/", $actualLink);
+$course_id = end($actualLink);
+?>
 
 <section class="signup__area po-rel-z1 pt-100 pb-100">
     <div class="sign__shape">
-        <img class="circle" src="assets/img/icon/sign/circle.png" alt="">
-        <img class="zigzag" src="assets/img/icon/sign/zigzag.png" alt="">
-        <img class="dot" src="assets/img/icon/sign/dot.png" alt="">
-        <img class="bg" src="assets/img/icon/sign/sign-up.png" alt="">
+        <img class="circle" src="<?= base_url()?>assets/img/icon/sign/circle.png" alt="">
+        <img class="zigzag" src="<?= base_url()?>assets/img/icon/sign/zigzag.png" alt="">
+        <img class="dot" src="<?= base_url()?>assets/img/icon/sign/dot.png" alt="">
+        <img class="bg" src="<?= base_url()?>assets/img/icon/sign/sign-up.png" alt="">
     </div>
     <div class="container">
         <div class="row">
@@ -79,8 +84,11 @@
                                 </div>
                             </div>
                             <button class="e-btn w-100 text-capitalize"> <span></span> Log in</button>
+                            <?php if(!empty($course_id)) { ?>
+                            <input type="hidden" name="course_id" value="<?= $course_id?>" >
+                            <?php } ?>
                             <div class="sign__new text-center mt-20">
-                                <p> <a href="<?php echo base_url('forgot-password') ?>" class="text-dark">Forgot your password?</a></p>
+                              <p><a href="<?php echo base_url('forgot-password') ?>" class="text-dark">Forgot your password?</a></p>
                             </div>
                             <div class="sign__new text-center mt-20">
                                 <p>Do not have account? <a href="<?php echo base_url('register') ?>"> Sign Up</a></p>

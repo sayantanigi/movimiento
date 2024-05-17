@@ -289,8 +289,10 @@ class Home extends CI_Controller {
         }
     }
     public function community() {
+        $data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
+        $data['community'] = $this->db->query("SELECT * FROM community WHERE status = '1' AND is_delete = '1'")->result_array();
 		$this->load->view('header');
-		$this->load->view('community');
+		$this->load->view('community', $data);
 		$this->load->view('footer');
 	}
     public function community_details() {
@@ -394,7 +396,7 @@ class Home extends CI_Controller {
             if(@$user->userType == '1') {
                 if(@$course_id) {
                     $this->session->set_flashdata('success', 'Logged in successfully.');
-                    redirect(base_url('course-enrollment/'.@$course_id), 'refresh');
+                    redirect(base_url('course-detail/'.@$course_id), 'refresh');
                 } else {
                     $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
                     redirect(base_url('student-dashboard'), 'refresh');
@@ -431,6 +433,29 @@ class Home extends CI_Controller {
 		$this->load->view('search_page', $data);
 		$this->load->view('footer', $data);
     }
+    public function reviewSave() {
+		$user_id = $this->session->userdata('user_id');
+		$course_id = $this->input->post('course_id');
+		$rating = $this->input->post('rating');
+        $message = $this->input->post('message');
+		$isExitMaterialSql = "SELECT * FROM `course_reviews` WHERE `user_id` = '" . $user_id . "' AND `course_id` = '" . $course_id . "'";
+		$isExist = $this->db->query($isExitMaterialSql)->num_rows();
+        if($isExist==0) {
+            $reviewData = array('course_id' => @$course_id, 'user_id' => @$user_id, 'rating' => @$rating, 'review_message' => @$message, 'review_status' => 1);
+            $this->Commonmodel->add_details('course_reviews', $reviewData);
+            $getAllReviewSql = "SELECT rev.*, usr.full_name from `course_reviews` as rev LEFT JOIN `users` as usr ON usr.id = rev.user_id WHERE `course_id` = '".$course_id."' ORDER BY `review_date` DESC";
+            echo $this->db->query($getAllReviewSql)->num_rows();
+        } else {
+            echo"0";
+        }
+	}
+    public function getAllReviews() {
+		$user_id = $this->session->userdata('user_id');
+		$course_id = $this->input->post('course_id');
+		$getAllReviewSql = "SELECT rev.*, usr.full_name from `course_reviews` as rev LEFT JOIN `users` as usr ON usr.id = rev.user_id WHERE `course_id` = '".$course_id."' ORDER BY `review_date` DESC";
+        $data['reviewList'] = $this->db->query($getAllReviewSql)->result();
+        $this->load->view('ajax-reviews', $data);
+	}
 
 
 
@@ -672,30 +697,6 @@ class Home extends CI_Controller {
         $this->load->view('success', $data);
         $this->load->view('footer');
     }
-    public function reviewSave() {
-		$user_id = $this->session->userdata('user_id');
-		$course_id = $this->input->post('course_id');
-		$rating = $this->input->post('rating');
-        $message = $this->input->post('message');
-		$isExitMaterialSql = "SELECT * FROM `course_reviews` WHERE `user_id` = '" . $user_id . "' AND `course_id` = '" . $course_id . "'";
-		$isExist = $this->db->query($isExitMaterialSql)->num_rows();
-        if($isExist==0) {
-            $reviewData = array('course_id' => @$course_id, 'user_id' => @$user_id, 'rating' => @$rating, 'review_message' => @$message, 'review_status' => 1);
-            $this->Commonmodel->add_details('course_reviews', $reviewData);
-            $getAllReviewSql = "SELECT rev.*, usr.fname, usr.lname from `course_reviews` as rev LEFT JOIN `users` as usr ON usr.id = rev.user_id WHERE `course_id` = '".$course_id."' ORDER BY `review_date` DESC";
-            echo $this->db->query($getAllReviewSql)->num_rows();
-        } else {
-            echo"0";
-        }
-	}
-    public function getAllReviews() {
-		$user_id = $this->session->userdata('user_id');
-		$course_id = $this->input->post('course_id');
-		$getAllReviewSql = "SELECT rev.*, usr.fname, usr.lname from `course_reviews` as rev LEFT JOIN `users` as usr ON usr.id = rev.user_id WHERE `course_id` = '".$course_id."' ORDER BY `review_date` DESC";
-        $data['reviewList'] = $this->db->query($getAllReviewSql)->result();
-        $this->load->view('ajax-reviews', $data);
-	}
-
     public function email_unsubscribe(){
         $id = $this->uri->segment(2);
         $data = array(

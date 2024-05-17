@@ -124,21 +124,23 @@
                                 $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value->id."'")->result_array();
                                 $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value->id."'")->row();
                                 if(!empty($rating)) {
-                                $rate = round($totalrate->total/count($rating), 0);
-                                foreach (range(1,5) as $i) {
-                                if($rate > 0) { ?>
-                                <span class="active"><i class="fas fa-star"></i></span>
-                                <?php } else { ?>
-                                <span><i class="fas fa-star"></i></span>
-                                <?php } $rate--; } ?>
-                                <?php } else { ?>
-                                <span><i class="fas fa-star zero"></i></span>
-                                <span><i class="fas fa-star zero"></i></span>
-                                <span><i class="fas fa-star zero"></i></span>
-                                <span><i class="fas fa-star zero"></i></span>
-                                <span><i class="fas fa-star zero"></i></span>
-                                <?php } echo "(0)";
-                                ?>
+                                    $rate = round($totalrate->total/count($rating), 0);
+                                    foreach (range(1,5) as $i) {
+                                        if($rate > 0) {
+                                            echo '<span class="active"><i class="fas fa-star"></i></span>';
+                                        } else {
+                                            echo '<span><i class="fas fa-star zero"></i></span>';
+                                        }  $rate--;
+                                    }
+                                    echo "(".round($totalrate->total/count($rating), 0).")";
+                                } else {
+                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                    echo "(0)";
+                                } ?>
                                 </div>
                             </div>
                             <h3 class="course__title"><a href="<?=base_url('course-detail/'.@$value->id)?>"><?= $value->title?></a></h3>

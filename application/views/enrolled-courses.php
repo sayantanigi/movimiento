@@ -43,7 +43,11 @@ if (!empty($active_data)) {
     $activeCourse = $active_data->activeCourse;
 }
 ?>
-<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="assets/img/page-title/page-title-2.jpg">
+<style>
+    .course__rating span i {padding-right: 2px !important; font-size: 12px;}
+    .zero {color: #ddd !important;}
+</style>
+<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="<?= base_url()?>assets/img/page-title/page-title-2.jpg">
     <div class="container">
         <div class="row">
             <div class="col-xxl-12">
@@ -154,19 +158,27 @@ if (!empty($active_data)) {
                                                 <span><i class="far fa-book-alt"></i><?php echo @$totalmodule; ?> Lesson</span>
                                             </div>
                                             <div class="course__rating">
-                                            <?php
-                                                echo "<span class='stars'>";
-                                                for ( $i = 1; $i <= 5; $i++ ) {
-                                                    if ( round( $rating - .25 ) >= $i ) {
-                                                        echo "<i class='icon_star'></i>"; //fas fa-star for v5
-                                                    } elseif ( round( $rating + .25 ) >= $i ) {
-                                                        echo "<i class='icon_star'></i>"; //fas fa-star-half-alt for v5
-                                                    } else {
-                                                        echo "<i class='icon_star'></i>"; //far fa-star for v5
+                                                <?php
+                                                $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value->id."'")->result_array();
+                                                $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value->id."'")->row();
+                                                if(!empty($rating)) {
+                                                    $rate = round($totalrate->total/count($rating), 0);
+                                                    foreach (range(1,5) as $i) {
+                                                        if($rate > 0) {
+                                                            echo '<span class="active"><i class="fas fa-star"></i></span>';
+                                                        } else {
+                                                            echo '<span><i class="fas fa-star zero"></i></span>';
+                                                        }  $rate--;
                                                     }
-                                                }
-                                                echo '</span>';
-                                            ?>
+                                                    echo "(".round($totalrate->total/count($rating), 0).")";
+                                                } else {
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo "(0)";
+                                                } ?>
                                             </div>
                                         </div>
                                         <h3 class="course__title" style="font-size: 18px !important; margin-bottom: 5px !important;">
@@ -179,7 +191,7 @@ if (!empty($active_data)) {
                                             </a>
                                         </h3>
                                         <?php if(!empty($value->user_id)) {
-                                        $user_details = $this->db->query("SELECT id, fname, image FROM users WHERE id = '".$value->user_id."' AND email_verified = '1' AND status = '1'")->row();?>
+                                        $user_details = $this->db->query("SELECT id, full_name, image FROM users WHERE id = '".$value->user_id."' AND email_verified = '1' AND status = '1'")->row();?>
                                         <div class="course__teacher d-flex align-items-center">
                                             <div class="course__teacher-thumb mr-15">
                                                 <?php if(!empty($user_details->image)) { ?>
@@ -188,7 +200,7 @@ if (!empty($active_data)) {
                                                 <img src="<?= base_url() ?>images/no-user.png" alt="">
                                                 <?php } ?>
                                             </div>
-                                            <h6><a href="javascript:void(0)"><?= $user_details->fname?></a></h6>
+                                            <h6><a href="javascript:void(0)"><?= $user_details->full_name?></a></h6>
                                         </div>
                                         <?php } else { ?>
                                         <div class="course__teacher d-flex align-items-center">
@@ -259,7 +271,7 @@ if (!empty($active_data)) {
                                 <div class="course__item white-bg mb-30 fix">
                                     <div class="course__thumb w-img p-relative fix">
                                         <a href="course-details.html">
-                                            <img src="assets/img/course/course-1.jpg" alt="">
+                                            <img src="<?= base_url()?>assets/img/course/course-1.jpg" alt="">
                                         </a>
                                         <div class="course__tag">
                                             <a href="#">Art & Design</a>
@@ -278,7 +290,7 @@ if (!empty($active_data)) {
                                                 Manager learn the skills & job.</a></h3>
                                         <div class="course__teacher d-flex align-items-center">
                                             <div class="course__teacher-thumb mr-15">
-                                                <img src="assets/img/course/teacher/teacher-1.jpg" alt="">
+                                                <img src="<?= base_url()?>assets/img/course/teacher/teacher-1.jpg" alt="">
                                             </div>
                                             <h6><a href="instructor-details.html">Jim Séchen</a></h6>
                                         </div>

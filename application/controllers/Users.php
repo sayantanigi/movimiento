@@ -39,6 +39,7 @@ class Users extends CI_Controller {
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
 		$data['user'] = $this->Commonmodel->fetch_row('users', $where);
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('profile');
 		$this->load->view('footer');
@@ -55,6 +56,7 @@ class Users extends CI_Controller {
 		$data['orders'] = $this->Commonmodel->fetch_all_join($getPurchaseSql);
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('purchase-list');
 		$this->load->view('footer');
@@ -71,6 +73,7 @@ class Users extends CI_Controller {
 		$data['reviews'] = $this->Commonmodel->fetch_all_join($getReviewsSql);
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('reviews');
 		$this->load->view('footer');
@@ -85,6 +88,7 @@ class Users extends CI_Controller {
 		$data['user'] = $this->Commonmodel->fetch_row('users', $where);
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('edit-profile');
 		$this->load->view('footer');
@@ -177,6 +181,7 @@ class Users extends CI_Controller {
 		$data['courses'] = $this->Commonmodel->fetch_all_join($getAllEnrolledSql);
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('enrolled-courses');
 		$this->load->view('footer');
@@ -195,6 +200,8 @@ class Users extends CI_Controller {
 		$data['courses'] = $this->Commonmodel->fetch_single_join($getEnrolledSql);
 		$where = array('id' => $user_id);
 		$data['user'] = $this->Commonmodel->fetch_row('users', $where);
+		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
+		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
 		$this->load->view('header', $data);
 		$this->load->view('enrolled-course-detail');
 		$this->load->view('footer');

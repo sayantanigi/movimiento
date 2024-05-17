@@ -34,20 +34,20 @@
                             <td><?= $i ?></td>
                             <td><?= $course['transaction_id']?></td>
                             <td>
-                                <?php $order_item = $this->db->query("SELECT * FROM courses WHERE id = '".$course['course_id']."'")->row(); 
+                                <?php $order_item = $this->db->query("SELECT * FROM courses WHERE id = '".$course['course_id']."'")->row();
                                 echo $order_item->title; ?>
                             </td>
                             <td>
-                            <?php 
-                            $getUserdata = $this->db->query("SELECT fname, lname FROM users WHERE id = '".$course['user_id']."'")->row(); 
-                            echo $getUserdata->fname." ".$getUserdata->lname;
+                            <?php
+                            $getUserdata = $this->db->query("SELECT full_name FROM users WHERE id = '".$course['user_id']."'")->row();
+                            echo $getUserdata->full_name;
                             ?>
                             </td>
                             <td>
                                 <?php if($course['price_cents'] > 0) {
                                     echo "$".$course['price_cents'];
                                 } else {
-                                    echo "Free"; 
+                                    echo "Free";
                                 } ?></td>
                             <td><?= $course['payment_status']?></td>
                             <td><?= date('d-m-Y', strtotime($course['enrollment_date'])) ?></td>
