@@ -50,7 +50,7 @@
                                 <div class="portlet box blue-hoki">
                                     <div class="portlet-title">
                                         <div class="caption"> <i class="fa fa-gift"></i>Show Category</div>
-                                        <div class="tools"> 
+                                        <div class="tools">
                                             <a href="javascript:;" class="collapse"> </a>
                                             <a href="javascript:;" class="reload"> </a>
                                             <a href="javascript:;" class="remove"> </a>
@@ -75,7 +75,7 @@
                                                                 <tr class="table table-striped table-bordered table-hover table-checkable order-column dt-responsive" id="sample_1">
                                                                     <td style="max-width:200px;"><?php echo $i->category_name; ?> </td>
                                                                     <td>
-                                                                        <a class="btn green sbold uppercase btn-xs" href="<?php echo base_url() ?>supercontrol/category/show_category_id/<?php echo $i->id; ?>">Edit</a> | 
+                                                                        <a class="btn green sbold uppercase btn-xs" href="<?php echo base_url() ?>supercontrol/category/show_category_id/<?php echo $i->id; ?>">Edit</a> |
                                                                         <a class="btn red sbold uppercase btn-xs" onclick="return confirm('Are you sure about this delete?');" href="<?php echo base_url() ?>supercontrol/category/delete_category/<?php echo $i->id; ?>">Delete</a>
                                                                     </td>
                                                                 </tr>

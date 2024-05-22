@@ -17,25 +17,50 @@
                     <li> <span>supercontrol panel</span> </li>
                 </ul>
             </div>
-            <div class="alert alert-success alert-dismissable" style="padding:10px;">
-                <button class="close" aria-hidden="true" data-dismiss="alert" type="button" style="right:0;"></button>
+            <?php if (@$success_msg) {
+                echo @$success_msg;
+            }
+            if (@$message) {
+                echo @$message;
+            }
+            if (@$msg) {
+                echo @$msg;
+            }
+            if (@$msg1) {
+                echo @$msg1;
+            }
+            if ($this->session->flashdata('success') != '') { ?>
+            <div class="alert alert-success text-center">
+                <?php echo $this->session->flashdata('success'); ?>
+            </div>
+            <?php }
+            if (isset($success_msg)) {
+                echo $success_msg;
+            }
+            if ($this->session->flashdata('add_message') != '') { ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">&#10006;</button>
                 <strong>
-                <?php
-                $last = end($this->uri->segments);
-                if ($last == "success") {
-                    echo "Data Added Successfully ......";
-                }
-                if ($last == "successdelete") {
-                    echo "Data Deleted Successfully ......";
-                }
-                ?>
-                <?php if ($this->session->flashdata('success') != '') { ?>
-                    <div class="alert alert-success text-center">
-                        <?php echo $this->session->flashdata('success'); ?>
-                    </div>
-                <?php } ?>
+                    <?php echo @$this->session->flashdata('add_message'); ?>
                 </strong>
             </div>
+            <?php }
+            if ($this->session->flashdata('edit_message') != '') { ?>
+            <div class="alert alert-success1" style="background-color:#98E0D5;">
+                <button type="button" class="close" data-dismiss="alert">&#10006;</button>
+                <strong style="color:#063;">
+                    <?php echo @$this->session->flashdata('edit_message'); ?>
+                </strong>
+            </div>
+            <?php }
+            if ($this->session->flashdata('delete_message') != '') { ?>
+            <div class="alert alert-success" style="background-color:#F0959B;">
+                <button type="button" class="close" data-dismiss="alert">&#10006;</button>
+                <strong style="color:#900;">
+                    <?php echo @$this->session->flashdata('delete_message'); ?>
+                </strong>
+            </div>
+            <?php } ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tabbable-line boxless tabbable-reversed">
@@ -46,7 +71,7 @@
                                         <div class="caption"> <i class="fa fa-gift"></i>Add page</div>
                                         <div class="tools">
                                             <a href="javascript:;" class="collapse"></a>
-                                            <a href="#portlet-config" data-toggle="modal" class="config"></a> 
+                                            <a href="#portlet-config" data-toggle="modal" class="config"></a>
                                             <a href="javascript:;" class="reload"></a>
                                             <a href="javascript:;" class="remove"></a>
                                         </div>
@@ -230,7 +255,7 @@
 </div>
 <!-- <script src="<?php echo base_url(); ?>js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>js/jquery.datetimepicker.full.js"></script>-->
-<script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script> 
+<script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('editor1');
 $(document).ready(function () {

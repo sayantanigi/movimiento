@@ -120,7 +120,7 @@ class Community extends Admin_Controller {
     }
     public function add_community($id = false) {
         $this->data['title'] = 'Add Community';
-        $this->data['tab'] = 'add_community';
+        $this->data['tab'] = 'add_comm';
         $this->data['main'] = admin_view('community/add');
         $this->data['community'] = $this->Community_model->getNew();
         $this->data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();

@@ -16,15 +16,17 @@
                     <a href="<?= admin_url('community/add_community') ?>" class="pull-right btn btn-primary">Add</a>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Uploaded By</th>
-                            <th>Status</th>
-                            <th style="width: 40px">Action</th>
-                        </tr>
+                    <table class="table table-bordered" id="communityList">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Uploaded By</th>
+                                <th>Status</th>
+                                <th style="width: 40px">Action</th>
+                            </tr>
+                        </thead>
                         <?php
                         if (is_array($community) && count($community) > 0) {
                         $i = 1;

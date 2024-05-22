@@ -10,7 +10,8 @@
 <!-- <script src="<?php echo base_url(); ?>assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script> -->
 <!-- <script src="<?php echo base_url(); ?>assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>  -->
 <script src="<?php echo base_url(); ?>assets/global/scripts/app.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script> 
+<!-- <script src="<?php echo base_url(); ?>assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>  -->
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 <script src="<?php echo base_url(); ?>assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
@@ -42,12 +43,12 @@ $("#createGrade").on('click', function (e) {
 		return false;
 	} else {
 		$("#errorBox1").html("");
-	}  
+	}
   	e.preventDefault();
   	$.ajax({
     	url: '<?=base_url();?>supercontrol/member/chat_data',
     	data: {
-	  		uid: $("#uid").val(),	
+	  		uid: $("#uid").val(),
       		message: $("#message").val(),
     	},
 		async: 'true',
@@ -64,7 +65,7 @@ $("#createGrade").on('click', function (e) {
   	});
 });
 
-setInterval(call, 2000); 
+setInterval(call, 2000);
 function call() {
    	$.ajax({
 		url: '<?=base_url();?>supercontrol/member/chat_data_refresh',
@@ -86,18 +87,19 @@ function call() {
 }
 
 $(document).ready(function() {
+	$('.cstm_cat').DataTable();
 	$("#check").click(function() {
 		$("#drop").show(1000);
 		$("#check").hide();
 		$("#check2").show();
 	});
-      
+
 	$("#check2").click(function(){
 		$("#drop").hide(1000);
         $("#check").show();
         $("#check2").hide();
-	});   
-	
+	});
+
 	$("#check").click(function(){
 		$("#drop").show(1000);
 		$("#check").hide();
@@ -155,4 +157,4 @@ function leftTrim(element){
 }
 </script>
 </body>
-</html>    
+</html>

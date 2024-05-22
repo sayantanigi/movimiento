@@ -10,13 +10,13 @@ $(document).ready(function(){
         $("#check").hide();
         $("#check2").show();
     });
-    
+
     $("#check2").click(function(){
         $("#drop").hide(1000);
         $("#check").show();
         $("#check2").hide();
     });
-});	
+});
 </script>
 <script>
 $(document).ready(function () {
@@ -43,9 +43,9 @@ $(document).ready(function () {
             <div class="alert alert-success alert-dismissable" style="padding:10px;">
                 <button class="close" aria-hidden="true" data-dismiss="alert" type="button" style="right:0;"></button>
                 <strong>
-                <?php 
+                <?php
                     if(@$success_msg!=''){echo @$success_msg;}
-                    $last = end($this->uri->segments); 
+                    $last = end($this->uri->segments);
                     if($last=="success"){echo "course Added Successfully ......";}
                     if($last=="successdelete"){echo "course Deleted Successfully ......";}
                 ?>
@@ -65,7 +65,7 @@ $(document).ready(function () {
                                             <a href="javascript:;" class="remove"></a>
                                         </div>
                                     </div>
-                                    <div class="portlet-body form"> 
+                                    <div class="portlet-body form">
                                         <?php foreach($couserdetails as $c){?>
                                         <form action="<?php echo base_url().'supercontrol/course/edit_course'?>" class="form-horizontal" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="course_id" value="<?=$c->id;?>">
@@ -77,7 +77,7 @@ $(document).ready(function () {
                                                 <div class="form-group">
                                                     <div class="col-md-8">
                                                         <p class="col-md-3 control-label">Category:
-                                                        <?php 
+                                                        <?php
                                                         $id1 = $allcat[0]->id;
                                                         $id2 = $c->cat_id;
                                                         $result = $this->generalmodel->course_view($id1,$id2);
@@ -115,7 +115,7 @@ $(document).ready(function () {
                                         </form>
                                         <?php  } ?>
                                         <h3>Instructor Details </h3>
-                                        <?php foreach($course as $dd) { 
+                                        <?php foreach($course as $dd) {
                                         $caa=$dd->course_id;
                                         //echo $cidaa;
                                         $queryallcat= $this->instructor_model->show_course_inst($caa);

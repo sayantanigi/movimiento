@@ -148,7 +148,7 @@ function timeAgo($time_ago)  {
                                         $rating = $value->rating;
                                     ?>
                                     <tr style="color: #000">
-                                        <td style="width: 200px;">
+                                        <td style="width: 360px;">
                                             <div class="b3">
                                                 <a href="javascript:void(0)">
                                                     <?php
@@ -160,7 +160,7 @@ function timeAgo($time_ago)  {
                                         <td>
                                             <span class="b3"><a href="javascript:void(0)"><?php echo @$value->review_message; ?></a></span>
                                             <div class="rbt-review d-flex">
-                                                <div class="rating me-2" style="width: 200px;">
+                                                <div class="rating me-2" style="width: 120px;">
                                                 <?php
                                                 $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value->course_id."'")->result_array();
                                                 $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value->course_id."'")->row();
@@ -184,7 +184,7 @@ function timeAgo($time_ago)  {
                                                 } ?>
                                                 </div>
                                                 <div class="b2 text-light mb-0" style="color: #000 !important">Good</div>
-                                                <div class="rating-count" style=" width: 100%; text-align: end; "><?php echo timeAgo($value->review_date); ?></div>
+                                                <div class="rating-count" style=" width: 120px; text-align: end; "><?php echo timeAgo($value->review_date); ?></div>
                                             </div>
                                         </td>
                                         <td>

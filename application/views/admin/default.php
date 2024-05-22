@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="<?= site_url('assets/admin/bootstrap-daterangepicker/daterangepicker.css') ?>">
     <link rel="stylesheet" href="<?= site_url('assets/admin/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') ?>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
     <script src="<?= site_url('assets/admin/jquery/dist/jquery.min.js') ?>"></script>
     <script src="<?= site_url('assets/admin/jquery-ui/jquery-ui.min.js') ?>"></script>
     <script>
@@ -40,6 +41,7 @@
     <script src="<?= site_url('assets/admin/js/adminlte.min.js') ?>"></script>
     <script src="<?= site_url('assets/admin/js/pages/dashboard.js') ?>"></script>
     <script src="<?= site_url('assets/admin/js/demo.js') ?>"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <!------------- CKEDITOR----------->
     <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
     <style>
@@ -61,7 +63,7 @@
             <a href="<?= admin_url('dashboard') ?>" class="logo" style="padding: 0px !important;">
                 <span class="logo-mini">
                     <h2 class="start" style="margin-top:10px;">
-                        <img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width:128px;background: #fff;">
+                        <img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width: 185px;background: #fff;margin-top: -10px;margin-left: 20px;">
                     </h2>
                 </span>
                 <span class="logo-lg" style="background: #222d32;">
@@ -125,42 +127,32 @@
                             </span>
                         </a>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_cms' || $tab == 'cms') ? 'active' : ''; ?>">
+                    <li class="treeview <?= ($tab == 'add_member' || $tab == 'members') ? 'active' : ''; ?>">
                         <a href="#">
-                            <i class="fa fa-cog"></i>
-                            <span>Content</span>
+                            <i class="fa fa-users"></i>
+                            <span>Members Management</span>
                             <span class="pull-right-container">
                                 <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <!-- <li class="<?= ($tab == 'add_cms') ? 'active' : ''; ?>"><a href="<?= admin_url('cms/add') ?>"><i class="fa fa-circle"></i> Add CMS</a></li> -->
-                            <li class="<?= ($tab == 'cms') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('cms') ?>"><i class="fa fa-circle"></i> CMS Lists</a>
+                            <li class="<?= ($tab == 'add_member') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('members/add') ?>"><i class="fa fa-circle"></i> Add Member</a>
+                            </li>
+                            <li class="<?= ($tab == 'members') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('members') ?>"><i class="fa fa-circle"></i> Member Lists</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_mode' || $tab == 'mode_list' || $tab == 'add_level' || $tab == 'level_list' || $tab == 'add_comp' || $tab == 'comp_list' || $tab == 'cat_list' || $tab == 'v_chapter' || $tab == 'ad_chapter' || $tab == 'v_mat' || $tab == 'ad_comp_chapter' || $tab == 'v_comp_chapter' || $tab == 'add_cat') ? 'active' : ''; ?>">
+                    <li class="treeview <?= ($tab == 'purchased_course' || $tab == 'add_comp' || $tab == 'comp_list' || $tab == 'cat_list' || $tab == 'v_chapter' || $tab == 'ad_chapter' || $tab == 'v_mat' || $tab == 'ad_comp_chapter' || $tab == 'v_comp_chapter' || $tab == 'add_cat') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-book"></i>
-                            <span>Course </span>
+                            <span>Course Management</span>
                             <span class="pull-right-container">
                                 <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_mode') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('course/mode_add') ?>"><i class="fa fa-circle"></i> Add Mode </a>
-                            </li>
-                            <li class="<?= ($tab == 'mode_list') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('course/mode') ?>"><i class="fa fa-circle"></i> Mode Lists</a>
-                            </li>
-                            <li class="<?= ($tab == 'add_level') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('course/level_add') ?>"><i class="fa fa-circle"></i> Add Level </a>
-                            </li>
-                            <li class="<?= ($tab == 'level_list') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('course/level') ?>"><i class="fa fa-circle"></i> Level Lists</a>
-                            </li>
                             <li class="<?= ($tab == 'add_cat') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('course/category_add') ?>"><i class="fa fa-circle"></i> Add Category </a>
                             </li>
@@ -181,7 +173,22 @@
                             </li> -->
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_comcat' || $tab == 'comcat_list' || $tab == 'add_comm' || $tab == 'comm_list') ? 'active' : ''; ?>">
+                    <li class="treeview <?= ($tab == 'add_cms' || $tab == 'cms') ? 'active' : ''; ?>">
+                        <a href="#">
+                            <i class="fa fa-cog"></i>
+                            <span>Content Management</span>
+                            <span class="pull-right-container">
+                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <!-- <li class="<?= ($tab == 'add_cms') ? 'active' : ''; ?>"><a href="<?= admin_url('cms/add') ?>"><i class="fa fa-circle"></i> Add CMS</a></li> -->
+                            <li class="<?= ($tab == 'cms') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('cms') ?>"><i class="fa fa-circle"></i> CMS Lists</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview <?= ($tab == 'add_comcat' || $tab == 'comcat_list' || $tab == 'add_comm' || $tab == 'community') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-book"></i>
                             <span>Community </span>
@@ -199,30 +206,31 @@
                             <li class="<?= ($tab == 'add_comm') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/add_community') ?>"><i class="fa fa-circle"></i> Add Community</a>
                             </li>
-                            <li class="<?= ($tab == 'comm_list') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('community/community_list') ?>"><i class="fa fa-circle"></i> Community Lists</a>
+                            <li class="<?= ($tab == 'community') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('community') ?>"><i class="fa fa-circle"></i> Community Lists</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_member' || $tab == 'members') ? 'active' : ''; ?>">
+                    <li class="treeview <?= ($tab == 'cert_apply' || $tab == 'rv_cont' || $tab == 'contacts' || $tab == 'cert_contacts' || $tab == 'contacts_stay') ? 'active' : ''; ?>">
                         <a href="#">
-                            <i class="fa fa-users"></i>
-                            <span>Members</span>
+                            <i class="fa fa-envelope"></i>
+                            <span>Contact Management</span>
                             <span class="pull-right-container">
                                 <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_member') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('members/add') ?>"><i class="fa fa-circle"></i> Add Member</a>
-                            </li>
-                            <li class="<?= ($tab == 'members') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('members') ?>"><i class="fa fa-circle"></i> Member Lists</a>
-                            </li>
+                            <li class="<?= ($tab == 'contacts') ? 'active' : ''; ?> "><a href="<?= admin_url('contacts') ?>"><i class="fa fa-circle"></i> <span>Contact Form</span></a></li>
+                            <!-- <li class="<?= ($tab == 'contacts_stay') ? 'active' : ''; ?> "><a href="<?= admin_url('contacts/stay_with_us') ?>"><i class="fa fa-circle"></i> <span>Consult With Us</span></a></li> -->
                         </ul>
                     </li>
-                    <li class="<?= ($tab == 'add_service' || $tab == 'service') ? 'active' : ''; ?>">
-                        <a href="<?= admin_url('settings') ?>"><i class="fa fa-wrench"></i> Settings</a>
+                    <li class="<?= ($tab == 'settings') ? 'active' : ''; ?>">
+                        <a href="<?= admin_url('settings') ?>">
+                            <i class="fa fa-wrench"></i> <span>Settings</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </span>
+                        </a>
                     </li>
                     <!-- <li class="treeview <?= ($tab == 'add_banner' || $tab == 'banner') ? 'active' : ''; ?>">
                         <a href="javascript:void(0);">
@@ -258,32 +266,6 @@
                             </li>
                             <li class="<?= ($tab == 'powerspeech') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('homecourse/powerspeech') ?>"><i class="fa fa-circle"></i> Home Middle</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview <?= ($tab == 'add_product_cat' || $tab == 'product_cat_list' || $tab == 'add_product' || $tab == 'products') ? 'active' : ''; ?>">
-                        <a href="#">
-                            <i class="fa fa-book"></i>
-                            <span>Product </span>
-                            <span class="pull-right-container">
-                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_product_cat') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('products/add_product_cat') ?>"><i class="fa fa-circle"></i> Add product category </a>
-                            </li>
-                            <li class="<?= ($tab == 'product_cat_list') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('products/product_cat_list') ?>"><i class="fa fa-circle"></i> Product Category Lists</a>
-                            </li>
-                            <li class="<?= ($tab == 'add_product') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('products/add_product') ?>"><i class="fa fa-circle"></i> Add Product</a>
-                            </li>
-                            <li class="<?= ($tab == 'products') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('products') ?>"><i class="fa fa-circle"></i> Product Lists</a>
-                            </li>
-                            <li class="<?= ($tab == 'purchased_products') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('products/purchased_products') ?>"><i class="fa fa-circle"></i> Purchased Products Lists</a>
                             </li>
                         </ul>
                     </li> -->
@@ -566,6 +548,14 @@
                 });
         }
         jQuery(document).ready(function ($) {
+            $('.Custom_Table').DataTable({
+                columns: [{ width: '4%' },{ width: '7%' },{ width: '7%' },{ width: '17%' },{ width: '7%' },{ width: '7%' },{ width: '15%' },{ width: '12%' },{ width:'22%'},{ width:'15%'}]
+            });
+            $('#members').DataTable();
+            $('#categoryList').DataTable();
+            $('#purchasedCourse').DataTable();
+            $('#communityCat').DataTable();
+            $('#communityList').DataTable();
             $('#vid_type').hide();
             $('#video_link').hide();
             $('#quiz_s').hide();

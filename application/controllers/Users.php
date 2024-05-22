@@ -11,7 +11,8 @@ class Users extends CI_Controller {
 		$this->load->model('Commonmodel');
 		// $this->isLoggedIn();
 		require 'vendor/autoload.php';
-		if (!$this->session->has_userdata('isLoggedIn') || !$this->session->has_userdata('user_id')) {
+		//if (!$this->session->has_userdata('isLoggedIn') || !$this->session->has_userdata('user_id')) {
+		if($this->session->userdata('isLoggedIn') != 1){
 			$redirectto = urlencode(current_url());
 			redirect(base_url('login?redirectto=' . $redirectto), 'refresh');
 		}

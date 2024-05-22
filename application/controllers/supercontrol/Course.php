@@ -7,9 +7,9 @@ class Course extends CI_Controller {
 		//$this->load->model('coursemodel', 'cat');
 		$this->load->helper('form');
 		$this->load->library(array('form_validation', 'session'));
-		/*if ($this->session->userdata('is_logged_in') != 1) {
-			redirect('supercontrol/home', 'refresh');
-		}*/
+		if ($this->session->userdata('isLoggedIn') != 1) {
+			redirect('login', 'refresh');
+		}
 		$this->load->model('supercontrol/category_model', 'cat');
 		$this->load->library('form_validation');
 		$this->load->model('generalmodel');
@@ -22,13 +22,13 @@ class Course extends CI_Controller {
 
 	}
 	function index() {
-		//print_r($this->session->userdata()); die;
 		$data['categories'] = $this->cat->course_menu();
 		$this->load->view('supercontrol/header', $data);
 		$this->load->view('supercontrol/courseadd_view', $data);
 		$this->load->view('supercontrol/footer');
 	}
 	function add_course() {
+		//print_r($this->session->userdata()); die;
 		$table_name = 'sm_category';
 		$primary_key = 'id !=';
 		$wheredata = '0';
@@ -752,7 +752,7 @@ class Course extends CI_Controller {
 				$error = array('error' => $this->upload->display_errors());
 				$msg = '["' . $error['error'] . '", "error", "#e50914"]';
 			} else {
-				// Uploaded file data 
+				// Uploaded file data
 				$fileData = $this->upload->data();
 				$module_image = $fileData['file_name'];
 			}
@@ -809,7 +809,7 @@ class Course extends CI_Controller {
 				if ($key != $primary_key) {
 
 					$this->db->set($key, $val);
-				} //endif              
+				} //endif
 			} //endforeach
 		} //endforeach
 
@@ -993,7 +993,7 @@ class Course extends CI_Controller {
 						}
 					}
 				}
-			}			
+			}
 		}
 
 		if ($this->input->post('material_type') == 'quiz') {
@@ -1067,7 +1067,7 @@ class Course extends CI_Controller {
 					$_FILES['file']['size'] = $_FILES['option2_file_name']['size'][$k];
 					$config['upload_path'] = 'uploads/quizs/answer_files/';
 					$config['allowed_types'] = '*';
-					$config['max_size'] = '*'; 
+					$config['max_size'] = '*';
 					$config['file_name'] = $_FILES['option2_file_name']['name'][$k];
 					$config['overwrite'] = false;
 					$config['remove_spaces'] = true;

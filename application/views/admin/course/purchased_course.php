@@ -14,16 +14,18 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-body">
-                    <table class="table">
-                        <tr>
-                            <th>Sl No.</th>
-                            <th>TXN ID</th>
-                            <th>Course Name</th>
-                            <th>Purchased By</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Enrollment Date</th>
-                        </tr>
+                    <table class="table" id="purchasedCourse">
+                        <thead>
+                            <tr>
+                                <th>Sl No.</th>
+                                <th>TXN ID</th>
+                                <th>Course Name</th>
+                                <th>Purchased By</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Enrollment Date</th>
+                            </tr>
+                        </thead>
                         <?php
                         if (is_array($course_order_details) && count($course_order_details) > 0) {
                         $i = 0;

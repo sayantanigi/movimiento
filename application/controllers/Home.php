@@ -93,7 +93,7 @@ class Home extends CI_Controller {
                 $mail = new PHPMailer(true);
                 try {
                     $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('admin@gmail.com', 'movimiento');
+                    $mail->SetFrom('info@movimiento.com', 'movimiento');
                     $mail->AddAddress($email);
                     $mail->IsHTML(true);
                     $mail->Subject = $subject;
@@ -103,8 +103,8 @@ class Home extends CI_Controller {
                     //Send mail using GMAIL server
                     $mail->Host = 'smtp-relay.brevo.com';       // Specify main and backup SMTP servers
                     $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                    $mail->Username = 'goutampaul@goigi.in';     // SMTP username
-                    $mail->Password = 'b7nNQ4Fk9XdAOcL3';                // SMTP password
+                    $mail->Username = 'sayantan@goigi.in';     // SMTP username
+                    $mail->Password = 'NWpyxa3UK2HDPSbs';                // SMTP password
                     $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
                     $mail->Port = 587;
                     if(!$mail->send()) {
@@ -394,7 +394,7 @@ class Home extends CI_Controller {
             $this->session->set_userdata('first_name', @$user->fname);
             $this->session->set_userdata('userType', @$user->userType);
             if(@$user->userType == '1') {
-                if(@$course_id) {
+                if(@$course_id != 'login') {
                     $this->session->set_flashdata('success', 'Logged in successfully.');
                     redirect(base_url('course-detail/'.@$course_id), 'refresh');
                 } else {

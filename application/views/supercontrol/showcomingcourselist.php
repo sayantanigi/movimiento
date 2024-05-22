@@ -18,7 +18,7 @@
             <div class="page-bar">
                 <ul class="page-breadcrumb">
                     <li><a href="<?php echo base_url(); ?>supercontrol/home">Home</a><i class="fa fa-circle"></i> </li>
-                    <li><span>supercontrol Panel</span> <i class="fa fa-circle"></i></li>
+                    <li><span>Supercontrol Panel</span> <i class="fa fa-circle"></i></li>
                     <li><span>Show Course List </span></li>
                 </ul>
             </div>
@@ -73,12 +73,11 @@
                             <div class="tab-pane active" id="tab_0">
                                 <div class="portlet box blue-hoki">
                                     <div class="portlet-title">
-                                        <div class="caption"> <i class="fa fa-gift"></i> Coming Soon Course List </div> 
-                                        
+                                        <div class="caption"> <i class="fa fa-gift"></i> Coming Soon Course List </div>
                                         <div class="tools">
-                                            <a href="javascript:;" class="collapse"> </a> 
-                                            <a href="javascript:;" class="reload"> </a> 
-                                            <a href="javascript:;" class="remove"> </a> 
+                                            <a href="javascript:;" class="collapse"> </a>
+                                            <a href="javascript:;" class="reload"> </a>
+                                            <a href="javascript:;" class="remove"> </a>
                                         </div>
                                     </div>
                                     <div class="portlet-body form">
@@ -88,26 +87,36 @@
                                                     <thead>
                                                         <tr>
                                                             <th width="20"><input id="selectall" type="checkbox"></th>
+                                                            <th width="27">Module</th>
+                                                            <th width="27">Material</th>
+                                                            <th width="27">Action</th>
                                                             <th>Image</th>
+                                                            <th>Category</th>
                                                             <th>Title</th>
                                                             <th>Destription</th>
                                                             <th>Overview</th>
                                                             <th>Details </th>
-                                                            <th width="27">Module</th>
-                                                            <th width="27">Material</th>
-                                                            <!-- <th width="27">Course Session </th>
-                                                            <th width="27">Course Clone</th> -->
-                                                            <th width="27">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php if (is_array($elocal)): 
+                                                        <?php if (is_array($elocal)):
                                                         $ctn = 1;
-                                                        foreach ($elocal as $i) { 
+                                                        foreach ($elocal as $i) {
                                                         $queryallcat = $this->db->query("SELECT category_name FROM sm_category WHERE id = $i->cat_id")->result_array();?>
                                                         <tr class="table table-striped table-bordered table-hover table-checkable order-column dt-responsive" id="sample_1">
-                                                            <td>
-                                                                <input name="checkbox[]" class="checkbox1" type="checkbox" value="<?php echo $i->id; ?>">
+                                                            <td><input name="checkbox[]" class="checkbox1" type="checkbox" value="<?php echo $i->id; ?>"></td>
+                                                            <td style="max-width:250px;">
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_course_module_view/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Module</a>
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/module_list/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Module</a>
+                                                            </td>
+                                                            <td style="max-width:250px;">
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_course_trainingmaterial_view/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Material</a>
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/material_list/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Material</a>
+                                                            </td>
+                                                            <td style="max-width:50px;">
+                                                                <!-- <a class="btn green btn-sm btn-outline sbold uppercase" href="<?php echo base_url() ?>supercontrol/course/view_course/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> </a> -->
+                                                                <a class="btn green btn-sm btn-outline sbold uppercase" href="<?php echo base_url() ?>supercontrol/course/show_course_id/<?php echo $i->id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                                <!-- <a class="btn red btn-sm btn-outline sbold uppercase" onclick="return confirm('Are you sure about this delete?');" href="<?php echo base_url() ?>supercontrol/course/delete_course/<?php echo $i->id; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a> -->
                                                             </td>
                                                             <td>
                                                                 <?php if ($i->image == "") { ?>
@@ -116,10 +125,10 @@
                                                                 <img src="<?php echo base_url() ?>assets/images/courses/<?php echo $i->image; ?>" width="90" height="90" style="border: 2px solid #ddd;" />
                                                                 <?php } ?>
                                                             </td>
+                                                            <td><?php echo $queryallcat[0]['category_name']; ?></td>
                                                             <td> <?php echo $i->title; ?> </td>
                                                             <td> <?php echo $i->description; ?> </td>
                                                             <td>
-                                                                <p style="margin:0px;"><b>Category </b>: <?php echo $queryallcat[0]['category_name']; ?></p>
                                                                 <p style="margin:0px;"><b>Price </b>: <?php echo $i->price; ?></p>
                                                                 <p style="margin:0px;"><b>Certification </b>: <?php echo $i->course_certificate; ?></p>
                                                                 <p style="margin:0px;"><b>Requirement </b>: <?php echo $i->requirement; ?></p>
@@ -138,14 +147,6 @@
                                                                 ?></p>
                                                                 <p style="margin:0px;"><b>Course Duration </b>: <?php echo $i->duration; ?></p>
                                                             </td>
-                                                            <td style="max-width:250px;">
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_course_module_view/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Module</a>
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/module_list/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Module</a>
-                                                            </td>
-                                                            <td style="max-width:250px;">
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_course_trainingmaterial_view/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Material</a>
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/material_list/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Material</a>
-                                                            </td>
                                                             <!-- <td style="max-width:250px;">
                                                                 <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_course_session_view/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Course Session</a>
                                                                 <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/course_session_list/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Course Session List</a>
@@ -154,26 +155,21 @@
                                                                 <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_course_clone/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Course Clone</a>
                                                             </td>
                                                             <td  style="max-width:250px;">
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url() ?>supercontrol/course/add_lesson/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Lesson</a> 
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url() ?>supercontrol/course/add_lesson/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Lesson</a>
                                                                 <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url() ?>supercontrol/course/lesson_list/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Lesson</a>
                                                             </td>
                                                             <td style="max-width:250px;">
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/location/location_add_form/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Location</a> 
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/location/location_add_form/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Location</a>
                                                                 <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/location/show_location/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Location</a>
-                                                            </td> 
+                                                            </td>
                                                             <td style="max-width:250px;">
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/distance/adddistanceview/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Distance</a> 
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/distance/adddistanceview/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Distance</a>
                                                                 <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/distance/showdistancebooking/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Distance</a>
                                                             </td>
                                                             <td  style="max-width:250px;">
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_private/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Private</a> 
-                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/view_private/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Private</a> 
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/add_private/<?php echo $i->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Private</a>
+                                                                <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/course/view_private/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Private</a>
                                                             </td>-->
-                                                            <td style="max-width:50px;">
-                                                                <!-- <a class="btn green btn-sm btn-outline sbold uppercase" href="<?php echo base_url() ?>supercontrol/course/view_course/<?php echo $i->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> </a> -->
-                                                                <a class="btn green btn-sm btn-outline sbold uppercase" href="<?php echo base_url() ?>supercontrol/course/show_course_id/<?php echo $i->id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                                                <!-- <a class="btn red btn-sm btn-outline sbold uppercase" onclick="return confirm('Are you sure about this delete?');" href="<?php echo base_url() ?>supercontrol/course/delete_course/<?php echo $i->id; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a> -->
-                                                            </td>
                                                         </tr>
                                                         <?php $ctn++; } ?>
                                                         <?php endif; ?>
@@ -228,7 +224,7 @@ $(document).ready(function () {
     });
     function resetcheckbox() {
         $('input:checkbox').each(function () { //loop through each checkbox
-            this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+            this.checked = false; //deselect all checkboxes with class "checkbox1"
         });
     }
 });

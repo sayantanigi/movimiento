@@ -5,7 +5,7 @@ class Category extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('form');
 		$this->load->library(array('form_validation', 'session'));
-		if($this->session->userdata('isLoggedIn') != TRUE){
+		if($this->session->userdata('isLoggedIn') != 1){
 			redirect('login', 'refresh');
 		}
 		$this->load->model('supercontrol/category_model');

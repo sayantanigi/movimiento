@@ -20,9 +20,10 @@
                     <a href="<?= admin_url('members/add/') ?>" class="pull-right btn btn-primary"><span class="fa fa-plus"></span> Add New</a>
                 </div>
                 <div class="box-body">
-                    <table class="table">
+                    <table class="table" id="members">
+                        <thead>
                         <tr>
-                            <th style="width: 10px">#</th>
+                            <th>Sl No.</th>
                             <th>Image</th>
                             <th>Name</th>
                             <th>Email</th>
@@ -34,6 +35,7 @@
                             <th>Actions</th>
                             <!-- <th>Reply</th> -->
                         </tr>
+                        </thead>
                         <?php
                         if (!empty($members)) {
                             $i = 1;
@@ -47,13 +49,13 @@
                                 <tr>
                                     <td><?= $i ?></td>
                                     <td><img src="<?= $profileImage ?>" style="width: 90px;"/></td>
-                                    <td><?= $member->fname . " " . $member->lname ?></td>
+                                    <td><?= $member->full_name?></td>
                                     <td><?= $member->email ?></td>
                                     <td>
                                         <?php if (@$member->phone) {
                                             echo @$member->phone;
                                         } else {
-                                            echo "&#8212;";
+                                            echo "";
                                         } ?>
                                     </td>
                                     <td>

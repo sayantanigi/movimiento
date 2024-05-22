@@ -16,12 +16,14 @@
                     <a href="<?= admin_url('community/category_add') ?>" class="pull-right btn btn-primary"><span class="fa fa-plus"></span> Add New</a>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th style="width: 30px;">Title</th>
-                            <th style="width: 40px">Action</th>
-                        </tr>
+                    <table class="table table-bordered" id="communityCat">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th style="width: 30px;">Title</th>
+                                <th style="width: 40px">Action</th>
+                            </tr>
+                        </thead>
                         <?php
                         if (is_array($community_cat) && count($community_cat) > 0) {
                         $i = 1;
