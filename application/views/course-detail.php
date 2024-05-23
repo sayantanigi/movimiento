@@ -22,7 +22,7 @@
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
+<section class="pt-15 pb-145">
     <div class="container">
         <div class="row align-items-center mt-50">
             <div class="col-lg-12">
@@ -638,8 +638,8 @@
                 </div>
             </div>
             <?php if(!empty(@$detail->cat_id)) {
-            $getCourse = $this->db->query("SELECT * FROM courses WHERE cat_id = '".$detail->cat_id."'")->result_array();
-            if(count($getCourse) > 1) { ?>
+            $getCourse = $this->db->query("SELECT * FROM courses WHERE cat_id = '".$detail->cat_id."' AND id NOT IN ('".$detail->id."')")->result_array();
+            if(!empty($getCourse)) { ?>
             <div class="col-lg-12">
                 <div class="course__related">
                     <div class="row">
@@ -655,24 +655,18 @@
                             <div class="course__slider swiper-container pb-60">
                                 <div class="swiper-wrapper">
                                     <?php
-                                    foreach ($variable as $key => $value) {
-                                        if (@$value->image && file_exists('./assets/images/courses/' . @$value->image)) {
-                                            $image = base_url('assets/images/courses/' . @$value->image);
+                                    foreach ($getCourse as $key => $value) {
+                                        $catname = $this->db->query("SELECT * FROM sm_category WHERE id = '".$value['cat_id']."'")->row();
+                                        if (@$value['image'] && file_exists('./assets/images/courses/' . @$value['image'])) {
+                                            $image = base_url('assets/images/courses/' . @$value['image']);
                                         } else {
-                                            $image = base_url('./images/noimage.jpg');
+                                            $image = base_url('assets/images/no-image.png');
                                         }
-                                        $getAverageRatingSql = "SELECT ROUND(AVG(rating),1) as averageRating FROM `course_reviews` where `course_id` = '" . @$value->id . "'";
-                                        $ratingRow = $this->db->query($getAverageRatingSql)->row();
-                                        $averageRating = @$ratingRow->averageRating;
-                                        $rating = @$ratingRow->averageRating;
-                                        $totalEnrolledSql = "SELECT * FROM `course_enrollment` WHERE `course_id` = '" . @$value->id . "' AND `payment_status` = 'COMPLETED'";
-                                        $totalEnrolledUsr = $this->db->query($totalEnrolledSql)->num_rows();
-                                        $catname = $this->db->query("SELECT * FROM sm_category WHERE id = '".$value->cat_id."'")->row();
                                     ?>
                                     <div class="course__item course__item-3 swiper-slide white-bg mb-30 fix">
                                         <div class="course__thumb w-img p-relative fix">
-                                            <a href="course-details.html">
-                                                <img src="<?php echo base_url()?>assets/img/course/course-1.jpg" alt="">
+                                            <a href="<?=base_url('course-detail/'.@$value['id'])?>">
+                                                <img src="<?= $image ?>" alt="">
                                             </a>
                                             <div class="course__tag">
                                                 <a href="#"><?= $catname->category_name?></a>
@@ -683,7 +677,7 @@
                                                 class="course__meta d-flex align-items-center justify-content-between">
                                                 <div class="course__lesson">
                                                     <?php
-                                                    $module = $this->db->query("SELECT count(id) as total_module FROM course_modules WHERE course_id = '".$value->id."'")->row();
+                                                    $module = $this->db->query("SELECT count(id) as total_module FROM course_modules WHERE course_id = '".$value['id']."'")->row();
                                                     if(!empty($module)) {
                                                         $count = $module->total_module;
                                                     } else {
@@ -694,8 +688,8 @@
                                                 </div>
                                                 <div class="course__rating">
                                                 <?php
-                                                $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value->id."'")->result_array();
-                                                $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value->id."'")->row();
+                                                $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value['id']."'")->result_array();
+                                                $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value['id']."'")->row();
                                                 if(!empty($rating)) {
                                                     $rate = round($totalrate->total/count($rating), 0);
                                                     foreach (range(1,5) as $i) {
@@ -717,10 +711,10 @@
                                                 </div>
                                             </div>
                                             <h3 class="course__title" style="font-size: 18px">
-                                                <a href="<?=base_url('course-detail/'.@$value->id)?>"><?php if(@$value->title) { echo strip_tags($value->title); } ?></a>
+                                                <a href="<?=base_url('course-detail/'.@$value['id'])?>"><?php if(@$value['title']) { echo strip_tags($value['title']); } ?></a>
                                             </h3>
-                                            <?php if(!empty($value->user_id)) {
-                                            $user_details = $this->db->query("SELECT id, full_name, image FROM users WHERE id = '".$value->user_id."' AND email_verified = '1' AND status = '1'")->row();?>
+                                            <?php if(!empty($value['user_id'])) {
+                                            $user_details = $this->db->query("SELECT id, full_name, image FROM users WHERE id = '".$value['user_id']."' AND email_verified = '1' AND status = '1'")->row();?>
                                             <div class="course__teacher d-flex align-items-center">
                                                 <div class="course__teacher-thumb mr-15">
                                                     <?php if(!empty($user_details->image)) { ?>
@@ -742,7 +736,7 @@
                                         </div>
                                         <div class="course__more d-flex justify-content-between align-items-center">
                                             <div class="course__btn">
-                                                <a href="<?= base_url('course-detail/'.@$value->id)?>" class="link-btn">
+                                                <a href="<?= base_url('course-detail/'.@$value['id'])?>" class="link-btn">
                                                     Know Details
                                                     <i class="far fa-arrow-right"></i>
                                                     <i class="far fa-arrow-right"></i>

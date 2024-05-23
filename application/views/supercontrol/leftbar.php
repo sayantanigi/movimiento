@@ -42,6 +42,11 @@ $nl2 = $this->uri->segment(3);
                         <span class="title">All Courses </span>
                     </a>
                 </li>
+                <li class="nav-item <?php if ($nl2 == "course") { ?>active open<?php } ?>">
+                    <a href="<?php echo base_url(); ?>supercontrol/course/purchased_course" class="nav-link ">
+                        <span class="title">Purchased Course List</span>
+                    </a>
+                </li>
                 <!-- <li class="nav-item <?php if ($nl == "show_course") { ?>active open<?php } ?>">
                     <a href="<?php echo base_url(); ?>supercontrol/course/upcomming_course" class="nav-link ">
                         <span class="title">Upcoming Courses </span>
@@ -52,6 +57,25 @@ $nl2 = $this->uri->segment(3);
                     <span class="title">Coming Soon courses </span>
                     </a>
                 </li> -->
+            </ul>
+        </li>
+        <li class="nav-item <?php if ($tab == "add_comm_cat" || $tab == "comm_cat" || $tab == "add_comm" || $tab == "comm") { ?>active open<?php } ?>">
+            <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-th-list"></i>
+                <span class="title">Community Management</span>
+                <span class="addindividual"></span>
+                <span class="arrow addindividual"></span>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item <?php if ($tab == "add_comm") { ?> active open<?php } ?>">
+                    <a href="<?php echo base_url(); ?>supercontrol/community/add_community" class="nav-link ">
+                        <span class="title">Add Community</span>
+                    </a>
+                </li>
+                <li class="nav-item <?php if ($tab == "comm") { ?>active open<?php } ?>">
+                    <a href="<?php echo base_url(); ?>supercontrol/community" class="nav-link ">
+                        <span class="title">Comminity List </span>
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="nav-item <?php if ($nl == "") { ?>active open<?php } ?>">

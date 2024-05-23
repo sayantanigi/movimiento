@@ -53,25 +53,25 @@
                                 <div class="col-sm-12">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="fname">First Name<span class="red">*</span></label>
-                                            <input type="text" name="fname" value="<?= @$member->fname ?>" class="form-control" id="fname" placeholder="Enter First Name">
+                                            <label for="fname">Full Name<span class="red">*</span></label>
+                                            <input type="text" name="full_name" value="<?= @$member->full_name ?>" class="form-control" id="full_name" placeholder="Enter Full Name">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <!-- <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="lname">Last Name<span class="red">*</span></label>
                                             <input type="text" name="lname" value="<?= @$member->lname ?>" class="form-control" id="lname" placeholder="Enter Last Name">
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12">
+                                    </div> -->
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="email">Email<span class="red">*</span></label>
                                             <input type="text" name="email" value="<?= @$member->email ?>" class="form-control" id="email" placeholder="Enter Email">
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="col-sm-12">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <?php if (@$member->id) { ?>
@@ -84,28 +84,30 @@
                                             <?php } ?>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="phone">Phone Number</label>
+                                            <input type="text" name="phone" value="<?= @$member->phone ?>" class="form-control" id="phone" placeholder="Enter phone" maxlength="10" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-sm-12">
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label for="phone">Phone Number</label>
-                                            <input type="text" name="phone" value="<?= @$member->phone ?>" class="form-control" id="phone" placeholder="Enter phone">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="status">User Type</label>
                                             <select name="userType" class="form-control">
+                                                <option value="">Select User Type</option>
                                                 <option value="1" <?= (@$member->userType == 1) ? 'selected' : ''; ?>>Student </option>
                                                 <option value="2" <?= (@$member->userType == 2) ? 'selected' : ''; ?>>Instructor </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="status">Status</label>
                                             <select name="status" class="form-control">
+                                                <option value="">Select Status</option>
                                                 <option value="1" <?= (@$member->status == 1) ? 'selected' : ''; ?>>Active </option>
                                                 <option value="0" <?= (@$member->status == 0) ? 'selected' : ''; ?>>Inactive </option>
                                             </select>

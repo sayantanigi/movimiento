@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="<?= site_url('assets/admin/bootstrap-daterangepicker/daterangepicker.css') ?>">
     <link rel="stylesheet" href="<?= site_url('assets/admin/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') ?>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
     <script src="<?= site_url('assets/admin/jquery/dist/jquery.min.js') ?>"></script>
     <script src="<?= site_url('assets/admin/jquery-ui/jquery-ui.min.js') ?>"></script>
     <script>
@@ -41,7 +40,6 @@
     <script src="<?= site_url('assets/admin/js/adminlte.min.js') ?>"></script>
     <script src="<?= site_url('assets/admin/js/pages/dashboard.js') ?>"></script>
     <script src="<?= site_url('assets/admin/js/demo.js') ?>"></script>
-    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <!------------- CKEDITOR----------->
     <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
     <style>
@@ -144,7 +142,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'purchased_course' || $tab == 'add_comp' || $tab == 'comp_list' || $tab == 'cat_list' || $tab == 'v_chapter' || $tab == 'ad_chapter' || $tab == 'v_mat' || $tab == 'ad_comp_chapter' || $tab == 'v_comp_chapter' || $tab == 'add_cat') ? 'active' : ''; ?>">
+                    <li class="treeview <?= ($tab == 'add_mode' || $tab == 'mode_list' || $tab == 'add_level' || $tab == 'level_list' || $tab == 'add_comp' || $tab == 'comp_list' || $tab == 'cat_list' || $tab == 'v_chapter' || $tab == 'ad_chapter' || $tab == 'v_mat' || $tab == 'ad_comp_chapter' || $tab == 'v_comp_chapter' || $tab == 'add_cat') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-book"></i>
                             <span>Course Management</span>
@@ -188,7 +186,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview <?= ($tab == 'add_comcat' || $tab == 'comcat_list' || $tab == 'add_comm' || $tab == 'community') ? 'active' : ''; ?>">
+                    <li class="treeview <?= ($tab == 'add_comcat' || $tab == 'comcat_list' || $tab == 'add_comm' || $tab == 'comm_list') ? 'active' : ''; ?>">
                         <a href="#">
                             <i class="fa fa-book"></i>
                             <span>Community </span>
@@ -206,8 +204,8 @@
                             <li class="<?= ($tab == 'add_comm') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/add_community') ?>"><i class="fa fa-circle"></i> Add Community</a>
                             </li>
-                            <li class="<?= ($tab == 'community') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('community') ?>"><i class="fa fa-circle"></i> Community Lists</a>
+                            <li class="<?= ($tab == 'comm_list') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('community/community_list') ?>"><i class="fa fa-circle"></i> Community Lists</a>
                             </li>
                         </ul>
                     </li>
@@ -548,14 +546,6 @@
                 });
         }
         jQuery(document).ready(function ($) {
-            $('.Custom_Table').DataTable({
-                columns: [{ width: '4%' },{ width: '7%' },{ width: '7%' },{ width: '17%' },{ width: '7%' },{ width: '7%' },{ width: '15%' },{ width: '12%' },{ width:'22%'},{ width:'15%'}]
-            });
-            $('#members').DataTable();
-            $('#categoryList').DataTable();
-            $('#purchasedCourse').DataTable();
-            $('#communityCat').DataTable();
-            $('#communityList').DataTable();
             $('#vid_type').hide();
             $('#video_link').hide();
             $('#quiz_s').hide();

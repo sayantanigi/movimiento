@@ -16,31 +16,13 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
         <div class="page-content">
             <div class="page-bar">
                 <ul class="page-breadcrumb">
-                    <li> <a href="<?php echo base_url(); ?>supercontrol/user/dashboard">Home</a> <i
-                            class="fa fa-circle"></i>
+                    <li>
+                        <a href="<?php echo base_url(); ?>supercontrol/user/dashboard">Home</a>
+                        <i class="fa fa-circle"></i>
                     </li>
                     <li> <span>Admin panel</span> </li>
                 </ul>
             </div>
-            <?php 
-            if (@$success_msg != '') {
-                $msg = $success_msg;
-            }
-            $last = end($this->uri->segments);
-            if ($last == "success") {
-                $msg = "course Added Successfully ......";
-            }
-            if ($last == "successdelete") {
-                $msg = "course Deleted Successfully ......";
-            }
-            ?>
-
-            <?php if (@$msg != '') { ?>
-            <div class="alert alert-success alert-dismissable" style="padding:10px;">
-                <button class="close" aria-hidden="true" data-dismiss="alert" type="button" style="right:0;"></button>
-                <strong><?= @$msg;?></strong>
-            </div>
-            <?php } ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tabbable-line boxless tabbable-reversed">
@@ -68,30 +50,6 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                             <?php } ?>
                                                         </select>
                                                         <label id="errorBox"></label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Course Mode *</b></label>
-                                                    <div class="col-md-8">
-                                                        <select name="mode_id" class="form-control">
-                                                            <option>Choose</option>
-                                                            <?php if (is_array($modes) && count($modes) > 0) {
-                                                            foreach ($modes as $mo) { ?>
-                                                            <option value="<?= $mo->id ?>"> <?= $mo->mode_title ?> </option>
-                                                            <?php } } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Course Level *</b></label>
-                                                    <div class="col-md-8">
-                                                        <select name="level_id" class="form-control">
-                                                            <option>Choose</option>
-                                                            <?php if (is_array($levels) && count($levels) > 0) {
-                                                            foreach ($levels as $lv) { ?>
-                                                            <option value="<?= $lv->id ?>"> <?= $lv->level_title ?> </option>
-                                                            <?php } } ?>
-                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group"> 
@@ -181,16 +139,6 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                             <input type="text" name="price_key" id="price_key" class="form-control price_key" placeholder="Price ID (Stripe Price ID)" onkeyup="leftTrim(this)" />
                                                             <label id="errorBox"></label>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group"> 
-                                                    <label class="col-md-3 control-label"><b>Course Type *</b></label>
-                                                    <div class="col-md-8">
-                                                        <select name="course_type" class="form-control">
-                                                            <option value="">Choose</option>
-                                                            <option value="Upcoming Courses">Upcoming Courses</option>
-                                                            <option value="Coming Soon Courses">Coming Soon Courses</option>
-                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">

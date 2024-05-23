@@ -61,6 +61,7 @@ $route['edit-profile'] = 'Users/editProfile';
 $route['logout'] = 'supercontrol/home/logout';
 $route['consultant-dashboard'] = 'supercontrol/home';
 $route['course-detail/(:any)'] = "home/courseDetail/$1";
+$route['community/(:any)'] = "home/community_details/$1";
 $route['forgot-password'] = "home/forgotPassword";
 $route['otp-verification/(:any)'] = "home/verifyOtp/$1";
 /*------------Admin Routes------------*/

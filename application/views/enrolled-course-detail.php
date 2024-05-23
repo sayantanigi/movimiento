@@ -124,7 +124,7 @@ if (!empty($active_data)) {
                                         <li style="background: #015ba4; padding: 10px; margin-bottom: 10px;">
                                             <a href="<?=base_url('users/courseMaterial/'.@$courses->enrollment_id."/".@$value->id)?>">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="flex-fill">
+                                                    <div class="flex-fill" style="color: #fff;">
                                                         <?php echo @$value->name; ?>
                                                     </div>
                                                     <span class="downloadModule"><i class="fa fa-arrow-right"></i></span>
@@ -148,4 +148,5 @@ if (!empty($active_data)) {
 <style>
 .cstm_crs_cls *{color: #000; text-align: justify; font-size: 13px; line-height: 16px;}
 .bg-success{padding: 7px 10px 0px 10px;border-radius: 50px; height: 35px; margin-left: 10px;}
+.fa-arrow-right:before {color: #fff};
 </style>

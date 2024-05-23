@@ -295,9 +295,10 @@ class Home extends CI_Controller {
 		$this->load->view('community', $data);
 		$this->load->view('footer');
 	}
-    public function community_details() {
-		$this->load->view('header');
-		$this->load->view('community-details');
+    public function community_details($slug) {
+        $data['community_data'] = $this->db->query("SELECT * FROM community WHERE slug LIKE '%".$slug."%'")->row();
+		$this->load->view('header', $data);
+		$this->load->view('community-details', $data);
 		$this->load->view('footer');
 	}
     public function contact() {

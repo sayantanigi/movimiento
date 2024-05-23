@@ -64,7 +64,7 @@
                 <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6">
                     <div class="category__item mb-30 transition-3 d-flex align-items-center">
                         <div class="category__icon mr-30">
-                            <img src="<?= base_url()?>uploads/category/<?= $value['category_image']?>">
+                            <img src="<?= base_url()?>uploads/category/<?= $value['category_image']?>" style="width: 100%;">
                         </div>
                         <div class="category__content">
                             <h4 class="category__title"><a href="#"><?= $value['category_name']?></a></h4>
@@ -99,7 +99,7 @@
                                 <?php if(!empty($value->image)) { ?>
                                 <img src="<?= base_url()?>assets/images/courses/<?= $value->image?>" alt="">
                                 <?php } else { ?>
-                                <img src="assets/images/no-image.png" alt="">
+                                <img src="<?= base_url()?>assets/images/no-image.png" alt="">
                                 <?php } ?>
                             </a>
                             <div class="course__tag">

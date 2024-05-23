@@ -26,7 +26,7 @@
             <?php if(!empty($community_cat)) {
             foreach ($community_cat as $cat_value) { ?>
             <li>
-                <a href="<?= $cat_value['id']?>"><?= $cat_value['category_name']?></a>
+                <a href="#"><?= $cat_value['category_name']?></a>
             </li>
             <?php } } ?>
         </ul>
@@ -62,9 +62,9 @@
                     <div class="userComInfo">
                         <h6 class="fw-semibold mb-0"><a href="javascript:void(0)"><?= $name?></a></h6>
                         <span class="post-meta mb-2 d-block text-secondary"> <small><?= date('M j, Y', strtotime($community_val['created_at']))?></small></span>
-                        <h2 class="h4 fw-bold communitytitle"><a href="<?= base_url() ?>community_details/<?= $community_val['slug']?>"><?= $community_val['title']?></a></h2>
+                        <h2 class="h4 fw-bold communitytitle"><a href="<?= base_url()?>community/<?= $community_val['slug'] ?>"><?= $community_val['title']?></a></h2>
                         <p><?= $string?></p>
-                        <p><a href="<?= base_url() ?>community_details/<?= $community_val['slug']?>" class="btn-community">View Details <i class="fas fa-arrow-right"></i></a></p>
+                        <p><a href="<?= base_url()?>community/<?= $community_val['slug'] ?>" class="btn-community">View Details <i class="fas fa-arrow-right"></i></a></p>
                         <ul class="d-flex align-items-center mt-3">
                             <li class="me-4"><a href="#"><i class="fas fa-thumbs-up text-secondary"></i><sup>0</sup></a></li>
                             <li><a href="#"><i class="fas fa-comment text-secondary"></i><sup>0</sup></a></li>

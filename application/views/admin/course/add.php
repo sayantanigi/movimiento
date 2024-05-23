@@ -163,7 +163,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-10">
+                                <!-- <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Course Type<span style="color: red">*</span></label>
@@ -174,7 +174,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">

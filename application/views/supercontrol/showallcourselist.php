@@ -101,6 +101,15 @@
                                                     <?php if (is_array($eloca)):
                                                     $ctn = 1;
                                                     foreach ($eloca as $i) {
+                                                    $string = strip_tags($i->description);
+                                                    if (strlen($string) > 500) {
+                                                        $stringCut = substr($string, 0, 250);
+                                                        $endPoint = strrpos($stringCut, ' ');
+
+                                                        //if the string doesn't contain any space then it will cut without word basis.
+                                                        $string = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+                                                        $string .= '... ';
+                                                    }
                                                     $queryallcat = $this->db->query("SELECT category_name FROM sm_category WHERE id = $i->cat_id")->result_array();?>
                                                     <tr class="table table-striped table-bordered table-hover table-checkable order-column dt-responsive" id="sample_1">
                                                         <td><input name="checkbox[]" class="checkbox1" type="checkbox" value="<?php echo $i->id; ?>"></td>
@@ -126,7 +135,7 @@
                                                         </td>
                                                         <td><?php echo $queryallcat[0]['category_name']; ?></td>
                                                         <td> <?php echo $i->title; ?> </td>
-                                                        <td> <?php echo $i->description; ?> </td>
+                                                        <td> <?php echo $string; ?> </td>
                                                         <td><p style="margin:0px;"><b>Price </b>:
                                                                 <?php if (@$i->course_fees == 'free') {
                                                                     echo $price = "Free";
@@ -140,16 +149,6 @@
                                                             <p style="margin:0px;"><b>Who should Attend </b>: <?php echo $i->attended; ?></p>
                                                         </td>
                                                         <td>
-                                                            <!-- <p style="margin:0px;"><b>Course Mode </b>:
-                                                            <?php
-                                                            $queryallmode = $this->db->query("SELECT mode_title FROM sm_mode WHERE id = $i->mode_id")->result_array();
-                                                            echo $queryallmode[0]['mode_title'];
-                                                            ?></p>
-                                                            <p style="margin:0px;"><b>Course Level </b>:
-                                                            <?php
-                                                            $queryalllevel = $this->db->query("SELECT level_title FROM sm_levels WHERE id = $i->level_id")->result_array();
-                                                            echo $queryalllevel[0]['level_title'];
-                                                            ?></p> -->
                                                             <p style="margin:0px;"><b>Course Duration </b>: <?php echo $i->duration; ?></p>
                                                         </td>
 

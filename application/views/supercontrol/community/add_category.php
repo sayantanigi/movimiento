@@ -12,7 +12,7 @@
             <div class="page-bar">
                 <ul class="page-breadcrumb">
                     <li>
-                        <a href="<?php echo base_url(); ?>supercontrol/user/dashboard">Home</a> 
+                        <a href="<?php echo base_url(); ?>supercontrol/user/dashboard">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li> <span>Admin panel</span> </li>
@@ -25,7 +25,7 @@
                             <div class="tab-pane active" id="tab_0">
                                 <div class="portlet box blue-hoki">
                                     <div class="portlet-title">
-                                        <div class="caption"> <i class="fa fa-gift"></i>Add Category</div>
+                                        <div class="caption"> <i class="fa fa-gift"></i>Add Community Category</div>
                                         <div class="tools">
                                             <a href="javascript:;" class="collapse"> </a>
                                             <a href="#portlet-config" data-toggle="modal" class="config"> </a>
@@ -34,17 +34,41 @@
                                         </div>
                                     </div>
                                     <div class="portlet-body form">
-                                        <form action="<?php echo base_url().'supercontrol/category/add_category'?>" class="form-horizontal form-bordered" method="post" enctype="multipart/form-data" onsubmit="return check();">
+                                        <form action="<?php echo base_url().'supercontrol/community/category_add'?>" class="form-horizontal form-bordered" method="post" enctype="multipart/form-data" onsubmit="return check();">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <b><label class="col-md-3 control-label">Name *</label></b>
+                                                    <b><label class="col-md-3 control-label">Category Title *</label></b>
                                                     <div class="col-md-4">
-                                                        <input type="text" name="name" id="title" class="form-control" placeholder="Name" onkeyup="leftTrim(this)" />
+                                                        <input type="text" name="category_name" id="title" class="form-control" placeholder="Name" onkeyup="leftTrim(this)" required/>
                                                         <label id="errorBox"></label>
                                                     </div>
                                                 </div>
                                                 <div style="color:#f00;text-align:center;">
-                                                    <?php echo validation_errors(); ?> 
+                                                    <?php echo validation_errors(); ?>
+                                                </div>
+                                            </div>
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <b><label class="col-md-3 control-label">Category Sub Title</label></b>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="category_subtitle" id="title" class="form-control" placeholder="Name" onkeyup="leftTrim(this)" />
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div style="color:#f00;text-align:center;">
+                                                    <?php echo validation_errors(); ?>
+                                                </div>
+                                            </div>
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <b><label class="col-md-3 control-label">Category Image</label></b>
+                                                    <div class="col-md-4">
+                                                        <input type="file" name="category_image" class="form-control" id="exampleInputEmail1">
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div style="color:#f00;text-align:center;">
+                                                    <?php echo validation_errors(); ?>
                                                 </div>
                                             </div>
                                             <div class="form-actions">

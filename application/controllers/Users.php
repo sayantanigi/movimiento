@@ -203,6 +203,7 @@ class Users extends CI_Controller {
 		$data['user'] = $this->Commonmodel->fetch_row('users', $where);
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('enrolled-course-detail');
 		$this->load->view('footer');
@@ -223,6 +224,9 @@ class Users extends CI_Controller {
 		$data['enrollment_id'] = $enrollment_id;
 		$getAllVideoSql = "SELECT * FROM `course_materials` WHERE `course_id` = '" . @$data['module']->course_id . "' AND `module` = '" . $id . "' AND `status` = '1' ORDER BY `position_order` ASC";
 		$data['materials'] = $this->Commonmodel->fetch_all_join($getAllVideoSql);
+		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
+		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('enrolled-course-read');
 		$this->load->view('footer');

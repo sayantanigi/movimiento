@@ -25,16 +25,6 @@ class Members extends AI_Controller {
         $this->data['tab'] = 'members';
         $this->data['main'] = admin_view('members/index');
         $members = $this->Master_model->getAll_members($offset, $show_per_page, 'users');
-        // if ($this->input->get('btnsearch')) {
-        //     $q = $this->input->get('q');
-        //     if ($q <> '') {
-        //         $likes = array(
-        //             'first_name' => $q, 'last_name' => $q, 'email_id' => $q
-        //         );
-        //         $members = $this->Service_model->getAllSearched($offset, $show_per_page, $likes);
-        //     }
-        // }
-        // select u.*,c.course_id,c.enrollment_id from users u left join course_enrollment c on c.user_id = u.id group by u.id;
         $this->data['members'] = $members['results'];
         $config['base_url'] = admin_url('members/index');
         $config['num_links'] = 2;
@@ -122,8 +112,7 @@ class Members extends AI_Controller {
         } else {
             $this->data['title'] = 'Add Member';
             $this->form_validation->set_rules('password', 'Password', 'required');
-            $this->form_validation->set_rules('fname', 'First Name', 'trim|required');
-            $this->form_validation->set_rules('lname', 'Last Name', 'trim|required');
+            $this->form_validation->set_rules('full_name', 'First Name', 'trim|required');
             $this->form_validation->set_rules('email', 'Email', 'required|is_unique[users.email]');
         }
         if ($this->form_validation->run()) {
@@ -137,8 +126,7 @@ class Members extends AI_Controller {
             $mydata = array(
                 'currency' => @$currency,
                 'currency_symbol' => @$currency_symbol,
-                'fname' => $this->testInput($this->input->post('fname')),
-                'lname' => $this->testInput($this->input->post('lname')),
+                'full_name' => $this->testInput($this->input->post('full_name')),
                 'email' => $this->testInput($this->input->post('email')),
                 'phone' => $this->testInput($this->input->post('phone')),
                 'token' => '',
@@ -165,7 +153,7 @@ class Members extends AI_Controller {
                 }
             }
             if ($this->input->post('password') && $this->input->post('password') != '') {
-                $mydata['password'] = md5($this->input->post('password'));
+                $mydata['password'] = base64_encode($this->input->post('password'));
             }
             $gn_user_id = $this->Commonmodel->add_details('users', $mydata);
             if ($gn_user_id) {
@@ -181,46 +169,32 @@ class Members extends AI_Controller {
         $this->load->view(admin_view('default'), $this->data);
     }
 
-    public function userUpdate($id = false)
-    {
-
+    public function userUpdate($id = false) {
         $this->data['member'] = $pages = $this->User_model->getRow($id);
-
-        $this->form_validation->set_rules('fname', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('lname', 'Last Name', 'trim|required');
-
+        $this->form_validation->set_rules('full_name', 'Full Name', 'trim|required');
         if ($this->form_validation->run()) {
-
             $old_image = $this->input->post('old_image');
             $email = $this->testInput($this->input->post('email'));
             $password = $this->testInput($this->input->post('password'));
             $status = $this->input->post('status');
-
             $where = array('id' => $id);
-
             $mydata = array(
-                'fname' => $this->testInput($this->input->post('fname')),
-                'lname' => $this->testInput($this->input->post('lname')),
+                'full_name' => $this->testInput($this->input->post('full_name')),
                 'email' => $this->testInput($this->input->post('email')),
                 'phone' => $this->testInput($this->input->post('phone')),
                 'email_verified' => $status,
                 'status' => $status
             );
-
             if ($_FILES['profile_image']['name'] != '') {
-
                 $config['upload_path'] = './uploads/profile_pictures/';
                 $config['allowed_types'] = 'gif|jpg|jpeg|png';
                 $config['max_size'] = '*';
                 $config['overwrite'] = false;
                 $config['remove_spaces'] = TRUE;  //it will remove all spaces
                 $config['encrypt_name'] = false;   //it wil encrypte the original file name
-
                 $this->load->library('upload', $config);
                 $this->upload->initialize($config);
-
                 if (!$this->upload->do_upload('profile_image')) {
-
                     $error = array('error' => $this->upload->display_errors());
                     $msg = '["' . $error['error'] . '", "error", "#e50914"]';
                 } else {
@@ -229,32 +203,26 @@ class Members extends AI_Controller {
                     $mydata['image'] = $fileData['file_name'];
                 }
             }
-
             if ($this->input->post('usr_password') && $this->input->post('usr_password') != '') {
-                $mydata['password'] = md5($this->input->post('usr_password'));
+                $mydata['password'] = base64_encode($this->input->post('usr_password'));
             }
-
             $gn_user_id = $this->Commonmodel->update_row('users', $mydata, $where);
-
             if ($old_image && $_FILES['profile_image']['name'] != '') {
                 if (file_exists('./uploads/profile_pictures/' . $old_image)) {
                     @unlink('./uploads/profile_pictures/' . $old_image);
                 }
             }
-
             if ($gn_user_id) {
                 $msg = '["User updated successfully!", "success", "#36A1EA"]';
             } else {
                 $msg = '["User not updated"!, "error", "#e50914"]';
             }
         }
-
         $this->session->set_flashdata('msg', $msg);
         redirect(admin_url('members'), 'refresh');
     }
 
-    function activate($id = false)
-    {
+    function activate($id = false) {
         $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : admin_url('members');
         if ($id) {
             $c['id'] = $id;
@@ -265,8 +233,7 @@ class Members extends AI_Controller {
         redirect($redirect);
     }
 
-    function deactivate($id = false)
-    {
+    function deactivate($id = false) {
         $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : admin_url('members');
         if ($id) {
             $c['id'] = $id;
@@ -277,8 +244,7 @@ class Members extends AI_Controller {
         redirect($redirect);
     }
 
-    function delete($id)
-    {
+    function delete($id) {
         if ($id > 0) {
             $this->User_model->delete($id);
             $this->session->set_flashdata('success', 'User deleted successfully ');
@@ -286,24 +252,18 @@ class Members extends AI_Controller {
         redirect(admin_url('members'));
     }
 
-    public function deleteUsers($id = false)
-    {
+    public function deleteUsers($id = false) {
         $data = $this->User_model->getRow($id);
-
         if (@$data->image && file_exists('./uploads/profile_pictures/' . @$data->image)) {
             @unlink('./uploads/profile_pictures/' . @$data->image);
         }
-
         $this->User_model->delete($id);
         $msg = '["Deleted successfully.", "success", "#36A1EA"]';
-
         $this->session->set_flashdata('msg', $msg);
-
         redirect(admin_url('members'));
     }
 
-    function exportmember()
-    {
+    function exportmember() {
         $resall = $this->db->get('users')->result();
         if (is_array($resall) && count($resall)) {
             foreach ($resall as $r) {
@@ -313,8 +273,7 @@ class Members extends AI_Controller {
                     $status = "InActive";
                 }
                 $arr[] = array(
-                    'fname' => $r->fname,
-                    'lname' => $r->lname,
+                    'full_name' => $r->full_name,
                     'email' => $r->email,
                     'phone' => $r->phone,
                     'status' => $status,
@@ -322,29 +281,19 @@ class Members extends AI_Controller {
                 );
             }
         }
-
         $this->load->library("Excel");
-
         $object = new PHPExcel();
-
         $object->setActiveSheetIndex(0);
-
-        $table_columns = array("First Name", "Last Name", "Email", "Phone No", "Status", "Created Date");
-
+        $table_columns = array("Full Name", "Email", "Phone No", "Status", "Created Date");
         $column = 0;
-
         foreach ($table_columns as $field) {
             $object->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $field);
             $column++;
         }
-
         $excel_row = 2;
-
         if (is_array($arr) && count($arr) > 0) {
             foreach ($arr as $row) {
-
-                $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $row['fname']);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row['lname']);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $row['full_name']);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row['email']);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row['phone']);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row['status']);
@@ -354,12 +303,8 @@ class Members extends AI_Controller {
         }
         $file = "exportmember.xls";
         $object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel5');
-        //print_r($object_writer);die;
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename=' . $file);
         $object_writer->save('php://output');
     }
 }
-
-/* End of file Members.php */
-/* Location: ./application/controllers/admin/Members.php */

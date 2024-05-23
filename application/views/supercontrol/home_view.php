@@ -17,32 +17,13 @@
 				</ul>
 			</div>
 			<div class="row">
-				<!-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-		  			<div class="dashboard-stat blue">
-						<div class="visual"> <i class="fa fa-sliders"></i> </div>
-						<div class="details">
-			  				<div class="desc">Course Managements</div>
-						</div>
-						<a class="more" href="<?php echo base_url(); ?>supercontrol/course/show_course"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
-					</div>
-				</div> -->
-
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 					<div class="dashboard-stat red">
 						<div class="visual"> <i class="fa fa-picture-o"></i> </div>
 						<div class="details">
 							<div class="desc">Course Management</div>
 						</div>
-						<a class="more" href="<?php echo base_url(); ?>supercontrol/course/show_course"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-					<div class="dashboard-stat red">
-						<div class="visual"> <i class="fa fa-picture-o"></i> </div>
-						<div class="details">
-							<div class="desc">Instructor Management</div>
-						</div>
-						<a class="more" href="<?php echo base_url(); ?>supercontrol/home"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
+						<a class="more" href="<?php echo base_url(); ?>supercontrol/course/show_all_courses"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
 					</div>
 				</div>
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -51,16 +32,7 @@
 						<div class="details">
 							<div class="desc">Booking Management</div>
 						</div>
-						<a class="more" href="<?php echo base_url(); ?>supercontrol/home"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-					<div class="dashboard-stat red">
-						<div class="visual"> <i class="fa fa-envelope"></i> </div>
-						<div class="details">
-							<div class="desc">Student Management</div>
-						</div>
-						<a class="more" href="<?php echo base_url(); ?>supercontrol/home"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
+						<a class="more" href="<?php echo base_url(); ?>supercontrol/course/purchased_course"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
 					</div>
 				</div>
 			</div>

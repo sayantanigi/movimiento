@@ -20,10 +20,9 @@
                     <a href="<?= admin_url('members/add/') ?>" class="pull-right btn btn-primary"><span class="fa fa-plus"></span> Add New</a>
                 </div>
                 <div class="box-body">
-                    <table class="table" id="members">
-                        <thead>
+                    <table class="table">
                         <tr>
-                            <th>Sl No.</th>
+                            <th style="width: 10px">#</th>
                             <th>Image</th>
                             <th>Name</th>
                             <th>Email</th>
@@ -35,7 +34,6 @@
                             <th>Actions</th>
                             <!-- <th>Reply</th> -->
                         </tr>
-                        </thead>
                         <?php
                         if (!empty($members)) {
                             $i = 1;
@@ -55,7 +53,7 @@
                                         <?php if (@$member->phone) {
                                             echo @$member->phone;
                                         } else {
-                                            echo "";
+                                            echo "&#8212;";
                                         } ?>
                                     </td>
                                     <td>

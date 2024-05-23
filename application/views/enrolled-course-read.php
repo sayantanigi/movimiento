@@ -61,8 +61,8 @@ $data = array(
                             <?php } ?>
                         </div>
                         <div class="tutor-content">
-                            <h5 class="title h4 fw-bold">
-                                <?= $userDetails->fname ?>
+                            <h5 class="title h4 fw-bold text-white">
+                                <?= $userDetails->full_name ?>
                             </h5>
                             <ul class="listRbt mt--5">
                                 <li><i class="far fa-book-alt"></i>
@@ -183,7 +183,7 @@ $data = array(
                                                     <h3 class="mb-3 badge bg-secondary text-white">Step <?php echo @$i; ?></h3>
                                                     <div id="quizHTML-<?php echo @$i; ?>">
                                                         <h4 style="color: #000;">Quiz</h4>
-                                                        <form name="quiz-form-<?php echo @$i; ?>" id="form-<?php echo @$i; ?>" autocomplete="off" method="post" action="javascript:void(0);">
+                                                        <form name="quiz-form-<?php echo @$i; ?>" id="form-<?php echo @$i; ?>" autocomplete="off" method="post" action="javascript:void(0);" style="text-align: justify;">
                                                             <?php $quizList = $this->db->get_where('course_quiz', array('material_id' => $course_v->id))->result();
                                                             if (!empty($quizList)) {
                                                             $c = 1;
