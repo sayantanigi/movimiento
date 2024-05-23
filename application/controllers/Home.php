@@ -313,13 +313,11 @@ class Home extends CI_Controller {
     public function contactFormSubmit() {
 		$fname = $this->input->post("name");
         $email = $this->input->post("email");
-        $phone = $this->input->post("phone");
         $sub = $this->input->post("subject");
         $msg = $this->input->post("message");
         $contactFormData = array (
             'fname' => $fname,
             'email' => $email,
-            'phone' => $phone,
             'subject' => $sub,
             'message' => $msg
         );
@@ -342,7 +340,6 @@ class Home extends CI_Controller {
                         <p style='font-size: 18px;'>Please find the below details for contact query.</p>
                         <p style='font-size: 18px; margin: 0px;'>Name: $fname</p>
                         <p style='font-size: 18px; margin: 0px;'>Email: $email</p>
-                        <p style='font-size: 18px; margin: 0px;'>Phone Number: $phone</p>
                         <p style='font-size: 18px; margin: 0px;'>Message: $msg</p>
                         <p style='font-size: 20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
@@ -363,7 +360,7 @@ class Home extends CI_Controller {
                 $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
                 $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
                 $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
+                $mail->AddEmbeddedImage('uploads/logo/logo.PNG', 'Logo');
                 $mail->Subject = $subject;
                 $mail->Body = $message;
                 $mail->IsSMTP();
