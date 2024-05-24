@@ -64,9 +64,9 @@ $data = array(
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="rbt-dashboard-content-wrapper">
+<section class="pb-145">
+<div class="rbt-dashboard-content-wrapper">
+        <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">
                     <div class="thumbnail rbt-avatars size-lg">
@@ -92,6 +92,8 @@ $data = array(
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
             <div class="col-lg-8">
@@ -132,8 +134,8 @@ $data = array(
                                 id="quickFormValidation" method="post"
                                 action="<?= base_url('users/profileUpdate') ?>">
                                 <div class="row g-4">
-                                    <div class="col-lg-12">
-                                        <label>Full Name</label>
+                                    <div class="col-lg-6">
+                                        <label class="Heading">Full Name</label>
                                         <input type="text" class="form-control" name="first_name" placeholder="First Name" value="<?php echo @$user->full_name; ?>">
                                     </div>
                                     <div class="col-lg-6">
@@ -141,19 +143,15 @@ $data = array(
                                         <input type="email" class="form-control" name="email" placeholder="Email" value="<?php echo @$user->email; ?>">
                                     </div>
                                     <div class="col-lg-6">
-                                        <label>Phone Number</label>
+                                        <label class="Heading">Phone Number</label>
                                         <input type="text" id="phone" class="form-control" name="phone" placeholder="Phone Number" required="" value="<?php echo @$user->phone; ?>" maxlength="10">
                                         <input type="hidden" name="phone_full" id="phone_full" value="<?php echo @$user->phone_full; ?>">
                                         <input type="hidden" name="phone_code" id="phone_code" value="<?php echo @$user->phone_code; ?>">
                                         <input type="hidden" name="phone_country" id="phone_country" value="<?php echo @$user->phone_country; ?>">
                                         <input type="hidden" name="phone_st_country" id="phone_st_country" value="<?php echo @$user->phone_st_country; ?>">
                                     </div>
-                                    <div class="col-lg-6">
-                                        <label>Skill/Occupation</label>
-                                        <input type="text" class="form-control" name="skills" placeholder="Skill/Occupation" value="<?php echo @$user->skills; ?>">
-                                    </div>
                                     <div class="col-lg-4">
-                                        <label>Update Profile Image</label>
+                                        <label class="Heading">Update Profile Image</label>
                                         <input type="file" accept="image/*" class="form-control" name="profile_image" id="customFile" onchange="preview_image(event)">
                                         <input type="hidden" name="old_image" value="<?php echo @$user->image; ?>">
                                     </div>
@@ -161,8 +159,12 @@ $data = array(
                                         <img id="output_image" src="<?= $profileImage ?>" />
                                     </div>
                                     <div class="col-lg-12">
-                                        <label>Bio</label>
-                                        <textarea class="form-control" name="user_bio"><?php echo @$user->user_bio; ?></textarea>
+                                        <label class="Heading">Skill/Occupation</label>
+                                        <input type="text" class="form-control" name="skills" placeholder="Skill/Occupation" value="<?php echo @$user->skills; ?>">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="Heading">Bio</label>
+                                        <textarea class="form-control" style="min-height: 150px;" name="user_bio"><?php echo @$user->user_bio; ?></textarea>
                                     </div>
                                     <div class="col-lg-12">
                                         <button class="btn e-btn">Update Profile</button>
@@ -181,16 +183,16 @@ $data = array(
                             <form>
                                 <div class="row g-4">
 
-                                    <div class="col-lg-8">
-                                        <label>Current Password</label>
+                                    <div class="col-lg-6">
+                                        <label class="Heading">Current Password</label>
                                         <input type="password" class="form-control" placeholder="Current Password">
                                     </div>
-                                    <div class="col-lg-8">
-                                        <label>New Password</label>
+                                    <div class="col-lg-6">
+                                        <label class="Heading">New Password</label>
                                         <input type="password" class="form-control" placeholder="New Password">
                                     </div>
-                                    <div class="col-lg-8">
-                                        <label>Re-Type New Password</label>
+                                    <div class="col-lg-6">
+                                        <label class="Heading">Re-Type New Password</label>
                                         <input type="password" class="form-control"
                                             placeholder="Re-Type New Password">
                                     </div>

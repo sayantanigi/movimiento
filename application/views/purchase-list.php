@@ -60,9 +60,9 @@ if (!empty($active_data)) {
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="rbt-dashboard-content-wrapper">
+<section class="pb-145">
+<div class="rbt-dashboard-content-wrapper">
+        <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">
                     <div class="thumbnail rbt-avatars size-lg">
@@ -88,6 +88,8 @@ if (!empty($active_data)) {
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
             <div class="col-lg-8">
@@ -96,7 +98,7 @@ if (!empty($active_data)) {
                         <h2 class="h5 fw-bold text-uppercase">Order History</h2>
                         <hr>
                         <div class="table-responsive">
-                            <table class="rbt-table table table-borderless">
+                            <table class="rbt-table table table-borderless OrderCustomTable">
                                 <thead>
                                     <tr>
                                         <th>Order ID</th>
@@ -113,7 +115,7 @@ if (!empty($active_data)) {
                                         foreach ($orders as $key => $value) {
                                     ?>
                                     <tr>
-                                        <th>#<?php echo @$value->order_id; ?></th>
+                                        <td>#<?php echo @$value->order_id; ?></td>
                                         <td><?php echo @$value->title; ?></td>
                                         <td><?php echo date("jS F Y, H:i", strtotime(@$value->enrollment_date)); ?></td>
                                         <td>
@@ -124,7 +126,7 @@ if (!empty($active_data)) {
                                             }
                                             ?>
                                         </td>
-                                        <td><span class="badge bg-success rounded-pill fw-normal"><?php echo ucWords(strtolower(@$value->payment_status)); ?></span>
+                                        <td class="text-center"><span class="badge bg-success rounded-pill fw-normal"><?php echo ucWords(strtolower(@$value->payment_status)); ?></span>
                                         </td>
                                     </tr>
                                     <?php } } else { ?>

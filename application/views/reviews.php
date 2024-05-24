@@ -92,9 +92,9 @@ function timeAgo($time_ago)  {
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="rbt-dashboard-content-wrapper">
+<section class="pb-145">
+<div class="rbt-dashboard-content-wrapper">
+        <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">
                     <div class="thumbnail rbt-avatars size-lg">
@@ -120,6 +120,8 @@ function timeAgo($time_ago)  {
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
             <div class="col-lg-8">
@@ -128,7 +130,7 @@ function timeAgo($time_ago)  {
                         <h2 class="h5 fw-bold text-uppercase">Reviews</h2>
                         <hr>
                         <div class="table-responsive">
-                            <table class="rbt-table table table-borderless">
+                            <table class="rbt-table table table-borderless CustomTable">
                                 <thead>
                                     <tr>
                                         <th>Course</th>
@@ -148,7 +150,7 @@ function timeAgo($time_ago)  {
                                         $rating = $value->rating;
                                     ?>
                                     <tr style="color: #000">
-                                        <td style="width: 360px;">
+                                        <td>
                                             <div class="b3">
                                                 <a href="javascript:void(0)">
                                                     <?php
@@ -188,14 +190,14 @@ function timeAgo($time_ago)  {
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="text-end">
+                                            <div class="text-center">
                                                 <!-- <a class="btn btn-outline-primary btn-sm" href="#" title="Edit"><i class="far fa-edit"></i></a> -->
                                                 <a class="btn btn-outline-danger btn-sm" href="javascript:void(0)" title="Delete" onclick="deleteReview(<?= $value->review_id?>)"><i class="far fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>
                                     <?php } } else  { ?>
-                                        <td class='text-danger' style='text-align: center; color: #fff !important;' colspan='2'>No review found!</td>
+                                        <td class='text-danger' style='text-align: center; color: #000 !important;' colspan='3'>No review found!</td>
                                     <?php } ?>
                                 </tbody>
                             </table>

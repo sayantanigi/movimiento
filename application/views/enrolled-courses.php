@@ -64,9 +64,9 @@ if (!empty($active_data)) {
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="rbt-dashboard-content-wrapper">
+<section class="pb-145">
+<div class="rbt-dashboard-content-wrapper">
+        <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">
                     <div class="thumbnail rbt-avatars size-lg">
@@ -92,6 +92,8 @@ if (!empty($active_data)) {
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
             <div class="col-lg-8">
@@ -139,7 +141,7 @@ if (!empty($active_data)) {
                                     $rating = @$ratingRow->averageRating;
                             ?>
                             <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6">
-                                <div class="course__item white-bg mb-30 fix">
+                                <div class="course__item white-bg fix">
                                     <div class="course__thumb w-img p-relative fix">
                                         <a href="<?=base_url('users/courseModule/'.@$value->enrollment_id);?>">
                                             <img src="<?php echo @$image; ?>" alt="" style="height: 154px;">

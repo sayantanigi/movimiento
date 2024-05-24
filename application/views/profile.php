@@ -64,9 +64,9 @@ $data = array(
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="rbt-dashboard-content-wrapper">
+<section class="pb-145">
+<div class="rbt-dashboard-content-wrapper">
+        <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">
                     <div class="thumbnail rbt-avatars size-lg">
@@ -92,6 +92,8 @@ $data = array(
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
             <div class="col-lg-8">
@@ -100,60 +102,40 @@ $data = array(
                         <h2 class="h5 fw-bold text-uppercase">My Profile</h2>
                         <hr>
                         <div class="rbt-profile-row row row--15 mt-3">
-                            <div class="col-lg-4 col-md-4">
-                                <div class="fw-bold">Registration Date:</div>
-                            </div>
-                            <div class="col-lg-8 col-md-8">
-                                <div class="rbt-profile-content b2">
+                            <div class="col-lg-6">
+                                <label class="Heading">Registration Date</label>
+                                <div class="rbt-profile-content b2 form-control">
                                     <?php echo date("F jS, Y H:i", strtotime(@$user->created_at)); ?>
                                 </div>
                             </div>
-                        </div>
-                        <div class="rbt-profile-row row row--15 mt-3">
-                            <div class="col-lg-4 col-md-4">
-                                <div class="fw-bold">Full Name:</div>
-                            </div>
-                            <div class="col-lg-8 col-md-8">
-                                <div class="rbt-profile-content b2">
+                            <div class="col-lg-6">
+                                <label class="Heading">Full Name</label>
+                                <div class="rbt-profile-content b2 form-control">
                                     <?php echo @$user->full_name; ?>
                                 </div>
                             </div>
-                        </div>
-                        <div class="rbt-profile-row row row--15 mt-3">
-                            <div class="col-lg-4 col-md-4">
-                                <div class="fw-bold">Email:</div>
-                            </div>
-                            <div class="col-lg-8 col-md-8">
-                                <div class="rbt-profile-content b2">
+                            <div class="col-lg-6 DataHead">
+                                <label class="Heading">Email</label>
+                                <div class="rbt-profile-content b2 form-control">
                                     <?php echo @$user->email; ?>
                                 </div>
                             </div>
-                        </div>
-                        <div class="rbt-profile-row row row--15 mt-3">
-                            <div class="col-lg-4 col-md-4">
-                                <div class="fw-bold">Phone Number:</div>
-                            </div>
-                            <div class="col-lg-8 col-md-8">
-                                <div class="rbt-profile-content b2">
-                                    <?php echo @$user->phone; ?>
+                            <div class="col-lg-6 DataHead">
+                                <label class="Heading">Phone Number</label>
+                                <div class="rbt-profile-content b2 form-control">
+                                <?php echo @$user->phone; ?>
                                 </div>
                             </div>
-                        </div>
-                        <div class="rbt-profile-row row row--15 mt-3">
-                            <div class="col-lg-4 col-md-4">
-                                <div class="fw-bold">Skill/Occupation:</div>
+                            <div class="col-lg-12 DataHead">
+                                <label class="Heading">Skill/Occupation</label>
+                                <div class="rbt-profile-content b2 form-control">
+                                <?php echo @$user->skills; ?>
+                                </div>
                             </div>
-                            <div class="col-lg-8 col-md-8">
-                                <div class="rbt-profile-content b2"><?php echo @$user->skills; ?></div>
-                            </div>
-                        </div>
-                        <div class="rbt-profile-row row row--15 mt-3">
-                            <div class="col-lg-4 col-md-4">
-                                <div class="fw-bold">Biography:</div>
-                            </div>
-                            <div class="col-lg-8 col-md-8">
-                                <div class="rbt-profile-content b2">
-                                    <?php echo @$user->user_bio; ?>
+                            <div class="col-lg-12 DataHead">
+                                <label class="Heading">Biography</label>
+                                <div class="rbt-profile-content b2 form-control">
+                                <?php echo @$user->user_bio; ?>
                                 </div>
                             </div>
                         </div>

@@ -47,45 +47,63 @@ $data = array(
     'courseArray' => count($courseArray)
 );
 ?>
-<main>
-    <section class="pt-100 pb-145">
+<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="<?= base_url()?>assets/img/page-title/page-title-2.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="page__title-wrapper mt-100">
+                <h3 class="page__title">Student Dashboard</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="<?= base_url()?>home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Student Dashboard</li>
+                    </ol>
+                </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <section class="pb-145">
+    <div class="rbt-dashboard-content-wrapper">
         <div class="container">
-            <div class="rbt-dashboard-content-wrapper">
-                <div class="rbt-tutor-information">
-                    <div class="rbt-tutor-information-left d-flex align-items-center">
-                        <div class="thumbnail rbt-avatars size-lg">
-                            <?php if (!empty($userDetails->image)) { ?>
-                                <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
-                            <?php } else { ?>
-                                <img src="images/no-user.png" alt="">
-                            <?php } ?>
-                        </div>
-                        <div class="tutor-content">
-                            <h5 class="title h4 fw-bold text-white">
-                                <?= $userDetails->full_name ?>
-                            </h5>
-                            <ul class="listRbt mt--5">
-                                <li><i class="far fa-book-alt"></i>
-                                    <?php echo @$ctn_enrolment; ?> Courses Enroled
-                                </li>
-                                <li><i class="far fa-file-certificate"></i>
-                                    <?php echo count($courseArray); ?> Certificate
-                                </li>
-                            </ul>
-                        </div>
+            <div class="rbt-tutor-information">
+                <div class="rbt-tutor-information-left d-flex align-items-center">
+                    <div class="thumbnail rbt-avatars size-lg">
+                        <?php if (!empty($userDetails->image)) { ?>
+                            <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
+                        <?php } else { ?>
+                            <img src="images/no-user.png" alt="">
+                        <?php } ?>
+                    </div>
+                    <div class="tutor-content">
+                        <h5 class="title h4 fw-bold text-white">
+                            <?= ucwords($userDetails->full_name) ?>
+                        </h5>
+                        <ul class="listRbt mt--5">
+                            <li><i class="far fa-book-alt"></i>
+                                <?php echo @$ctn_enrolment; ?> Courses Enroled
+                            </li>
+                            <li><i class="far fa-file-certificate"></i>
+                                <?php echo count($courseArray); ?> Certificate
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+        <div class="container">
             <div class="row">
                 <?php $this->load->view('leftbar_dash'); ?>
                 <div class="col-lg-8">
                     <div class="card bg-dark shadow">
                         <div class="card-body p-4">
-                            <h2 class="h5 fw-bold text-uppercase"><?php echo @$module->name; ?></h2>
-                            <hr>
+                            <h2 class="h5 fw-bold text-uppercase text-white"><?php echo @$module->name; ?></h2>
+                            <hr class="text-white">
                             <div class="row g-3">
                                 <div class="col-lg-12 col-md-12 col-sm-6 col-12">
-                                    <div class="rbt-counterup" style="padding: 10px 20px;">
+                                    <div class="rbt-counterup" style="padding: 0;">
                                         <div class="card">
                                             <div class="card-body">
                                             <?php
@@ -279,7 +297,6 @@ $data = array(
             </div>
         </div>
     </section>
-</main>
 <style>
 .cstm_crs_cls *{color: #fff; text-align: justify; font-size: 13px; line-height: 16px;}
 .ansbox .badge{background: #7384e9 !important;}

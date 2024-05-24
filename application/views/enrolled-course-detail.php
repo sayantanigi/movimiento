@@ -60,9 +60,9 @@ if (!empty($active_data)) {
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="rbt-dashboard-content-wrapper">
+<section class="pb-145">
+<div class="rbt-dashboard-content-wrapper">
+        <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">
                     <div class="thumbnail rbt-avatars size-lg">
@@ -88,6 +88,8 @@ if (!empty($active_data)) {
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
             <div class="col-lg-8">
@@ -97,10 +99,10 @@ if (!empty($active_data)) {
                         <hr>
                         <div class="row g-3">
                             <div class="col-lg-12 col-md-12 col-sm-6 col-12">
-                                <div class="rbt-counterup" style="padding: 10px 20px;">
+                                <div class="rbt-counterup" style="padding: 0;">
                                     <div class="inner">
                                         <h4 style="text-align: justify; font-size: 18px;"><?=@$courses->heading_1?></h4>
-                                        <div class="cstm_crs_cls" style="margin-top: 28px;"><?=@$courses->description?></div>
+                                        <div class="cstm_crs_cls" style="margin-top: 15px;"><?=@$courses->description?></div>
                                     </div>
                                     <ul class="course-doclist" style="margin-top: 30px !important;">
                                         <?php

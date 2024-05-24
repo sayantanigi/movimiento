@@ -290,7 +290,7 @@ class Home extends CI_Controller {
     }
     public function community() {
         $data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
-        $data['community'] = $this->db->query("SELECT * FROM community WHERE status = '1' AND is_delete = '1'")->result_array();
+        $data['community'] = $this->db->query("SELECT * FROM community WHERE status = '1' AND is_delete = '1' ORDER BY id DESC")->result_array();
 		$this->load->view('header');
 		$this->load->view('community', $data);
 		$this->load->view('footer');
@@ -436,8 +436,8 @@ class Home extends CI_Controller {
 		$course_id = $this->input->post('course_id');
 		$rating = $this->input->post('rating');
         $message = $this->input->post('message');
-		$isExitMaterialSql = "SELECT * FROM `course_reviews` WHERE `user_id` = '" . $user_id . "' AND `course_id` = '" . $course_id . "'";
-		$isExist = $this->db->query($isExitMaterialSql)->num_rows();
+		$isExistMaterialSql = "SELECT * FROM `course_reviews` WHERE `user_id` = '" . $user_id . "' AND `course_id` = '" . $course_id . "'";
+		$isExist = $this->db->query($isExistMaterialSql)->num_rows();
         if($isExist==0) {
             $reviewData = array('course_id' => @$course_id, 'user_id' => @$user_id, 'rating' => @$rating, 'review_message' => @$message, 'review_status' => 1);
             $this->Commonmodel->add_details('course_reviews', $reviewData);
@@ -454,6 +454,87 @@ class Home extends CI_Controller {
         $data['reviewList'] = $this->db->query($getAllReviewSql)->result();
         $this->load->view('ajax-reviews', $data);
 	}
+    public function postComment() {
+        if(!empty($_POST['comment_id'])) {
+            $commentData = array(
+                'user_id' => @$this->session->userdata('user_id'),
+                'community_id' => $_POST['community_id'],
+                'comment_id' => $_POST['comment_id'],
+                'full_name' => $_POST['full_name'],
+                'email' => $_POST['email'],
+                'website' => $_POST['website'],
+                'comment' => $_POST['comment'],
+                'created_at' => date('Y-m-d h:i:s'),
+            );
+            $this->Commonmodel->add_details('community_comment_rply', $commentData);
+        } else {
+            $commentData = array(
+                'user_id' => @$this->session->userdata('user_id'),
+                'community_id' => $_POST['community_id'],
+                'full_name' => $_POST['full_name'],
+                'email' => $_POST['email'],
+                'website' => $_POST['website'],
+                'comment' => $_POST['comment'],
+                'created_at' => date('Y-m-d h:i:s'),
+            );
+            $this->Commonmodel->add_details('community_comment', $commentData);
+        }
+
+        $insert_id = $this->db->insert_id();
+        if($insert_id > 0) {
+            echo "Post comment successfully.";
+        } else {
+            echo "Error while posting comment.";
+        }
+    }
+    public function postCommentRply() {
+        $commentData = array(
+            'user_id' => @$this->session->userdata('user_id'),
+            'community_id' => $_POST['community_id'],
+            'comment_id' => $_POST['comment_id'],
+            'full_name' => $_POST['full_name'],
+            'email' => $_POST['email'],
+            'website' => $_POST['website'],
+            'comment' => $_POST['comment'],
+            'created_at' => date('Y-m-d h:i:s'),
+        );
+        $this->Commonmodel->add_details('community_comment_rply', $commentData);
+        $insert_id = $this->db->insert_id();
+        if($insert_id > 0) {
+            echo "Post comment successfully.";
+        } else {
+            echo "Error while posting comment.";
+        }
+    }
+    public function likecommunity() {
+        $likeData = array(
+            'user_id' => @$this->session->userdata('user_id'),
+            'community_id' => $_POST['community_id'],
+            'is_liked' => 1
+        );
+        $isExistLikedSql = "SELECT * FROM community_like WHERE user_id = '".$this->session->userdata('user_id')."' AND community_id = '".$_POST['community_id']."'";
+		$isExist = $this->db->query($isExistLikedSql)->num_rows();
+        if($isExist == 0) {
+            $this->Commonmodel->add_details('community_like', $likeData);
+            $insert_id = $this->db->insert_id();
+            if($insert_id > 0) {
+                echo "Liked";
+            } else {
+                echo "Error";
+            }
+        } else {
+            $checkisLiked = $this->db->query("SELECT * FROM community_like WHERE user_id = '".$this->session->userdata('user_id')."' AND community_id = '".$_POST['community_id']."'")->row();
+            if($checkisLiked->isliked == '1') {
+                $this->db->query("UPDATE community_like SET is_liked = '0' WHERE user_id = '".$this->session->userdata('user_id')."' AND community_id = '".$_POST['community_id']."'");
+            } else {
+                $this->db->query("UPDATE community_like SET is_liked = '1' WHERE user_id = '".$this->session->userdata('user_id')."' AND community_id = '".$_POST['community_id']."'");
+            }
+            echo "liked";
+        }
+    }
+    public function dislikecommunity() {
+        $this->db->query("UPDATE community_like SET is_liked = '0' WHERE user_id = '".$this->session->userdata('user_id')."' AND community_id = '".$_POST['community_id']."'");
+    }
 
 
 

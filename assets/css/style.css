@@ -9961,13 +9961,83 @@ p.checkout-coupon input[type=text]:focus {
     width: 100%;
 }
 
+.rbt-dashboard-content-wrapper {
+    background: linear-gradient(to right, #3dd7c4 0%, #07a793 44%, #3dd7c4 100%);
+}
+
 .rbt-tutor-information {
     position: relative;
     margin-bottom: 30px;
-    background: linear-gradient(to right, #3dd7c4 0%, #07a793 44%, #3dd7c4 100%);
     padding: 30px;
-    border-radius: 8px;
 }
+
+.DataHead {
+    margin-top: 24px;
+}
+
+.CustomTable {
+    table-layout: auto;
+    margin-bottom: 0;
+}
+.CustomTable thead tr th:nth-child(1) {
+    width: 20%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+}
+.CustomTable thead tr th:nth-child(2) {
+    width: 70%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+}
+.CustomTable thead tr th:nth-child(3) {
+    width: 10%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+}
+.CustomTable tbody tr td {
+    border: 1px solid #2ac6b3;
+}
+
+
+.OrderCustomTable {
+    table-layout: auto;
+    margin-bottom: 0;
+}
+.OrderCustomTable thead tr th:nth-child(1) {
+    width: 15%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+}
+.OrderCustomTable thead tr th:nth-child(2) {
+    width: 40%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+}
+.OrderCustomTable thead tr th:nth-child(3) {
+    width: 15%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+}
+.OrderCustomTable thead tr th:nth-child(4) {
+    width: 15%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+}
+.OrderCustomTable thead tr th:nth-child(5) {
+    width: 15%;
+    background: #2ac6b3;
+    border: 1px solid #2ac6b3;
+    text-align: center;
+}
+.OrderCustomTable tbody tr td {
+    border: 1px solid #2ac6b3;
+    color: #000;
+}
+
+.Heading {
+    font-weight: 600;
+}
+
 
 .tutor-bg-photo {
     border-radius: 10px;

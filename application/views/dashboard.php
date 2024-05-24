@@ -47,26 +47,27 @@ $data = array(
     'courseArray' => count($courseArray)
 );
 ?>
-<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="assets/img/page-title/page-title-2.jpg">
+<section class="page__title-area page__title-height page__title-overlay d-flex align-items-center"
+    data-background="assets/img/page-title/page-title-2.jpg">
     <div class="container">
         <div class="row">
             <div class="col-xxl-12">
                 <div class="page__title-wrapper mt-100">
-                <h3 class="page__title">Student Dashboard</h3>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?= base_url()?>home">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Student Dashboard</li>
-                    </ol>
-                </nav>
+                    <h3 class="page__title">Student Dashboard</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="<?= base_url() ?>home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Student Dashboard</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="rbt-dashboard-content-wrapper">
+<section class="pb-145">
+    <div class="rbt-dashboard-content-wrapper">
+        <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">
                     <div class="thumbnail rbt-avatars size-lg">
@@ -92,9 +93,12 @@ $data = array(
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container">
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
-            <div class="col-lg-8">
+            <div class="col-lg-9">
                 <div class="card">
                     <div class="card-body p-4">
                         <h2 class="h5 fw-bold text-uppercase">Dashboard</h2>

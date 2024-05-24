@@ -1,5 +1,5 @@
 <?php $userDetails = $this->Commonmodel->fetch_row('users', array('id' => $this->session->userdata('user_id'))); ?>
-<div class="col-lg-4 mb-4">
+<div class="col-lg-3 mb-4">
     <div class="rbt-default-sidebar">
         <div class="wrappsidebar">
             <h2 class="h6 mb-4 text-white">Welcome, <?= $userDetails->full_name ?></h2>
