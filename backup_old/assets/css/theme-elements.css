@@ -1,0 +1,75 @@
+/******************* custom select styles *******************/
+div.tg-select { display: inline-block; vertical-align: middle; position: relative; text-align: left; z-index: 100;width: 100%;
+-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;}
+div.tg-select:focus{ outline: none; background: #fff;}
+.tg-select select{ display: none;}
+.tg-select span{ display: block; position: relative; cursor: pointer; padding: 0 18px; line-height: 48px;
+height: 50px white-space: nowrap; overflow: hidden;text-overflow: ellipsis;}
+/* Placeholder and selected option */
+.tg-select > span{ padding-right: 3em;}
+.tg-select > span::after,
+.tg-select .tg-selected span::after { speak: none; position: absolute; top: 50%; -webkit-transform: translateY(-50%); 
+transform: translateY(-50%); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+.tg-select > span::after{ content: '\25BE'; right: 20px;}
+.tg-select .tg-selected span::after{ content: '\2713'; margin-left: 1em;}
+.tg-select.cs-active > span::after{ -webkit-transform: translateY(-50%) rotate(180deg); transform: translateY(-50%) rotate(180deg);}
+div.cs-active{ z-index: 200;}
+/* Options */
+.tg-select .cs-options{ position: absolute; overflow: hidden; width: 100%; background: #fff; visibility: hidden;}
+.tg-select.cs-active .cs-options{ visibility: visible;}
+.tg-select ul{ list-style: none; margin: 0; padding: 0; width: 100%;}
+.tg-select ul span{ padding: 1em;}
+.tg-select ul li.cs-focus span{ background-color: #ddd;}
+/* Optgroup and optgroup label */
+.tg-select li.cs-optgroup ul{ padding-left: 1em;}
+.tg-select li.cs-optgroup > span {cursor: default;}
+.tg-select-menu > span { border: 1px solid #afafaf; color: #a7a7a7;}
+.tg-select-menu > span::after,
+.tg-select-menu .tg-selected span::after{ content: "\f107"; font-family: fontawesome;}
+.tg-select-menu ul span::after{ content: ''; opacity: 0;}
+.tg-select-menu .tg-selected span::after { content: "\f00c"; font-family: fontawesome; font-size: 1.5em; opacity: 1;
+-webkit-transition: opacity 0.3s;
+transition: opacity 0.3s;}
+.tg-select-menu.cs-active > span{ background: #fff; border-color: transparent;}
+.tg-select-menu .cs-options{ opacity: 0;
+-webkit-transition: opacity 0.3s, visibility 0s 0.3s;
+transition: opacity 0.3s, visibility 0s 0.3s;}
+.tg-select-menu.cs-active .cs-options{ opacity: 1;
+-webkit-transition: opacity 0.3s;
+transition: opacity 0.3s;}
+.tg-select-menu ul span { padding: 0 30px;
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;}
+.tg-select-menu .cs-options li span:hover,
+.tg-select-menu li.cs-focus span{ color: #fff;}
+/******************* custom select styles *******************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -20,9 +20,11 @@
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th>Title</th>
+                                <th style="width: 180px">Course Title</th>
+                                <th style="width: 180px">Community Title</th>
                                 <th>Description</th>
-                                <th>Uploaded By</th>
+                                <th>Posted By</th>
+                                <th>Event</th>
                                 <th>Status</th>
                                 <th style="width: 40px">Action</th>
                             </tr>
@@ -41,6 +43,12 @@
                         ?>
                         <tr>
                             <td><?= $i ?></td>
+                            <td>
+                                <?php
+                                $course_details = $this->db->query("SELECT * FROM courses WHERE id = '".$community_v->course_id."'")->row();
+                                echo $course_details->title;
+                                ?>
+                            </td>
                             <td><?= $community_v->title ?></td>
                             <td><?= $string?></td>
                             <td>
@@ -52,6 +60,10 @@
                                     echo "Admin";
                                 }
                                 ?>
+                            </td>
+                            <td>
+                                <a href="<?= admin_url('community/add_event/'.$community_v->id) ?>" class="btn btn-xs btn-info"><span class="fa fa-plus"></span> Add </a>
+                                <a href="<?= admin_url('community/event_list/'.$community_v->id) ?>" class="btn btn-xs btn-info"><span class="fa fa-eye"></span> View </a>
                             </td>
                             <td>
                                 <?php if ($community_v->status == 1) { ?>

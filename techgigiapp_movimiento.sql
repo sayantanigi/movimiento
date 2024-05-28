@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 23, 2024 at 07:48 PM
+-- Generation Time: May 28, 2024 at 12:08 PM
 -- Server version: 5.7.44
 -- PHP Version: 8.1.28
 
@@ -48511,7 +48511,8 @@ CREATE TABLE `community` (
 --
 
 INSERT INTO `community` (`id`, `title`, `slug`, `uploaded_by`, `cat_id`, `description`, `status`, `created_at`, `is_delete`) VALUES
-(1, 'How do you become a member of Makutano?', 'how-do-you-become-a-member-of-makutano', '', '1', '<p>APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE&nbsp;APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE.</p>\r\n\r\n<p>APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE&nbsp;APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE</p>\r\n', '1', '2024-05-23 11:50:52', '1');
+(1, 'How do you become a member ?', 'how-do-you-become-a-member', '', '1', '<p>APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE&nbsp;APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE.</p>\r\n\r\n<p>APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE&nbsp;APPLICATION DE LA LOI DE LA SOUS-TRAITANCE EN R&Eacute;PUBLIQUE D&Eacute;MOCRATIQUE DU CONGO : ANALYSE DE LA RATIONALIT&Eacute; &Eacute;CONOMICO-JURIDIQUE</p>\r\n', '1', '2024-05-23 11:50:52', '1'),
+(2, 'Flipiando America ', 'flipiando-america', '2', '', '<p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.&nbsp;In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available. 1</p>\r\n', '1', '2024-05-23 15:19:44', '1');
 
 -- --------------------------------------------------------
 
@@ -48533,7 +48534,83 @@ CREATE TABLE `community_cat` (
 --
 
 INSERT INTO `community_cat` (`id`, `category_name`, `category_subtitle`, `category_image`, `status`, `is_delete`) VALUES
-(1, 'Community Category', 'Community Category', NULL, '1', '1');
+(1, 'Community Category', 'Community Category', NULL, '1', '1'),
+(2, 'Special Courses', 'The latest courses', NULL, '1', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `community_comment`
+--
+
+CREATE TABLE `community_comment` (
+  `id` int(11) NOT NULL,
+  `community_id` varchar(45) DEFAULT NULL,
+  `user_id` varchar(45) DEFAULT NULL,
+  `full_name` text,
+  `email` text,
+  `website` text,
+  `comment` text,
+  `created_at` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `community_comment`
+--
+
+INSERT INTO `community_comment` (`id`, `community_id`, `user_id`, `full_name`, `email`, `website`, `comment`, `created_at`) VALUES
+(1, '2', '1', 'Demo Student', 'student@gmail.com', 'Demo Comment', 'Here\'s how you can achieve this using pure CSS or jQuery along with an additional CSS class.', '2024-05-24 09:06:10'),
+(2, '2', '2', 'Demo Instructor', 'instructor@gmail.com', 'www.website.com', 'Here\'s how you can achieve this using pure CSS or jQuery along with an additional CSS class.', '2024-05-24 09:07:28'),
+(3, '1', '1', 'Demo Student', 'student@gmail.com', 'www.goigi.com', 'This is the a test post query.', '2024-05-27 05:45:16');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `community_comment_rply`
+--
+
+CREATE TABLE `community_comment_rply` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(45) DEFAULT NULL,
+  `community_id` varchar(45) DEFAULT NULL,
+  `comment_id` varchar(45) DEFAULT NULL,
+  `full_name` text,
+  `email` text,
+  `website` text,
+  `comment` text,
+  `created_at` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `community_comment_rply`
+--
+
+INSERT INTO `community_comment_rply` (`id`, `user_id`, `community_id`, `comment_id`, `full_name`, `email`, `website`, `comment`, `created_at`) VALUES
+(1, '2', '2', '1', 'Demo Instructor', 'instructor@gmail.com', 'Comment From Demo Instructor', 'Here\'s how you can achieve this using pure CSS or jQuery along with an additional CSS class.', '2024-05-24 09:07:14'),
+(2, '2', '2', '1', 'Demo Instructor', 'instructor@gmail.com', 'www.website.com', 'test', '2024-05-24 09:07:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `community_like`
+--
+
+CREATE TABLE `community_like` (
+  `id` int(11) NOT NULL,
+  `community_id` varchar(45) DEFAULT NULL,
+  `user_id` varchar(45) DEFAULT NULL,
+  `is_liked` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `community_like`
+--
+
+INSERT INTO `community_like` (`id`, `community_id`, `user_id`, `is_liked`) VALUES
+(1, '2', '1', '1'),
+(2, '2', '2', '1'),
+(3, NULL, NULL, '1'),
+(4, '1', '1', '1');
 
 -- --------------------------------------------------------
 
@@ -48563,19 +48640,26 @@ CREATE TABLE `conference` (
 
 CREATE TABLE `contacts` (
   `id` int(11) NOT NULL,
-  `fname` varchar(255) NOT NULL,
-  `lname` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` int(15) NOT NULL,
-  `subject` varchar(255) NOT NULL,
-  `message` text NOT NULL,
-  `crested_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `rply_text` longtext NOT NULL,
-  `rply_status` int(11) NOT NULL,
+  `fname` varchar(255) DEFAULT NULL,
+  `lname` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` int(15) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `message` text,
+  `crested_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `rply_text` longtext,
+  `rply_status` int(11) DEFAULT NULL,
   `rply_date` datetime DEFAULT NULL,
-  `address` text NOT NULL,
-  `business_name` text NOT NULL
+  `address` text,
+  `business_name` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `fname`, `lname`, `email`, `phone`, `subject`, `message`, `crested_at`, `rply_text`, `rply_status`, `rply_date`, `address`, `business_name`) VALUES
+(1, 'Module 1 update', '', 'sayantan@goigi.in', 0, 'subject', 'test', '2024-05-23 15:43:01', 'Hello Sayantan,\r\n\r\nThank you for contacting with us. Our team will contact you soon.', 1, '2024-05-25 04:26:50', '', '');
 
 -- --------------------------------------------------------
 
@@ -48901,8 +48985,9 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `user_id`, `cat_id`, `mode_id`, `level_id`, `title`, `slug`, `heading_1`, `heading_2`, `meta_descr`, `description`, `program_overview`, `objectives`, `curriculam`, `duration`, `career_paths`, `course_fees`, `price`, `price_key`, `course_type`, `course_certificate`, `requirement`, `rating`, `attended`, `image`, `video`, `status`, `created_at`, `assigned_instrustor`) VALUES
-(1, NULL, 1, NULL, NULL, ' Web Development Course', 'web-development-course', 'The course web application development covers all the concepts from basics to intermediate and will upgrade the skills of a learner.', 'The web design and development course contain both theory & practical.\r\nThe course is 40 hours of extensive learning Lifetime access to videos Complete all modules and get certified.', '', '<p>The goal of the Front End Web Application Development course is to help learners and to equip them with unique<br />\r\nskills that they need in order to build and develop a variety of websites and games. Learners will be able<br />\r\nto construct responsive websites using CSS, CSS Grid, and Bootstrap, and Develop Interactive websites and<br />\r\nUI (User Interface) games and using JavaScript and HTML. Learners will also be taught to connect a<br />\r\nweb application to various APIs using JavaScript.</p>\r\n', '<p>In this course, you&rsquo;ll learn the fundamentals of Web Developments course and how to understand document-tation, along with creating websites. You&rsquo;ll learn to create Dynamic UI using HTML, CSS and will use Javascript to control the flow of Websites. You&rsquo;ll harness the power of the Bootstrap framework.You&rsquo;ll design and create your own custom user interactive websites and games. This would-be supported by building real-world projects and utilizing these technologies and best project development practices.</p>\r\n', '<ul>\r\n	<li>General Requirements<br />\r\n	You must be enthusiastic and motivated to learn. Participation in this course requires consistently<br />\r\n	meeting project deadlines and active participation.</li>\r\n	<li>Program-Specific Requirements<br />\r\n	You have access to a computer with an internet connection, on which you&rsquo;ll install a professional<br />\r\n	code/text editor (VSCode).</li>\r\n</ul>\r\n', '<p>In this course, you&rsquo;ll learn the fundamentals of Web Developments course and how to understand document-tation, along with creating websites. You&rsquo;ll learn to create Dynamic UI using HTML, CSS and will use Javascript to control the flow of Websites. You&rsquo;ll harness the power of the Bootstrap framework.You&rsquo;ll design and create your own custom user interactive websites and games. This would-be supported by building real-world projects and utilizing these technologies and best project development practices.</p>\r\n', '2 Months', '<p>In this course, you&rsquo;ll learn the fundamentals of Web Developments course and how to understand document-tation, along with creating websites. You&rsquo;ll learn to create Dynamic UI using HTML, CSS and will use Javascript to control the flow of Websites. You&rsquo;ll harness the power of the Bootstrap framework.You&rsquo;ll design and create your own custom user interactive websites and games. This would-be supported by building real-world projects and utilizing these technologies and best project development practices.</p>\r\n', 'free', '', '', NULL, 'BOTH', 'Applicable for all', 0, 'Applicable for all', 'Web-Development-2.jpg', '', 1, '2024-05-23 09:26:07', NULL),
-(2, 2, 1, NULL, NULL, 'Demo Course', '', 'Demo Course', 'Demo Course', '', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '1 Month', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', 'free', '', '', NULL, 'BOTH', 'Applicable for all', 0, 'Applicable for all', 'Ethical-Hacker1.jpg', '', 1, '2024-05-23 10:34:43', NULL);
+(1, NULL, 1, NULL, NULL, ' Web Development Course', 'web-development-course', 'The course web application development covers all the concepts from basics to intermediate and will upgrade the skills of a learner.', 'The web design and development course contain both theory & practical.\r\nThe course is 40 hours of extensive learning Lifetime access to videos Complete all modules and get certified.', '', '<p>The goal of the Front End Web Application Development course is to help learners and to equip them with unique<br />\r\nskills that they need in order to build and develop a variety of websites and games. Learners will be able<br />\r\nto construct responsive websites using CSS, CSS Grid, and Bootstrap, and Develop Interactive websites and<br />\r\nUI (User Interface) games and using JavaScript and HTML. Learners will also be taught to connect a<br />\r\nweb application to various APIs using JavaScript.</p>\r\n', '<p>In this course, you&rsquo;ll learn the fundamentals of Web Developments course and how to understand document-tation, along with creating websites. You&rsquo;ll learn to create Dynamic UI using HTML, CSS and will use Javascript to control the flow of Websites. You&rsquo;ll harness the power of the Bootstrap framework.You&rsquo;ll design and create your own custom user interactive websites and games. This would-be supported by building real-world projects and utilizing these technologies and best project development practices.</p>\r\n', '<ul>\r\n	<li>General Requirements<br />\r\n	You must be enthusiastic and motivated to learn. Participation in this course requires consistently<br />\r\n	meeting project deadlines and active participation.</li>\r\n	<li>Program-Specific Requirements<br />\r\n	You have access to a computer with an internet connection, on which you&rsquo;ll install a professional<br />\r\n	code/text editor (VSCode).</li>\r\n</ul>\r\n', '<p>In this course, you&rsquo;ll learn the fundamentals of Web Developments course and how to understand document-tation, along with creating websites. You&rsquo;ll learn to create Dynamic UI using HTML, CSS and will use Javascript to control the flow of Websites. You&rsquo;ll harness the power of the Bootstrap framework.You&rsquo;ll design and create your own custom user interactive websites and games. This would-be supported by building real-world projects and utilizing these technologies and best project development practices.</p>\r\n', '2 Months', '<p>In this course, you&rsquo;ll learn the fundamentals of Web Developments course and how to understand document-tation, along with creating websites. You&rsquo;ll learn to create Dynamic UI using HTML, CSS and will use Javascript to control the flow of Websites. You&rsquo;ll harness the power of the Bootstrap framework.You&rsquo;ll design and create your own custom user interactive websites and games. This would-be supported by building real-world projects and utilizing these technologies and best project development practices.</p>\r\n', 'free', '', '', NULL, 'BOTH', 'Applicable for all', 0, 'Applicable for all', 'Web-Development-2.jpg', '', 1, '2024-05-23 09:26:07', '2'),
+(2, 2, 1, NULL, NULL, 'Demo Course', 'demo-course', 'Demo Course', 'Demo Course', '', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', '1 Month', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n\r\n<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;A collection of tools and techniques used to create and deliver content on the World Wide Web.</p>\r\n', 'free', '', '', NULL, 'BOTH', 'Applicable for all', 0, 'Applicable for all', 'goigi-logo.png', '', 1, '2024-05-23 10:34:43', NULL),
+(4, NULL, 3, NULL, NULL, 'Graphics Designing', 'graphics-designing', 'Unlock your creative potential with our comprehensive Graphics Designing course. ', 'This program is meticulously designed to cater to beginners and intermediate learners, guiding you through the fundamental principles and advanced techniques of graphic design.', '', '<ol>\r\n	<li>\r\n	<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Foundations of Graphic Design:</tt></h3>\r\n\r\n	<ul>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Understanding color theory, typography, and composition.</tt></h3>\r\n		</li>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Exploring the history and evolution of graphic design.</tt></h3>\r\n		</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Design Tools and Software:</tt></h3>\r\n\r\n	<ul>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Mastering industry-standard software like Adobe Photoshop, Illustrator, and InDesign.</tt></h3>\r\n		</li>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Learning the latest digital design tools and platforms.</tt></h3>\r\n		</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Creative Process:</tt></h3>\r\n\r\n	<ul>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Developing a design mindset and creative workflow.</tt></h3>\r\n		</li>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Conducting research, brainstorming, and conceptualization.</tt></h3>\r\n		</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Visual Communication:</tt></h3>\r\n\r\n	<ul>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Crafting compelling visual messages.</tt></h3>\r\n		</li>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Understanding the psychology of design and audience engagement.</tt></h3>\r\n		</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Practical Projects:</tt></h3>\r\n\r\n	<ul>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Creating logos, posters, brochures, and digital content.</tt></h3>\r\n		</li>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Building a diverse portfolio showcasing various design styles.</tt></h3>\r\n		</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Advanced Techniques:</tt></h3>\r\n\r\n	<ul>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Exploring advanced graphic design concepts and methodologies.</tt></h3>\r\n		</li>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Integrating motion graphics and interactive media.</tt></h3>\r\n		</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Industry Insights:</tt></h3>\r\n\r\n	<ul>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Learning from experienced professionals and guest lectures.</tt></h3>\r\n		</li>\r\n		<li>\r\n		<h3 style=\"color:#aaaaaa; font-style:italic\"><tt>Understanding the business side of graphic design, including freelancing and client management.</tt></h3>\r\n		</li>\r\n	</ul>\r\n	</li>\r\n</ol>\r\n', '<ul>\r\n	<li>Interactive online classes with live sessions and recorded lectures.</li>\r\n	<li>Hands-on assignments and real-world projects.</li>\r\n	<li>Peer reviews and constructive feedback.</li>\r\n	<li>Access to a community of designers and industry experts.</li>\r\n</ul>\r\n', '<p><strong>Who Should Enroll:</strong></p>\r\n\r\n<ul>\r\n	<li>Aspiring graphic designers looking to build a solid foundation.</li>\r\n	<li>Professionals seeking to enhance their design skills.</li>\r\n	<li>Anyone passionate about visual arts and digital creativity.</li>\r\n</ul>\r\n', '<ol>\r\n	<li>\r\n	<p><strong>Foundations of Graphic Design:</strong></p>\r\n\r\n	<ul>\r\n		<li>Understanding color theory, typography, and composition.</li>\r\n		<li>Exploring the history and evolution of graphic design.</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<p><strong>Design Tools and Software:</strong></p>\r\n\r\n	<ul>\r\n		<li>Mastering industry-standard software like Adobe Photoshop, Illustrator, and InDesign.</li>\r\n		<li>Learning the latest digital design tools and platforms.</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<p><strong>Creative Process:</strong></p>\r\n\r\n	<ul>\r\n		<li>Developing a design mindset and creative workflow.</li>\r\n		<li>Conducting research, brainstorming, and conceptualization.</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<p><strong>Visual Communication:</strong></p>\r\n\r\n	<ul>\r\n		<li>Crafting compelling visual messages.</li>\r\n		<li>Understanding the psychology of design and audience engagement.</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<p><strong>Practical Projects:</strong></p>\r\n\r\n	<ul>\r\n		<li>Creating logos, posters, brochures, and digital content.</li>\r\n		<li>Building a diverse portfolio showcasing various design styles.</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<p><strong>Advanced Techniques:</strong></p>\r\n\r\n	<ul>\r\n		<li>Exploring advanced graphic design concepts and methodologies.</li>\r\n		<li>Integrating motion graphics and interactive media.</li>\r\n	</ul>\r\n	</li>\r\n	<li>\r\n	<p><strong>Industry Insights:</strong></p>\r\n\r\n	<ul>\r\n		<li>Learning from experienced professionals and guest lectures.</li>\r\n		<li>Understanding the business side of graphic design, including freelancing and client management.</li>\r\n	</ul>\r\n	</li>\r\n</ol>\r\n', '6 Months', '<p>Join us in this immersive journey to master the art and science of graphic design, and transform your creative visions into stunning visual realities. Whether you&#39;re starting from scratch or aiming to refine your skills, our course will empower you to achieve your design goals with confidence and flair.</p>\r\n', 'free', '', '', NULL, 'BOTH', 'Basic knowledge of computers and art', 0, 'Aspiring graphic designers looking to build a solid foundation.', 'Graphical2.png', '', 1, '2024-05-25 08:42:37', '3');
 
 -- --------------------------------------------------------
 
@@ -48929,7 +49014,8 @@ CREATE TABLE `course_enrollment` (
 --
 
 INSERT INTO `course_enrollment` (`enrollment_id`, `course_id`, `user_id`, `order_id`, `enrollment_date`, `enrollment_price`, `price_cents`, `currency`, `currency_symbol`, `payment_status`, `transaction_id`) VALUES
-(1, 2, 1, NULL, '2024-05-23 17:44:49', '0', '0.00', 'USD', '$', 'COMPLETED', 'txn_492853853');
+(1, 2, 1, NULL, '2024-05-23 17:44:49', '0', '0.00', 'USD', '$', 'COMPLETED', 'txn_492853853'),
+(2, 4, 1, NULL, '2024-05-25 15:59:59', '0', '0.00', 'USD', '$', 'COMPLETED', 'txn_1117559703');
 
 -- --------------------------------------------------------
 
@@ -48956,7 +49042,10 @@ INSERT INTO `course_enrollment_status` (`id`, `enrollment_id`, `course_id`, `mod
 (1, 1, 2, 5, 1, 5, 'video', '2024-05-23 17:56:31'),
 (2, 1, 2, 6, 1, 6, 'video', '2024-05-23 17:57:58'),
 (3, 1, 2, 7, 1, 7, 'resource', '2024-05-23 17:58:06'),
-(4, 1, 2, 8, 1, 8, 'quiz', '2024-05-23 18:00:17');
+(4, 1, 2, 8, 1, 8, 'quiz', '2024-05-23 18:00:17'),
+(5, 2, 4, 9, 1, 9, 'video', '2024-05-25 16:00:27'),
+(6, 2, 4, 9, 1, 10, 'resource', '2024-05-25 16:00:32'),
+(7, 2, 4, 9, 1, 11, 'quiz', '2024-05-25 16:00:47');
 
 -- --------------------------------------------------------
 
@@ -48991,7 +49080,10 @@ INSERT INTO `course_materials` (`id`, `user_id`, `course_id`, `module`, `materia
 (5, 2, 2, 5, 'video', 'youtube', 'https://www.youtube.com/watch?v=CYTyQ9886eU', NULL, '', 1, 5, '2024-05-23 05:16:10'),
 (6, 2, 2, 6, 'video', 'video', '', '68a29e4c7420209d9cc7de54daa22983.mp4', '', 1, 6, '2024-05-23 05:16:30'),
 (7, 2, 2, 7, 'resource', '', '', NULL, '<p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.</p>\r\n', 1, 7, '2024-05-23 05:16:59'),
-(8, 2, 2, 8, 'quiz', '', '', NULL, '', 1, 8, '2024-05-23 05:18:39');
+(8, 2, 2, 8, 'quiz', '', '', NULL, '', 1, 8, '2024-05-23 05:18:39'),
+(9, NULL, 4, 9, 'video', 'youtube', 'https://www.youtube.com/watch?v=GQS7wPujL2k', NULL, '', 1, 9, '2024-05-25 02:18:10'),
+(10, NULL, 4, 9, 'resource', '', '', NULL, '&lt;p&gt;Graphical design, often referred to as graphic design, is a creative process that involves the use of visual elements to communicate messages and ideas. Here are the basics:&lt;/p&gt;\r\n\r\n&lt;h3&gt;Key Elements of Graphic Design&lt;/h3&gt;\r\n\r\n&lt;ol&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Line&lt;/strong&gt;: The most basic element, lines can be straight, curved, thick, thin, solid, or dashed. They are used to divide space, direct the viewer&amp;#39;s attention, and create shapes and forms.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Shape&lt;/strong&gt;: Shapes are created when lines enclose a space. They can be geometric (like squares, circles, and triangles) or organic (free-form or natural shapes).&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Color&lt;/strong&gt;: Color is used to create mood, convey messages, and highlight important elements. Understanding color theory, including the color wheel, complementary colors, and color harmony, is crucial.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Texture&lt;/strong&gt;: Texture refers to the surface quality of a design. It can be visual (how something looks like it feels) or physical (how something actually feels to the touch).&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Space&lt;/strong&gt;: Space refers to the area around and between elements in a design. Proper use of space can make a design feel uncluttered and easier to navigate.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Form&lt;/strong&gt;: In 3D design, form refers to objects with depth. In 2D design, it creates the illusion of depth through shading, perspective, and other techniques.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Typography&lt;/strong&gt;: The art of arranging type to make written language legible, readable, and visually appealing. It includes the choice of fonts, size, spacing, and color of text.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n&lt;/ol&gt;\r\n\r\n&lt;h3&gt;Principles of Graphic Design&lt;/h3&gt;\r\n\r\n&lt;ol&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Balance&lt;/strong&gt;: Distributing elements evenly throughout a design. Balance can be symmetrical (evenly balanced) or asymmetrical (uneven but still balanced).&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Contrast&lt;/strong&gt;: Using opposing elements (such as colors, shapes, or textures) to create visual interest and draw attention.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Emphasis&lt;/strong&gt;: Highlighting the most important elements in a design so they stand out. This can be achieved through size, color, and placement.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Movement&lt;/strong&gt;: Guiding the viewer&amp;#39;s eye through a design in a specific direction. This can be done through lines, shapes, and the placement of elements.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Rhythm&lt;/strong&gt;: Creating a sense of organized movement in a design. This is often achieved through repeating elements like lines, shapes, or colors.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Proportion&lt;/strong&gt;: The relative size and scale of elements within a design. Proper proportion ensures that elements look cohesive and harmonious.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n	&lt;li&gt;\r\n	&lt;p&gt;&lt;strong&gt;Unity&lt;/strong&gt;: Ensuring all elements in a design work together to create a cohesive whole. Unity is achieved through the consistent use of colors, shapes, and styles.&lt;/p&gt;\r\n	&lt;/li&gt;\r\n&lt;/ol&gt;\r\n\r\n&lt;h3&gt;Tools and Software&lt;/h3&gt;\r\n\r\n&lt;ol&gt;\r\n	&lt;li&gt;&lt;strong&gt;Adobe Creative Suite&lt;/strong&gt;: Includes Photoshop, Illustrator, and InDesign, which are industry-standard tools for graphic design.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;CorelDRAW&lt;/strong&gt;: A vector graphics editor used for creating illustrations, logos, and more.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;Sketch&lt;/strong&gt;: Popular for user interface design and prototyping.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;Canva&lt;/strong&gt;: An easy-to-use web-based design tool for creating social media graphics, presentations, and more.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;Figma&lt;/strong&gt;: A collaborative interface design tool used for UI/UX design.&lt;/li&gt;\r\n&lt;/ol&gt;\r\n\r\n&lt;h3&gt;Applications of Graphic Design&lt;/h3&gt;\r\n\r\n&lt;ol&gt;\r\n	&lt;li&gt;&lt;strong&gt;Branding&lt;/strong&gt;: Creating logos, business cards, and other branding materials.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;Advertising&lt;/strong&gt;: Designing advertisements for print, digital, and social media.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;Web Design&lt;/strong&gt;: Creating visually appealing and user-friendly websites.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;Packaging&lt;/strong&gt;: Designing packaging for products.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;Print Design&lt;/strong&gt;: Creating brochures, flyers, posters, and other printed materials.&lt;/li&gt;\r\n	&lt;li&gt;&lt;strong&gt;UI/UX Design&lt;/strong&gt;: Designing user interfaces and experiences for software and apps.&lt;/li&gt;\r\n&lt;/ol&gt;\r\n\r\n&lt;p&gt;Graphic design is a field that combines art and technology to communicate ideas. It requires creativity, technical skills, and an understanding of how to convey messages visually effectively.&lt;/p&gt;', 1, 10, '2024-05-25 02:20:18'),
+(11, NULL, 4, 9, 'quiz', '', '', NULL, '', 1, 11, '2024-05-25 02:24:46');
 
 -- --------------------------------------------------------
 
@@ -49023,7 +49115,8 @@ INSERT INTO `course_modules` (`id`, `user_id`, `course_id`, `position_order`, `n
 (5, 2, 2, NULL, 'Module 1', '534bec458abcf2246c47224034a49be8.png', '<p>A collection of tools and techniques used to create and deliver content on the World Wide Web&nbsp;</p>\r\n', 1, '2024-05-23'),
 (6, 2, 2, NULL, 'Module 2', '7638a50effc61353858cacd6f6038971.png', '<p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.</p>\r\n', 1, '2024-05-23'),
 (7, 2, 2, NULL, 'Module 3', 'b2d81794fa91e41ee69c8cd7f3f8ca53.png', '<p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.</p>\r\n', 1, '2024-05-23'),
-(8, 2, 2, NULL, 'Module 4', 'd7584faa9f6fa5dfca077b4d1086ddc0.png', '<p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.</p>\r\n', 1, '2024-05-23');
+(8, 2, 2, NULL, 'Module 4', 'd7584faa9f6fa5dfca077b4d1086ddc0.png', '<p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.</p>\r\n', 1, '2024-05-23'),
+(9, NULL, 4, 9, 'Foundations of Graphic Design', '4a6016eb94c87e31f87ece7f206e6172.png', '<ul>\r\n	<li>Understanding color theory, typography, and composition.</li>\r\n	<li>Exploring the history and evolution of graphic design.</li>\r\n</ul>\r\n', 1, '2024-05-25');
 
 -- --------------------------------------------------------
 
@@ -49059,7 +49152,10 @@ INSERT INTO `course_quiz` (`id`, `course_id`, `material_id`, `question`, `ans1`,
 (2, 1, 4, 'Which HTML tag is used to create a hyperlink?', '<link>', '<href>', '<a>', '<hyperlink>', 'ans3', '', '', '', '', '', 1, '2024-05-23 03:09:10'),
 (3, 1, 4, 'Which of the following is not a web component element?', '<shadow>', '<menu>', '<content>', '<element>', 'ans2', '', '', '', '', '', 1, '2024-05-23 03:09:10'),
 (4, 2, 8, 'Test question 1', 'underscore and ampersand are the only two special characters allowed 1', 'unlimited length 1', 'all private members must have leading and trailing underscores 1', 'none of the mentioned 1', 'ans1', '', '', '', '', '', 1, '2024-05-23 05:18:39'),
-(5, 2, 8, 'Test question 2', 'underscore and ampersand are the only two special characters allowed 2', 'unlimited length 2', 'all private members must have leading and trailing underscores 2', 'none of the mentioned 2', 'ans2', '', '', '', '', '', 1, '2024-05-23 05:18:39');
+(5, 2, 8, 'Test question 2', 'underscore and ampersand are the only two special characters allowed 2', 'unlimited length 2', 'all private members must have leading and trailing underscores 2', 'none of the mentioned 2', 'ans2', '', '', '', '', '', 1, '2024-05-23 05:18:39'),
+(6, 4, 11, 'What is the primary purpose of using contrast in graphic design?', 'To create harmony', 'To draw attention and create visual interest', 'To balance elements', 'To create texture', 'ans2', '', '', '', '', '', 1, '2024-05-25 02:24:46'),
+(7, 4, 11, 'Which of the following software is most commonly used for vector graphic design?', 'Adobe Photoshop', 'Adobe Illustrator', 'Adobe InDesign', 'All of the above', 'ans4', '', '', '', '', '', 1, '2024-05-25 02:24:46'),
+(8, 4, 11, 'In color theory, what are complementary colors?', 'Colors that are next to each other on the color wheel', 'Colors that are directly opposite each other on the color wheel', 'Colors that form a triangle on the color wheel', 'Colors that have similar hues', 'ans2', '', '', '', '', '', 1, '2024-05-25 02:24:46');
 
 -- --------------------------------------------------------
 
@@ -49083,7 +49179,8 @@ CREATE TABLE `course_resources` (
 
 INSERT INTO `course_resources` (`id`, `user_id`, `course_id`, `material_id`, `resource_file`, `status`, `created_at`) VALUES
 (1, NULL, 1, 3, 'sample_document.pdf', 1, '2024-05-23 03:01:56'),
-(2, 2, 2, 7, 'sample_document1.pdf', 1, '2024-05-23 05:16:59');
+(2, 2, 2, 7, 'sample_document1.pdf', 1, '2024-05-23 05:16:59'),
+(3, NULL, 4, 10, 'graphic_design_basics.pdf', 1, '2024-05-25 02:20:18');
 
 -- --------------------------------------------------------
 
@@ -49777,7 +49874,8 @@ CREATE TABLE `sm_category` (
 --
 
 INSERT INTO `sm_category` (`id`, `userid`, `category_name`, `category_subtitle`, `category_image`, `category_link`, `parent_id`, `sort_order`) VALUES
-(1, 0, 'Web Development', 'Web Development', '4e561f71caa9a44729e433a7726c675c.PNG', 'web-development', 0, 0);
+(1, 0, 'Web Development', 'Web Development', 'd363d80885479435ad03b49df06cca5a.PNG', 'web-development', 0, 0),
+(3, 0, 'Designing', 'Graphical and UI designing', 'c007a7d1255e07ec6c6931e98e19388e.png', 'designing', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -54049,8 +54147,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `lname`, `email`, `password`, `userType`, `phone`, `phone_full`, `phone_code`, `phone_country`, `phone_st_country`, `skills`, `user_bio`, `image`, `email_verified`, `status`, `otp`, `token`, `currency`, `currency_symbol`, `created_at`) VALUES
-(1, 'Demo Student', NULL, 'student@gmail.com', 'MTIzNDU2Nzg=', '1', '0789654123', '', 0, '', 0, 'Python', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.', '6080_ben-den-engelsen-YUu9UAcOKZ4-unsplash.jpg', 1, 1, '164457', '', 'USD', '$', '2024-05-23 01:49:58'),
-(2, 'Demo Instructor', NULL, 'instructor@gmail.com', 'MTIzNDU2', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, 'USD', '$', '2024-05-23 15:23:09');
+(1, 'Demo Student', NULL, 'student@gmail.com', 'MTIzNDU2Nzg=', '1', '0789654123', '', 0, '', 0, 'Python', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.', '6080_ben-den-engelsen-YUu9UAcOKZ4-unsplash.jpg', 1, 1, '469495', '', 'USD', '$', '2024-05-23 01:49:58'),
+(2, 'Demo Instructor', NULL, 'instructor@gmail.com', 'MTIzNDU2', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, 'USD', '$', '2024-05-23 15:23:09'),
+(3, 'Demo Instructor 1', NULL, 'instructor1@gmail.com', 'MTIzNDU2', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, 'USD', '$', '2024-05-23 15:23:09'),
+(4, 'Demo Student 1', NULL, 'student1@gmail.com', 'MTIzNDU2Nzg=', '1', '0789654123', '', 0, '', 0, 'Python', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.', '6080_ben-den-engelsen-YUu9UAcOKZ4-unsplash.jpg', 1, 1, NULL, '', 'USD', '$', '2024-05-23 01:49:58');
 
 -- --------------------------------------------------------
 
@@ -54231,6 +54331,24 @@ ALTER TABLE `community`
 -- Indexes for table `community_cat`
 --
 ALTER TABLE `community_cat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `community_comment`
+--
+ALTER TABLE `community_comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `community_comment_rply`
+--
+ALTER TABLE `community_comment_rply`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `community_like`
+--
+ALTER TABLE `community_like`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -54651,13 +54769,31 @@ ALTER TABLE `cms`
 -- AUTO_INCREMENT for table `community`
 --
 ALTER TABLE `community`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `community_cat`
 --
 ALTER TABLE `community_cat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `community_comment`
+--
+ALTER TABLE `community_comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `community_comment_rply`
+--
+ALTER TABLE `community_comment_rply`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `community_like`
+--
+ALTER TABLE `community_like`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `conference`
@@ -54669,7 +54805,7 @@ ALTER TABLE `conference`
 -- AUTO_INCREMENT for table `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `contact_institute`
@@ -54687,43 +54823,43 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `course_enrollment`
 --
 ALTER TABLE `course_enrollment`
-  MODIFY `enrollment_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `enrollment_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `course_enrollment_status`
 --
 ALTER TABLE `course_enrollment_status`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `course_materials`
 --
 ALTER TABLE `course_materials`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `course_modules`
 --
 ALTER TABLE `course_modules`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `course_quiz`
 --
 ALTER TABLE `course_quiz`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `course_resources`
 --
 ALTER TABLE `course_resources`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `course_reviews`
@@ -54945,7 +55081,7 @@ ALTER TABLE `setting`
 -- AUTO_INCREMENT for table `sm_category`
 --
 ALTER TABLE `sm_category`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sm_levels`
@@ -54993,7 +55129,7 @@ ALTER TABLE `thematiques`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_address`

@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-10">
-                                    <div class="col-sm-6">
+                                    <!-- <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Type</label>
                                             <select name="frm[cat_id]" class="form-control">
@@ -48,6 +48,21 @@
                                                 if(!empty($community_cat)) {
                                                 foreach ($community_cat as $community_cat_v) { ?>
                                                 <option value="<?= $community_cat_v['id']?>" <?php if($community_cat_v['id'] == $community->cat_id) { echo "selected"; }?>><?= $community_cat_v['category_name']?></option>
+                                                <?php } } else { ?>
+                                                <option value="">No Data</option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div> -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Course</label>
+                                            <select name="frm[course_id]" class="form-control">
+                                                <option value="">Select option</option>
+                                                <?php
+                                                if(!empty($course_list)) {
+                                                foreach ($course_list as $course_list_v) { ?>
+                                                <option value="<?= $course_list_v['id']?>" <?php if($course_list_v['id'] == $community->course_id) { echo "selected"; }?>><?= $course_list_v['title']?></option>
                                                 <?php } } else { ?>
                                                 <option value="">No Data</option>
                                                 <?php } ?>

@@ -1,0 +1,67 @@
+/* Theme transition Effect */
+a,
+.nav-split .icon-wrap,
+.reserve-table-img::before,
+.service,
+.service i,
+.service h3,
+.team-figure,
+.overlay,
+.blog-discription,
+.testimonial-silder .owl-dots .active,
+.flicker-img-list li:hover .img-overlay,
+.service:hover p,
+.owl-dots .active,
+.blog-title,
+.inner-services i,
+.badge,
+.blog-figure .blog-discription,
+button,
+.contact-column span,
+.contact-column h3,
+.contact-column,
+.srvices-overlay-v2,
+.service-v2 h3,
+.service-figure-v3,
+.service-detail-v3,
+.service-figure-v3 p,
+.sleekslider,
+.blog-figure-v2 .blog-discription,
+.service-figure-v3 h3::before
+{-webkit-transition: all 0.3s ease-in-out;
+-moz-transition: all 0.3s ease-in-out;
+-ms-transition: all 0.3s ease-in-out;
+-o-transition: all 0.3s ease-in-out;
+transition: all 0.3s ease-in-out;}
+
+.blog-figure h3{
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+.blog-figure .blod-meta{
+	-webkit-transition: all 0.9s ease-in-out;
+	-moz-transition: all 0.9s ease-in-out;
+	-ms-transition: all 0.9s ease-in-out;
+	-o-transition: all 0.9s ease-in-out;
+	transition: all 0.9s ease-in-out;
+}
+.blog-figure p{
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+
+
+
+.testimonial-slider .center img,
+.contact-overlay{
+-webkit-transition: all 0.7s ease-out;
+-moz-transition: all 0.7s ease-out;
+-ms-transition: all 0.7s ease-out;
+-o-transition: all 0.7s ease-out;
+transition: all 0.7s ease-out;}

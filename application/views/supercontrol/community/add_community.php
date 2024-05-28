@@ -54,7 +54,7 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                         <label id="errorBox"></label>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
+                                                <!-- <div class="form-group">
                                                     <label class="col-md-3 control-label"><b>Type</b></label>
                                                     <div class="col-md-8">
                                                         <select name="frm[cat_id]" class="form-control">
@@ -63,6 +63,22 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                             if(!empty($community_cat)) {
                                                             foreach ($community_cat as $community_cat_v) { ?>
                                                             <option value="<?= $community_cat_v['id']?>" <?php if($community_cat_v['id'] == $community->cat_id) { echo "selected"; }?>><?= $community_cat_v['category_name']?></option>
+                                                            <?php } } else { ?>
+                                                            <option value="">No Data</option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div> -->
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Courses</b></label>
+                                                    <div class="col-md-8">
+                                                        <select name="frm[course_id]" class="form-control">
+                                                            <option value="">Select option</option>
+                                                            <?php
+                                                            if(!empty($course_list)) {
+                                                            foreach ($course_list as $course_list_v) { ?>
+                                                            <option value="<?= $course_list_v['id']?>" <?php if($course_list_v['id'] == $community->course_id) { echo "selected"; }?>><?= $course_list_v['title']?></option>
                                                             <?php } } else { ?>
                                                             <option value="">No Data</option>
                                                             <?php } ?>

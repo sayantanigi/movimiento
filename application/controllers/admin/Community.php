@@ -11,8 +11,7 @@ class Community extends Admin_Controller {
         $this->load->model('Community_cat_model');
     }
 
-    public function index($page = 1)
-    {
+    public function index($page = 1) {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
@@ -57,7 +56,6 @@ class Community extends Admin_Controller {
         $this->data['paginate'] = $this->pagination->create_links();
         $this->load->view(admin_view('default'), $this->data);
     }
-
     public function category() {
         $this->data['title'] = 'Community Category List';
         $this->data['tab'] = 'comcat_list';
@@ -123,7 +121,8 @@ class Community extends Admin_Controller {
         $this->data['tab'] = 'add_comm';
         $this->data['main'] = admin_view('community/add');
         $this->data['community'] = $this->Community_model->getNew();
-        $this->data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
+        //$this->data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
+        $this->data['course_list'] = $this->db->query("SELECT * FROM courses WHERE status = '1' AND (assigned_instrustor IS NOT NULL OR assigned_instrustor != '')")->result_array();
         $this->data['community']->gender = "Male";
         if ($id) {
             $this->data['title'] = 'Update Community';
@@ -178,6 +177,75 @@ class Community extends Admin_Controller {
         }
         redirect(admin_url('community'));
     }
+    public function add_event($com_id = false, $id = false) {
+        $this->data['title'] = 'Add Community Event';
+        $this->data['tab'] = 'add_comm_evnt';
+        $this->data['main'] = admin_view('community/add_event');
+        if ($id) {
+            $this->data['title'] = 'Update Community Event';
+            $this->data['event'] = $event_v = $this->db->query("SELECT * FROM events WHERE id = '".$id."'")->row();
+            if (!isset($event_v)) {
+                show_404();
+                exit();
+            }
+        }
+        $this->form_validation->set_rules('frm[event_title]', 'Title title', 'required');
+        if ($this->form_validation->run()) {
+            $formdata = $this->input->post('frm');
+            $slug = $this->input->post('frm[event_title]');
+            if (empty($slug) || $slug == '') {
+                $slug = $this->input->post('event_title');
+            }
+            $formdata['slug'] = strtolower(url_title($slug));
+            //$formdata['id'] = $id;
+            $formdata['uploaded_by'] = '';
+            if ($id) {
+                $this->db->where('id', $id);
+                $id = $this->db->update('events',$formdata);
+                $this->session->set_flashdata("success", "Event updated successfully");
+            } else {
+                //print_r($formdata); die();
+                $id = $this->db->insert('events',$formdata);
+                $this->session->set_flashdata("success", "Event saved successfully");
+            }
+            redirect(admin_url('community/event_list/'.$com_id));
+        }
+        $this->load->view(admin_view('default'), $this->data);
+    }
+    public function event_list($comm_id){
+        $this->data['title'] = 'Community Event List';
+        $this->data['tab'] = 'community';
+        $this->data['main'] = admin_view('community/event_index');
+        $this->data['event_list'] = $this->db->query("SELECT * FROM events WHERE community_id = '".$comm_id."'")->result_array();
+        $this->load->view(admin_view('default'), $this->data);
+    }
+    function eventactivate($com_id = false, $id = false) {
+        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : admin_url('community/event_list/'.$com_id);
+        if ($id) {
+            $c['event_status'] = 1;
+            $this->db->where('id', $id);
+            $this->db->update('events', $c);
+            $this->session->set_flashdata("success", "Event activated");
+        }
+        redirect($redirect);
+    }
+    function eventdeactivate($com_id = false, $id = false) {
+        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : admin_url('community/event_list/'.$com_id);
+        if ($id) {
+            $c['event_status'] = 2;
+            $this->db->where('id', $id);
+            $this->db->update('events', $c);
+            $this->session->set_flashdata("success", "Event deactivated");
+        }
+        redirect($redirect);
+    }
+    function eventdelete($com_id, $id) {
+        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : admin_url('community/event_list/'.$com_id);
+        if ($id > 0) {
+            $c['id'] = $id;
+            $this->db->delete('events', $c);
+            $this->session->set_flashdata('success', 'Event deleted successfully ');
+        }
+        redirect($redirect);
+    }
 }
-/* End of file Blog.php */
-/* Location: ./application/controllers/admin/teams.php */

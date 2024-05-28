@@ -1,0 +1,76 @@
+input#con_name form_border, input#con_email form_border, textarea#con_message form_border {
+	border: 1px solid #ff6002 !important;
+    width: 100% !important;
+}
+
+input.required{
+    border: 1px solid #363636;
+    width: 100%;
+    margin-top: 5px;
+}
+
+textarea.required {
+    width: 100%;
+    border: 1px solid #363636;
+    height: 200px;
+    margin-top: 5px;
+}
+.col-lg-6.noPaddingLeft, .col-lg-6.noPaddingRight {
+    margin-bottom: 20px;
+}
+label.con_label {
+    font-size: 18px;
+}
+button#con_submit {
+    background: #ff6000;
+    margin-top: 12px;
+    margin-bottom: 26px;
+}
+
+.sectionTitle.text-center {
+    margin-top: 38px;
+}
+p.sub {
+    font-size: 18px;
+}
+#circle_box {
+    color: #ffffff;
+    font-family: 'Pacifico', cursive;
+    font-size: 23px;
+    word-spacing: 3px;
+    line-height: 36px;
+    text-align: center;
+}
+.big_button_signup {
+    width: 300px;
+    height: 300px;
+    padding-top: 28%;
+    border-radius: 50%;
+    border: 3px solid #ff6000;
+    background: #ff6000;
+    margin-bottom: 40px;
+}
+.big_button_signup:hover {
+    border: 3px solid #8bcc4c;
+}
+
+span.spa {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333;
+    display: block;
+}
+textarea.required.v {
+    height: 120px;
+}
+input[type="radio"] {
+    height: 20px;
+    width: 37px;
+    margin-bottom: 16px;
+}
+
+section.pageTitleSection {
+    position: relative;
+    background: url(../assets/images/cus.jpg) no-repeat center center;
+    padding: 160px 0;
+}

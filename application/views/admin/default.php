@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Makutano | <?= $title ?></title>
+    <title>Movimiento | <?= $title ?></title>
     <link rel="icon" href="<?= base_url('assets/img/favicon.png') ?>" type="image/jpg" sizes="16x16">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -195,17 +195,17 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?= ($tab == 'add_comcat') ? 'active' : ''; ?>">
+                            <!-- <li class="<?= ($tab == 'add_comcat') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/category_add') ?>"><i class="fa fa-circle"></i> Add Category </a>
                             </li>
                             <li class="<?= ($tab == 'comcat_list') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/category') ?>"><i class="fa fa-circle"></i> Category Lists</a>
-                            </li>
+                            </li> -->
                             <li class="<?= ($tab == 'add_comm') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/add_community') ?>"><i class="fa fa-circle"></i> Add Community</a>
                             </li>
                             <li class="<?= ($tab == 'comm_list') ? 'active' : ''; ?>">
-                                <a href="<?= admin_url('community/community_list') ?>"><i class="fa fa-circle"></i> Community Lists</a>
+                                <a href="<?= admin_url('community') ?>"><i class="fa fa-circle"></i> Community Lists</a>
                             </li>
                         </ul>
                     </li>
