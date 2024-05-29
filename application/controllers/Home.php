@@ -457,6 +457,118 @@ class Home extends CI_Controller
         $this->load->view('search_page', $data);
         $this->load->view('footer', $data);
     }
+    public function getcatwiseData() {
+        if($_POST['cat_id']) {
+            $cat_id = $_POST['cat_id'];
+            $search_result = $this->db->query("SELECT * FROM courses WHERE cat_id = '".$cat_id."' AND  status = '1' AND assigned_instrustor IS NOT NULL")->result_array();
+        } else if ($_POST['rate_id']) {
+            $rate_id = $_POST['rate_id'];
+            $getcourseid = $this->db->query("SELECT group_concat(course_id) as course_id FROM course_reviews WHERE rating = '".$rate_id."'")->row();
+            $courseID = $getcourseid->course_id;
+            echo "SELECT * FROM courses WHERE id IN (".$courseID.") AND  status = '1' AND assigned_instrustor IS NOT NULL";
+            $search_result = $this->db->query("SELECT * FROM courses WHERE id IN (".$courseID.") AND  status = '1' AND assigned_instrustor IS NOT NULL")->result_array();
+        } else {
+
+        }
+        $html = '';
+        if (!empty($search_result)) {
+            foreach ($search_result as $value) {
+                $course_url = base_url('course-detail/' . @$value['id']);
+                $catname = $this->db->query("SELECT * FROM sm_category WHERE id = '" . $value['cat_id']."'")->row();
+                if (!empty($value['image'])) {
+                    $img = base_url().'assets/images/courses/'.$value['image'];
+                } else {
+                    $img = base_url().'assets/images/no-image.png';
+                }
+                $module = $this->db->query("SELECT count(id) as total_module FROM course_modules WHERE course_id = '" .  @$value['id'] . "'")->row();
+                if (!empty($module)) {
+                    $count = $module->total_module;
+                } else {
+                    $count = '0';
+                }
+                if (!empty($value['user_id'])) {
+                    $user_details = $this->db->query("SELECT id, full_name, image FROM users WHERE id = '" . $value['user_id'] . "' AND email_verified = '1' AND status = '1'")->row();
+                    $full_name = $user_details->full_name;
+                    if (!empty($user_details->image)) {
+                        $uimg = base_url().'uploads/users/'.$user_details->image;
+                    } else {
+                        $uimg = base_url().'images/no-user.png';
+                    }
+                } else {
+                    $full_name = 'Admin';
+                    $uimg = base_url().'assets/img/favicon.png';
+                }
+                if ($value['course_fees'] == 'free') {
+                    $fees = ucwords($value['course_fees']);
+                } else {
+                    $fees = ucwords($value['price']);
+                }
+                $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '" . @$value['id'] . "'")->result_array();
+                $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '" . @$value['id'] . "'")->row();
+                $html .= '
+                <div class="col-md-4 col-sm-12 grid-item cat1 cat2 cat4">
+                    <div class="course__item white-bg mb-30 fix">
+                        <div class="course__thumb w-img p-relative fix">
+                            <a href="'.$course_url.'">
+                                <img src='.$img.' alt="" style="width: 282px; height: 190px;">
+                            </a>
+                            <div class="course__tag">
+                                <a href="javascript:void(0)">'.$catname->category_name.'</a>
+                            </div>
+                        </div>
+                        <div class="course__content">
+                            <div class="course__meta d-flex align-items-center justify-content-between">
+                                <div class="course__lesson">
+                                    <span><i class="far fa-book-alt"></i>'.$count.' Lesson</span>
+                                </div>
+                                <div class="course__rating">';
+                                if (!empty($rating)) {
+                                    $rate = round($totalrate->total / count($rating), 0);
+                                    foreach (range(1, 5) as $i) {
+                                        if ($rate > 0) {
+                                            $html .= '<span class="active"><i class="fas fa-star"></i></span>';
+                                        } else {
+                                            $html .= '<span><i class="fas fa-star zero"></i></span>';
+                                        }
+                                        $rate--;
+                                    }
+                                    $html .= "(" . round($totalrate->total / count($rating), 0) . ")";
+                                } else {
+                                    $html .= '<span><i class="fas fa-star zero"></i></span>';
+                                    $html .= '<span><i class="fas fa-star zero"></i></span>';
+                                    $html .= '<span><i class="fas fa-star zero"></i></span>';
+                                    $html .= '<span><i class="fas fa-star zero"></i></span>';
+                                    $html .= '<span><i class="fas fa-star zero"></i></span>';
+                                    $html .= "(0)";
+                                }
+                                $html .= '</div></div><h3 class="course__title">
+                                    <a href="'.$course_url.'">'.@$value['title'].'</a>
+                                </h3>
+                                <div class="course__teacher d-flex align-items-center">
+                                    <div class="course__teacher-thumb mr-15">
+                                        <img src="'.$uimg.'" alt="">
+                                    </div>
+                                    <h6><a href="javascript:void(0)">'.$full_name.'</a></h6>
+                                </div>
+                            </div>
+                            <div class="course__more d-flex justify-content-between align-items-center">
+                                <div class="course__status">
+                                    <span>'.$fees.'</span>
+                                </div>
+                                <div class="course__btn">
+                                    <a href="'.$course_url.'" class="link-btn">Know Details<i class="far fa-arrow-right"></i><i class="far fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+            }
+        } else {
+            $html = '<div class="col-lg-12 col-md-12 col-sm-12 mb-40" style="text-align : center;"><div class="courses-item">No Data found!</div></div>';
+        }
+        echo $html;
+
+    }
     public function reviewSave()
     {
         $user_id = $this->session->userdata('user_id');
@@ -1848,7 +1960,11 @@ class Home extends CI_Controller
         }
     }
     public function course_list(){
-        $this->load->view('header');
+        $getCategotyListSql = "SELECT * from `sm_category` ORDER BY `id` DESC";
+        $data['category_list'] = $this->db->query($getCategotyListSql)->result_array();
+        $getcourselistsql = "SELECT * from `courses` WHERE `status` = '1' AND assigned_instrustor IS NOT NULL";
+        $data['course_list'] = $this->Commonmodel->fetch_all_join($getcourselistsql);
+        $this->load->view('header', $data);
         $this->load->view('course_list_page');
         $this->load->view('footer');
     }
