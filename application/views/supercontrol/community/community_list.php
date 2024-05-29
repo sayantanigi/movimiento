@@ -111,10 +111,8 @@
                                                         <td><?= $community_v->title ?></td>
                                                         <td><?= $string?></td>
                                                         <td style="max-width:250px;">
-                                                            <!-- <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/community/add_event/<?= $community_v->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Event</a>
-                                                            <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/community/event_list/<?= $community_v->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Event</a> -->
-                                                            <a class="btn green btn-sm btn-outline uppercase" href="#"><i class="fa fa-plus" aria-hidden="true"></i> Event</a>
-                                                            <a class="btn green btn-sm btn-outline uppercase" href="#"><i class="fa fa-eye" aria-hidden="true"></i> Event</a>
+                                                            <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/community/add_event/<?= $community_v->id; ?>"><i class="fa fa-plus" aria-hidden="true"></i> Event</a>
+                                                            <a class="btn green btn-sm btn-outline uppercase" href="<?php echo base_url(); ?>supercontrol/community/event_list/<?= $community_v->id; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Event</a>
                                                         </td>
                                                         <td>
                                                             <?php if ($community_v->status == 1) { ?>

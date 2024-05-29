@@ -49,6 +49,7 @@ $route['email-verification/(:any)'] = "home/emailVerification/$1";
 $route['login'] = 'home/login';
 $route['login/(:any)'] = 'home/login/$1';
 $route['search_data'] = "home/searchData";
+$route['showCategoryWiseData/(:any)'] = "home/categoryWisesearchData/$1";
 $route['community'] = 'home/community';
 $route['community_details'] = 'home/community_details';
 $route['contact'] = 'home/contact';
@@ -64,6 +65,7 @@ $route['course-detail/(:any)'] = "home/courseDetail/$1";
 $route['community/(:any)'] = "home/community_details/$1";
 $route['forgot-password'] = "home/forgotPassword";
 $route['otp-verification/(:any)'] = "home/verifyOtp/$1";
+$route['course_list'] = 'Home/course_list';
 /*------------Admin Routes------------*/
 $route['admin'] = 'admin/users';
 $route['dashboard'] = 'admin/dashboard/index';

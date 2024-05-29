@@ -19,7 +19,7 @@
                 <ul class="page-breadcrumb">
                     <li><a href="<?php echo base_url(); ?>supercontrol/home">Home</a><i class="fa fa-circle"></i> </li>
                     <li><span>Supercontrol Panel</span> <i class="fa fa-circle"></i></li>
-                    <li><span>Show Community List </span></li>
+                    <li><span>Show event_list List </span></li>
                 </ul>
             </div>
             <?php if (@$success_msg) {
@@ -73,7 +73,7 @@
                             <div class="tab-pane active" id="tab_0">
                                 <div class="portlet box blue-hoki">
                                     <div class="portlet-title">
-                                        <div class="caption"> <i class="fa fa-gift"></i> Community List </div>
+                                        <div class="caption"> <i class="fa fa-gift"></i> Event List </div>
                                         <div class="tools">
                                             <a href="javascript:;" class="collapse"> </a>
                                             <a href="javascript:;" class="reload"> </a>
@@ -86,18 +86,19 @@
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
-                                                        <th>Title</th>
-                                                        <th>Description</th>
+                                                        <th>Event Title</th>
+                                                        <th>Event Description</th>
+                                                        <th>Event date</th>
                                                         <th>Status</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    if (is_array($community) && count($community) > 0) {
+                                                    if (is_array($event_list) && count($event_list) > 0) {
                                                     $i = 1;
-                                                    foreach ($community as $community_v) {
-                                                        $string = strip_tags($community_v->description);
+                                                    foreach ($event_list as $event_list_v) {
+                                                        $string = strip_tags($event_list_v['event_description']);
                                                         if (strlen($string) > 500) {
                                                             $stringCut = substr($string, 0, 900);
                                                             $endPoint = strrpos($stringCut, ' ');
@@ -107,19 +108,26 @@
                                                     ?>
                                                     <tr>
                                                         <td><?= $i ?></td>
-                                                        <td><?= $community_v->title ?></td>
+                                                        <td><?= $event_list_v['event_title'] ?></td>
                                                         <td><?= $string?></td>
                                                         <td>
-                                                            <?php if ($community_v->status == 1) { ?>
-                                                            <a href="<?= base_url('supercontrol/community/deactivate/' . $community_v->id) ?>"><span class="badge bg-green">Active</span></a>
+                                                            <?php
+                                                            $fromDate = $event_list_v['event_from_date']." ".$event_list_v['event_from_time'];
+                                                            $toDate = $event_list_v['event_to_date']." ".$event_list_v['event_to_time'];
+                                                            echo "<p><b>From: </b>".date('d-m-Y h:i a', strtotime($fromDate))."</p><p><b>To: </b>".date('d-m-Y h:i a', strtotime($toDate))."</p>";
+                                                            ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if ($event_list_v['event_status'] == 1) { ?>
+                                                            <a href="<?= base_url('supercontrol/community/eventdeactivate/'.$event_list_v['community_id'].'/'.$event_list_v['id']) ?>"><span class="badge bg-green">Active</span></a>
                                                             <?php } else { ?>
-                                                            <a href="<?= base_url('supercontrol/community/activate/' . $community_v->id) ?>"><span class="badge bg-red">Inactive</span></a>
+                                                            <a href="<?= base_url('supercontrol/community/eventactivate/'.$event_list_v['community_id'].'/'.$event_list_v['id']) ?>"><span class="badge bg-red">Inactive</span></a>
                                                             <?php } ?>
                                                         </td>
                                                         <td>
                                                             <div class="action-button">
-                                                                <a href="<?= base_url('supercontrol/community/add_community/' . $community_v->id) ?>" class="btn btn-xs btn-info"><span class="fa fa-pencil"></span></a>
-                                                                <a href="<?= base_url('supercontrol/community/delete/' . $community_v->id) ?>" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span></a>
+                                                                <a href="<?= base_url('supercontrol/community/add_event/'.$event_list_v['community_id'].'/'.$event_list_v['id']) ?>" class="btn btn-xs btn-info"><span class="fa fa-pencil"></span></a>
+                                                                <a href="<?= base_url('supercontrol/community/delete/'.$event_list_v['community_id'].'/'.$event_list_v['id']) ?>" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span></a>
                                                             </div>
                                                         </td>
                                                     </tr>

@@ -26,6 +26,15 @@ $optionsList = $this->db->query($getOptionsSql)->result();
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/elegantFont.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/default.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css">
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,es',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+        }
+    </script>
 </head>
 <body>
     <div id="loading">
@@ -68,17 +77,20 @@ $optionsList = $this->db->query($getOptionsSql)->result();
                                     <?php
                                     if(!empty($this->session->userdata('user_id'))) {
                                         if($this->session->userdata('userType') == '1') { ?>
-                                        <ul>
-                                            <li><a href="<?= base_url()?>student-dashboard" class="e-btn">Dashboard</a></li>
+                                        <ul style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                                            <li style="margin-right: 15px;"><a href="<?= base_url()?>student-dashboard" class="e-btn">Dashboard</a></li>
+                                            <div id="google_translate_element"></div>
                                         </ul>
                                         <?php } else { ?>
-                                        <ul>
-                                            <li><a href="<?= base_url()?>consultant-dashboard" class="e-btn">Dashboard</a></li>
+                                        <ul style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                                            <li style="margin-right: 15px;"><a href="<?= base_url()?>consultant-dashboard" class="e-btn">Dashboard</a></li>
+                                            <div id="google_translate_element"></div>
                                         </ul>
                                     <?php } } else { ?>
-                                    <ul>
-                                        <li><a href="<?= base_url()?>register" class="e-btn">Sign Up</a></li>
-                                        <li><a href="<?= base_url()?>login" class="e-btn">Log In</a></li>
+                                    <ul style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                                        <li style="margin-right: 15px;"><a href="<?= base_url()?>register" class="e-btn">Sign Up</a></li>
+                                        <li style="margin-right: 15px;"><a href="<?= base_url()?>login" class="e-btn">Log In</a></li>
+                                        <div id="google_translate_element"></div>
                                     </ul>
                                     <?php } ?>
                                 </nav>

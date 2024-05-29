@@ -45,7 +45,6 @@ class Community extends CI_Controller {
             $formdata['slug'] = strtolower(url_title($slug));
             $formdata['id'] = $id;
             $formdata['uploaded_by'] = $this->session->userdata('user_id');
-            //print_r($formdata); die();
             $id = $this->Community_model->save($formdata);
             $this->session->set_flashdata("success", "Community saved successfully");
             redirect(base_url('supercontrol/community'));
@@ -110,9 +109,10 @@ class Community extends CI_Controller {
                 $slug = $this->input->post('event_title');
             }
             $formdata['slug'] = strtolower(url_title($slug));
-            //$formdata['id'] = $id;
-            $formdata['uploaded_by'] = '';
+            $formdata['uploaded_by'] = $this->session->userdata('user_id');
+            $formdata['created_at'] = date('Y-m-d h:i s');
             if ($id) {
+                //print_r($formdata); die();
                 $this->db->where('id', $id);
                 $id = $this->db->update('events',$formdata);
                 $this->session->set_flashdata("success", "Event updated successfully");
@@ -121,7 +121,7 @@ class Community extends CI_Controller {
                 $id = $this->db->insert('events',$formdata);
                 $this->session->set_flashdata("success", "Event saved successfully");
             }
-            redirect(base_url('community/event_list/'.$com_id));
+            redirect(base_url('supercontrol/community/event_list/'.$com_id));
         }
         $this->load->view('supercontrol/header', $this->data);
 		$this->load->view('supercontrol/community/add_event', $this->data);
@@ -137,7 +137,7 @@ class Community extends CI_Controller {
 		$this->load->view('supercontrol/footer');
     }
     function eventactivate($com_id = false, $id = false) {
-        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : base_url('community/event_list/'.$com_id);
+        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : base_url('supercontrol/community/event_list/'.$com_id);
         if ($id) {
             $c['event_status'] = 1;
             $this->db->where('id', $id);
@@ -147,7 +147,7 @@ class Community extends CI_Controller {
         redirect($redirect);
     }
     function eventdeactivate($com_id = false, $id = false) {
-        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : base_url('community/event_list/'.$com_id);
+        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : base_url('supercontrol/community/event_list/'.$com_id);
         if ($id) {
             $c['event_status'] = 2;
             $this->db->where('id', $id);
@@ -157,7 +157,7 @@ class Community extends CI_Controller {
         redirect($redirect);
     }
     function eventdelete($com_id, $id) {
-        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : base_url('community/event_list/'.$com_id);
+        $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : base_url('supercontrol/community/event_list/'.$com_id);
         if ($id > 0) {
             $c['id'] = $id;
             $this->db->delete('events', $c);

@@ -201,16 +201,32 @@
                         <div class="job-overview" id="job-overview">
                             <h3>All Events</h3>
                             <ul>
+                            <?php
+                            $event_list = $this->db->query("SELECT * FROM events WHERE community_id = '".@$community_data->id."' AND event_status = '1'")->result_array();
+                            if(!empty($event_list)) {
+                            foreach ($event_list as $evnt) { ?>
                                 <li>
-                                    <p>Event Title: <span>Flipiando America</span></p>
-                                    <p>Event Date: <span>15/10/2024</span></p>
-                                    <p>Organized By: <span>Movimiento Latino</span></p>
+                                    <p>Event Title: <span><?= $evnt['event_title']?></span></p>
+                                    <p>Event Date: <span>
+                                        <?php
+                                        $from_date = date('d-m-Y h:i a', strtotime($evnt['event_from_date']." ".$evnt['event_from_time']));
+                                        $to_date = date('d-m-Y h:i a', strtotime($evnt['event_to_date']." ".$evnt['event_to_time']));
+                                        echo $from_date." to ".$to_date." (".$evnt['event_repeat'].")";
+                                        ?>
+                                    </span></p>
+                                    <p>Organized By: <span>
+                                        <?php
+                                        if($evnt['uploaded_by'] != '0') {
+                                            $user_details = $this->db->query("SELECT * FROM users WHERE id = '".$evnt['uploaded_by']."'")->row();
+                                            echo $user_details->full_name;
+                                        } else {
+                                            echo "Admin";
+                                        }?></span>
+                                    </p>
                                 </li>
-                                <li>
-                                    <p>Event Title: <span>Flipiando America</span></p>
-                                    <p>Event Date: <span>15/10/2024</span></p>
-                                    <p>Organized By: <span>Movimiento Latino</span></p>
-                                </li>
+                            <?php } } else { ?>
+                            <li>No Event Created Yet</li>
+                            <?php } ?>
                             </ul>
                         </div>
                     </div>

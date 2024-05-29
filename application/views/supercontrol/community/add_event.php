@@ -6,6 +6,11 @@ label span { display: block; width: 17px; height: 17px; border: 1px solid black;
 label.active span:after { content: " "; position: absolute; left: 3px; right: 3px; top: 3px; bottom: 3px; background: black; }
 .topul li { list-style-type: none; }
 </style>
+<?php
+$url = $_SERVER['REQUEST_URI'];
+$url = explode('/', $url);
+$comm_id = $url[5];
+?>
 <div class="page-container">
     <div class="page-sidebar-wrapper">
         <div class="page-sidebar navbar-collapse collapse">
@@ -31,34 +36,71 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                 <div class="portlet box blue-hoki">
                                     <div class="portlet-body form">
                                         <!-- BEGIN FORM-->
-                                        <form action="<?php echo base_url().'supercontrol/community/add_event/'.$community->id?>" class="form-horizontal" method="post" enctype="multipart/form-data" onsubmit="check()">
+                                        <form action="<?php echo base_url().'supercontrol/community/add_event/'.@$event->community_id.'/'.@$event->id?>" class="form-horizontal" method="post" enctype="multipart/form-data" onsubmit="check()">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Title *</b></label>
+                                                    <label class="col-md-3 control-label"><b>Event Title *</b></label>
                                                     <div class="col-md-8">
-                                                        <input type="text" name="frm[title]" required="" id="title" class="form-control" placeholder="Title" onkeyup="leftTrim(this)" value="<?= $community->title ?>"/>
+                                                        <input type="text" name="frm[event_title]" required="" id="event_title" class="form-control" placeholder="Event Title" onkeyup="leftTrim(this)" value="<?= $event->event_title ?>"/>
                                                         <label id="errorBox"></label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Description</b></label>
+                                                    <label class="col-md-3 control-label"><b>Event From Date *</b></label>
                                                     <div class="col-md-8">
-                                                        <textarea id="pagedes" class="form-control" name="frm[description]" cols="60" rows="10" aria-hidden="true"><?= $community->description ?></textarea>
+                                                        <input type="date" name="frm[event_from_date]" value="<?= @$event->event_from_date ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter From Date" required>
                                                         <label id="errorBox"></label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Type</b></label>
+                                                    <label class="col-md-3 control-label"><b>Event From Time *</b></label>
                                                     <div class="col-md-8">
-                                                        <select name="frm[cat_id]" class="form-control">
+                                                    <input type="time" name="frm[event_from_time]" value="<?= @$event->event_from_time ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter From Time" required>
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Event To Date *</b></label>
+                                                    <div class="col-md-8">
+                                                    <input type="date" name="frm[event_to_date]" value="<?= @$event->event_to_date ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter To Date" required>
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Event To Time *</b></label>
+                                                    <div class="col-md-8">
+                                                    <input type="time" name="frm[event_to_time]" value="<?= @$event->event_to_time ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter To Date" required>
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Event Repeat *</b></label>
+                                                    <div class="col-md-8">
+                                                        <select name="frm[event_repeat]" class="form-control" required>
+                                                                <option value="">Select option</option>
+                                                                <option value="Does not repeat" <?php if (@$event->event_repeat == 'Does not repeat') { echo 'selected';} ?>>Does not repeat</option>
+                                                                <option value="Daily" <?php if (@$event->event_repeat == 'Daily') { echo 'selected';} ?>>Daily</option>
+                                                                <option value="Weekly" <?php if (@$event->event_repeat == 'Weekly') { echo 'selected';} ?>>Weekly</option>
+                                                                <option value="Monthly" <?php if (@$event->event_repeat == 'Monthly') { echo 'selected';} ?>>Monthly</option>
+                                                                <option value="Yearly" <?php if (@$event->event_repeat == 'Yearly') { echo 'selected';} ?>>Yearly</option>
+                                                            </select>
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Event Description</b></label>
+                                                    <div class="col-md-8">
+                                                        <textarea id="pagedes" class="form-control" name="frm[event_description]" cols="60" rows="10" aria-hidden="true"><?= $event->event_description ?></textarea>
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Status</b></label>
+                                                    <div class="col-md-8">
+                                                        <select name="frm[event_status]" class="form-control">
                                                             <option value="">Select option</option>
-                                                            <?php
-                                                            if(!empty($community_cat)) {
-                                                            foreach ($community_cat as $community_cat_v) { ?>
-                                                            <option value="<?= $community_cat_v['id']?>" <?php if($community_cat_v['id'] == $community->cat_id) { echo "selected"; }?>><?= $community_cat_v['category_name']?></option>
-                                                            <?php } } else { ?>
-                                                            <option value="">No Data</option>
-                                                            <?php } ?>
+                                                            <option value="1" <?php if (@$event->event_status == '1') { echo 'selected';} ?>>Active</option>
+                                                            <option value="0" <?php if (@$event->event_status == '0') { echo 'selected';} ?>>Inactive</option>
                                                         </select>
                                                         <label id="errorBox"></label>
                                                     </div>
@@ -68,6 +110,7 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                 <div class="row">
                                                     <div class="col-md-offset-3 col-md-9">
                                                         <input type="submit" id="submit" value="Submit" class="btn red">
+                                                        <input type="hidden" name="frm[community_id]" value="<?= $comm_id?>">
                                                         <button type="button" class="btn default">Cancel</button>
                                                     </div>
                                                 </div>

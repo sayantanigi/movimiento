@@ -29,7 +29,7 @@
                     <div class="course__thumb w-img p-relative fix">
                         <a href="<?=base_url('course-detail/'.@$value['id'])?>">
                         <?php if(!empty($value['image'])) { ?>
-                        <img src="<?= base_url()?>assets/images/courses/<?= $value['image']?>" alt="">
+                        <img src="<?= base_url()?>assets/images/courses/<?= $value['image']?>" alt="" style="width: 100%; height: 300px;">
                         <?php } else { ?>
                         <img src="assets/images/no-image.png" alt="">
                         <?php } ?>
