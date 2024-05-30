@@ -23,12 +23,12 @@
                             <span>Enrolled Courses</span>
                         </a>
                     </li>
-                    <!-- <li>
+                    <li>
                         <a href="<?= base_url('event-booked') ?>">
                             <i class="fa fa-calendar"></i>
-                            <span>Event Booked</span>
+                            <span>Events</span>
                         </a>
-                    </li> -->
+                    </li>
                     <li>
                         <a href="<?= base_url('reviews') ?>">
                             <i class="far fa-star"></i>

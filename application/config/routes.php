@@ -66,6 +66,7 @@ $route['community/(:any)'] = "home/community_details/$1";
 $route['forgot-password'] = "home/forgotPassword";
 $route['otp-verification/(:any)'] = "home/verifyOtp/$1";
 $route['course_list'] = 'Home/course_list';
+$route['event-booked'] = 'Users/eventBooked';
 /*------------Admin Routes------------*/
 $route['admin'] = 'admin/users';
 $route['dashboard'] = 'admin/dashboard/index';
@@ -122,7 +123,6 @@ $route['dashboard'] = 'admin/dashboard/index';
 // $route['consulting'] = 'home/consulting';
 // $route['course-enrollment/(:any)'] = "home/courseEnrollment/$1";
 // $route['success/(:any)'] = "home/success/$1";;
-// $route['event-booked'] = 'Users/eventBooked';
 // $route['product-order-list'] = 'Users/productOrderList';
 // $route['search-query'] = 'Home/search_query';
 // $route['unsubscribe/(:any)'] = 'Home/unsubscribe/$1';

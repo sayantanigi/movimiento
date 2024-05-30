@@ -61,7 +61,7 @@ if (!empty($active_data)) {
     </div>
 </section>
 <section class="pb-145">
-<div class="rbt-dashboard-content-wrapper">
+    <div class="rbt-dashboard-content-wrapper">
         <div class="container">
             <div class="rbt-tutor-information">
                 <div class="rbt-tutor-information-left d-flex align-items-center">

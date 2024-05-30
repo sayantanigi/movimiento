@@ -300,17 +300,20 @@ class Users extends CI_Controller {
 	}
 	public function eventBooked() {
 		$data = array(
-			'title' => 'Booked Event List',
+			'title' => 'Event List',
 			'page' => 'booked',
 		);
 		$user_id = $this->session->userdata('user_id');
 		$isLoggedIn = $this->session->userdata('isLoggedIn');
 		$where = array('id' => $user_id);
 		$data['user'] = $this->Commonmodel->fetch_row('users', $where);
-		$getAllBookedSql = "SELECT evb.*, evnt.* FROM `event_booked` evb INNER JOIN `event` AS evnt ON evnt.id = evb.event_id WHERE evb.payment_status = 'COMPLETED' AND evb.user_id = '" . $user_id . "'";
-		$data['event'] = $this->Commonmodel->fetch_all_join($getAllBookedSql);
+		$getcourseIDSql = $this->db->query("SELECT GROUP_CONCAT(course_id) AS course_id FROM course_enrollment WHERE user_id = '".$user_id."'")->row();
+		$getuserIDsql = $this->db->query("SELECT GROUP_CONCAT(user_id) AS user_id FROM courses WHERE id IN ($getcourseIDSql->course_id)")->row();
+		$data['event'] = $this->db->query("SELECT * FROM events WHERE uploaded_by IN ($getuserIDsql->user_id,0)")->result_array();
 		$getBookedSql = "SELECT * FROM `event_booked` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
-		$data['ctn_enrolment'] = $this->db->query($getBookedSql)->num_rows();
+		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
+		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
 		$this->load->view('header', $data);
 		$this->load->view('event_booked');
 		$this->load->view('footer');

@@ -465,8 +465,11 @@ class Home extends CI_Controller
             $rate_id = $_POST['rate_id'];
             $getcourseid = $this->db->query("SELECT group_concat(course_id) as course_id FROM course_reviews WHERE rating = '".$rate_id."'")->row();
             $courseID = $getcourseid->course_id;
-            echo "SELECT * FROM courses WHERE id IN (".$courseID.") AND  status = '1' AND assigned_instrustor IS NOT NULL";
-            $search_result = $this->db->query("SELECT * FROM courses WHERE id IN (".$courseID.") AND  status = '1' AND assigned_instrustor IS NOT NULL")->result_array();
+            if(!empty($courseID)){
+                $search_result = $this->db->query("SELECT * FROM courses WHERE id IN (".$courseID.") AND  status = '1' AND assigned_instrustor IS NOT NULL")->result_array();
+            } else {
+                $search_result = $this->db->query("SELECT * FROM courses WHERE id IN (0) AND  status = '1' AND assigned_instrustor IS NOT NULL")->result_array();
+            }
         } else {
 
         }
@@ -1967,5 +1970,33 @@ class Home extends CI_Controller
         $this->load->view('header', $data);
         $this->load->view('course_list_page');
         $this->load->view('footer');
+    }
+    public function dateWisefilter() {
+        $date = $_POST['date'];
+        $comm_id = $_POST['comm_id'];
+        $date = DateTime::createFromFormat('d/m/Y', $date);
+        $date = $date->format('Y-m-d');
+        $getEventData = $this->db->query("SELECT * FROM events WHERE community_id = '".$comm_id."' AND event_from_date = '".$date."'")->result_array();
+        if(!empty($getEventData)) {
+            $html = '';
+            foreach ($getEventData as $event) {
+                $from_date = date('d-m-Y h:i a', strtotime($event['event_from_date']." ".$event['event_from_time']));
+                $to_date = date('d-m-Y h:i a', strtotime($event['event_to_date']." ".$event['event_to_time']));
+                $date = $from_date." to ".$to_date." (".$event['event_repeat'].")";
+                if($event['uploaded_by'] != '0') {
+                    $user_details = $this->db->query("SELECT * FROM users WHERE id = '".$event['uploaded_by']."'")->row();
+                    $full_name = $user_details->full_name;
+                } else {
+                    $full_name = "Admin";
+                }
+                $html .= '<li><p>Event Title: <span>'.$event['event_title'].'</span></p><p>Event Date: <span>'.$date.'</span></p>
+                <p>Organized By: <span>'.$full_name.'</span>
+                </p>
+            </li>';
+            }
+        } else {
+            $html = '<li>No Data found!</li>';
+        }
+        echo $html;
     }
 }
