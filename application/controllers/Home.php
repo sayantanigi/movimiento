@@ -371,18 +371,18 @@ class Home extends CI_Controller
             $mail = new PHPMailer(true);
             try {
                 $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
+                $mail->SetFrom('info@movimiento.com', 'movimiento');
+                $mail->SetFrom('info@movimiento.com', 'movimiento');
                 $mail->IsHTML(true);
                 $mail->AddEmbeddedImage('uploads/logo/logo.PNG', 'Logo');
                 $mail->Subject = $subject;
                 $mail->Body = $message;
                 $mail->IsSMTP();
                 //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
+                $mail->Host = 'smtp-relay.brevo.com';       // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
+                $mail->Username = 'sayantan@goigi.in';     // SMTP username
+                $mail->Password = 'NWpyxa3UK2HDPSbs';                // SMTP password
                 $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 587;
                 $mail->send();
@@ -420,6 +420,7 @@ class Home extends CI_Controller
             }
         } else {
             $this->session->set_flashdata('error', 'Invalid email/password, Please try again!');
+            redirect(base_url('login/'.@$course_id), 'refresh');
             $data = array(
                 'title' => 'Sign In',
                 'page' => 'login',
@@ -905,14 +906,14 @@ class Home extends CI_Controller
         $this->load->view('payment');
         $this->load->view('footer');
     }
-    /*public function checkout() {
+    public function checkout() {
         $data['user_id'] = $this->input->post('user_id');
         $data['price_key'] = $this->input->post('enrollment');
         $this->session->set_userdata('course_id', $this->input->post('course_id'));
         $this->load->view('header', $data);
 		$this->load->view('checkout');
 		$this->load->view('footer');
-    }*/
+    }
     public function success($id)
     {
         $data['p_id'] = $id;
@@ -951,79 +952,7 @@ class Home extends CI_Controller
             echo $msg = "0";
         }
     }
-    public function consultFormSubmit()
-    {
-        $fname = $this->input->post("name");
-        $email = $this->input->post("email");
-        $phone = $this->input->post("phone");
-        $msg = $this->input->post("message");
-        $consultFormData = array('fname' => $fname, 'email' => $email, 'phone' => $phone, 'msg' => $msg);
-        $result = $this->Commonmodel->add_details('consulting_form', $consultFormData);
-        $insert_id = $this->db->insert_id();
-        if (!empty($insert_id)) {
-            $subject = "Consult With Us";
-            $getOptionsSql = "SELECT * FROM `options`";
-            $optionsList = $this->db->query($getOptionsSql)->result();
-            //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-            //$imagePath = base_url() . 'user_assets/images/C2C_Home/Header_Logo.png';
-            $admEmail = $optionsList[8]->option_value;
-            $address = $optionsList[6]->option_value;
-            $message = "
-            <body>
-                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
-                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
-                        <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Makutano</span></h3>
-                        <p style='font-size: 18px;'>Hello User,</p>
-                        <p style='font-size: 18px;'>Thank you for Thank you for your email. Our contact person will reach you shortly.</p>
-                        <p style='font-size: 18px; margin: 0px;'>First Name: $fname/p>
-                        <p style='font-size: 18px; margin: 0px;'>Email: $email</p>
-                        <p style='font-size: 18px; margin: 0px;'>Phone Number: $phone</p>
-                        <p style='font-size: 18px; margin: 0px;'>Message: $msg</p>
-                        <p style='font-size: 20px;'></p>
-                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                    </div>
-                    <table style='width: 100%;'>
-                        <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                        </tr>
-                    </table>
-                </div>
-            </body>";
-            $mail = new PHPMailer(true);
-            try {
-                //Server settings
-                $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
-                $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-                $mail->Subject = $subject;
-                $mail->Body = $message;
-                //Send email via SMTP
-                $mail->IsSMTP();
-                //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
-                $mail->send();
-                // echo 'Message has been sent';
-            } catch (Exception $e) {
-                $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-            }
-            echo $msg = "Thank You for Contacting Us";
-        } else {
-            echo $msg = "Opps, Try again!";
-        }
-    }
-    public function emailVerification($otp = null)
-    {
+    public function emailVerification($otp = null) {
         if (empty($otp)) {
             $this->session->set_flashdata('error', 'You have not permission to access this page!');
             redirect(base_url('register'), 'refresh');
@@ -1289,99 +1218,7 @@ class Home extends CI_Controller
         $this->load->view('youth', $data);
         $this->load->view('footer');
     }
-    public function submitYouthForm()
-    {
-        $interest = implode(',', $this->input->post('interest'));
-        $fname = $this->input->post('fname');
-        $lname = $this->input->post('lname');
-        $email = $this->input->post('email');
-        $contactno = $this->input->post('contactno');
-        $age = $this->input->post('age');
-        $town = $this->input->post('town');
-        $area = $this->input->post('area');
-        $company = $this->input->post('company');
-        $qualification = $this->input->post('qualification');
-        $statute = $this->input->post('statute');
-        $interest = $interest;
-        $formdata = array(
-            'fname' => $fname,
-            'lname' => $lname,
-            'email' => $email,
-            'contactno' => $contactno,
-            'age' => $age,
-            'town' => $town,
-            'area' => $area,
-            'company' => $company,
-            'qualification' => $qualification,
-            'statute' => $statute,
-            'interest' => $interest
-        );
-        $insertId = $this->db->insert("youth_member", $formdata);
-        if (!empty($insertId)) {
-            $optionsList = $this->db->query("SELECT * FROM options")->result();
-            //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-            $admEmail = $optionsList[8]->option_value;
-            $address = $optionsList[6]->option_value;
-            $admEmail = $optionsList[8]->option_value;
-            $message = "
-            <body>
-                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
-                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box;'>
-                        <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
-                        <p style='font-size: 18px; margin: 0px;'>Hello Admin,</p>
-                        <p style='font-size: 18px; margin: 0px;'>Please find the below details submitted by the user for Youth Member Registration.</p><br/><br/>
-                        <p style='font-size: 18px; margin: 0px;'>First Name: $fname</p>
-                        <p style='font-size: 18px; margin: 0px;'>Last Name: $lname</p>
-                        <p style='font-size: 18px; margin: 0px;'>Email: $email</p>
-                        <p style='font-size: 18px; margin: 0px;'>Phone Number: $contactno</p>
-                        <p style='font-size: 18px; margin: 0px;'>Age: $age</p>
-                        <p style='font-size: 18px; margin: 0px;'>Town: $town</p>
-                        <p style='font-size: 18px; margin: 0px;'>Area: $area</p>
-                        <p style='font-size: 18px; margin: 0px;'>Company: $company</p>
-                        <p style='font-size: 18px; margin: 0px;'>Qualification: $qualification</p>
-                        <p style='font-size: 18px; margin: 0px;'>Statute: $statute</p>
-                        <p style='font-size: 18px; margin: 0px;'>Interest: $interest</p>
-                        <p style='font-size: 20px;'></p>
-                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                    </div>
-                    <table style='width: 100%;'>
-                        <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                        </tr>
-                    </table>
-                </div>
-            </body>";
-            $mail = new PHPMailer(true);
-            try {
-                $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress($this->input->post('email'));
-                $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-                $mail->Subject = "Youth Member";
-                $mail->Body = $message;
-                $mail->IsSMTP();
-                //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
-                $mail->send();
-            } catch (Exception $e) {
-                $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-            }
-            $this->session->set_flashdata('success', "1");
-        } else {
-            $this->session->set_flashdata('error', "2");
-        }
-        redirect('youth', 'refresh');
-    }
+
     public function blog()
     {
         $data['blogList'] = $this->db->query("SELECT * FROM blogs WHERE status = '1' ORDER BY id DESC")->result_array();
@@ -1437,13 +1274,13 @@ class Home extends CI_Controller
         $this->load->view('cart', $data);
         $this->load->view('footer');
     }
-    public function checkout()
-    {
-        $data['cartItems'] = $this->db->query("SELECT * FROM cart WHERE user_id = '" . @$this->session->userdata('user_id') . "'")->result_array();
-        $this->load->view('header', $data);
-        $this->load->view('checkout', $data);
-        $this->load->view('footer');
-    }
+    // public function checkout()
+    // {
+    //     $data['cartItems'] = $this->db->query("SELECT * FROM cart WHERE user_id = '" . @$this->session->userdata('user_id') . "'")->result_array();
+    //     $this->load->view('header', $data);
+    //     $this->load->view('checkout', $data);
+    //     $this->load->view('footer');
+    // }
     public function portfolio9()
     {
         $data['portfolio9'] = $this->db->query("SELECT * FROM portfolio WHERE portfolioId = '1' AND status = '1'")->result_array();
@@ -1465,79 +1302,6 @@ class Home extends CI_Controller
         $this->load->view('portfolio7', $data);
         $this->load->view('footer');
     }
-    public function user_subscribe()
-    {
-        $user_email = $_POST['user_email'];
-        $checkEmail = $this->db->query("SELECT * FROM email_subscription WHERE user_email = '" . $user_email . "'");
-        if ($checkEmail->num_rows()) {
-            echo "1";
-        } else {
-            // $insertData = array(
-            //     'user_email' => $user_email,
-            //     'status' => 1,
-            //     'created_at' => date('Y-m-d h:i')
-            // );
-            $created_at = date('Y-m-d h:i');
-            $insertId = $this->db->query("INSERT INTO email_subscription (user_email, status, created_at) VALUES ('$user_email', '1', '$created_at')");
-            $id = $this->db->insert_id();
-            if (!empty($insertId)) {
-                $optionsList = $this->db->query("SELECT * FROM options")->result();
-                //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-                $admEmail = $optionsList[8]->option_value;
-                $address = $optionsList[6]->option_value;
-                $unsubscribe = base_url() . 'unsubscribe/' . $id;
-                $baseurl = base_url();
-                $blog = base_url() . 'blog';
-                $message = "
-                <body>
-                    <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
-                        <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
-                            <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                            <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
-                            <p style='font-size: 18px;'> Dear User,</p>
-                            <p style='font-size: 18px;'>Thank you so much for signing up to our newsletter.</p>
-                            <p style='font-size: 18px; margin: 0px;'>It is a delight to have you on board. You can also visit our blog to get more information about <a href='$baseurl'>Makutano.</a></p>
-                            <p>I'de like to share more great content with you in the future, but you can <a href='$unsubscribe'>Unsubscribe</a> at any time if you'd rathe not receive anything further.</p>
-                            <p style='font-size: 18px; margin: 0px;'>In the meantime, if you'd like to check out more of our news and blogs, please swing by our <a href='$blog'>News & Blog</a></p>
-                            <p style='font-size:20px;'></p>
-                            <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                        </div>
-                        <table style='width: 100%;'>
-                            <tr>
-                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                            </tr>
-                        </table>
-                    </div>
-                </body>";
-                $mail = new PHPMailer(true);
-                try {
-                    $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                    $mail->AddAddress($user_email);
-                    $mail->IsHTML(true);
-                    $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-                    $mail->Subject = "Email Subscription";
-                    $mail->Body = $message;
-                    $mail->IsSMTP();
-                    $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                    $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                    $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                    $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                    $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port = 587;
-                    $mail->send();
-                } catch (Exception $e) {
-                    $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-                }
-                echo "2";
-            } else {
-                echo "3";
-            }
-        }
-    }
     public function unsubscribe($id)
     {
         $this->db->query("UPDATE email_subscription SET status = '0' WHERE id = '" . $id . "'");
@@ -1548,78 +1312,6 @@ class Home extends CI_Controller
         $this->load->view('header');
         $this->load->view('institute');
         $this->load->view('footer');
-    }
-    public function contactInstitute()
-    {
-        $fname = $_POST['fname'];
-        $lname = $_POST['lname'];
-        $email = $_POST['email'];
-        $subject = $_POST['subject'];
-        $message = $_POST['message'];
-        $insertData = array(
-            'fname' => $_POST['fname'],
-            'lname' => $_POST['lname'],
-            'email' => $_POST['email'],
-            'subject' => $_POST['subject'],
-            'message' => $_POST['message'],
-            'created_at' => date('Y-m-d h:i')
-        );
-        $insertId = $this->db->insert("contact_institute", $insertData);
-        if (!empty($insertId)) {
-            $optionsList = $this->db->query("SELECT * FROM options")->result();
-            //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-            $admEmail = $optionsList[8]->option_value;
-            $address = $optionsList[6]->option_value;
-            $message = "
-            <body>
-                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
-                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
-                        <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
-                        <p style='font-size: 18px;'> Dear Admin,</p>
-                        <p style='font-size: 18px;'>Please find the below details for contact query.</p>
-                        <p style='font-size: 18px; margin: 0px;'>First Name: $fname/p>
-                        <p style='font-size: 18px; margin: 0px;'>Last Name: $lname</p>
-                        <p style='font-size: 18px; margin: 0px;'>Email: $email</p>
-                        <p style='font-size: 18px; margin: 0px;'>Age: $message</p>
-                        <p style='font-size:20px;'></p>
-                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                    </div>
-                    <table style='width: 100%;'>
-                        <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                        </tr>
-                    </table>
-                </div>
-            </body>";
-            $mail = new PHPMailer(true);
-            try {
-                $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
-                $mail->IsHTML(true);
-                $mail->Subject = "Contact Makutano Institute";
-                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-                $mail->Body = $message;
-                $mail->IsSMTP();
-                //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
-                $mail->send();
-            } catch (Exception $e) {
-                $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-            }
-            echo "1";
-        } else {
-            echo "2";
-        }
     }
     public function programmeForum()
     {
@@ -1699,73 +1391,6 @@ class Home extends CI_Controller
         $this->load->view('header');
         $this->load->view('sponsorship');
         $this->load->view('footer');
-    }
-    public function contactSponsor()
-    {
-        $fname = $_POST['fname'];
-        $lname = $_POST['lname'];
-        $email = $_POST['email'];
-        $phno = $_POST['phno'];
-        $title = $_POST['title'];
-        $company = $_POST['company'];
-        $activty = $_POST['actvty'];
-        $msg = $_POST['msg'];
-        $optionsList = $this->db->query("SELECT * FROM options")->result();
-        //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-        $admEmail = $optionsList[8]->option_value;
-        $address = $optionsList[6]->option_value;
-        $message = "
-        <body>
-            <div style='width:600px;margin: 0 auto;background: #fff; border: 1px solid #e6e6e6;'>
-                <div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'>
-                    <img src='cid:Logo' style='width:220px;float: right;margin-top: 0 auto;'>
-                    <h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Makutano</span></h3>
-                    <p style='font-size: 18px;'>Dear Admin,</p>
-                    <p style='font-size: 18px;'>Please find the below details for contact sponsor.</p>
-                    <p style='font-size: 18px; margin: 0px;'>First Name: $fname</p>
-                    <p style='font-size: 18px; margin: 0px;'>Last Name: $lname</p>
-                    <p style='font-size: 18px; margin: 0px;'>Email: $email</p>
-                    <p style='font-size: 18px; margin: 0px;'>Phone Number: $phno</p>
-                    <p style='font-size: 18px; margin: 0px;'>Title: $title</p>
-                    <p style='font-size: 18px; margin: 0px;'>Company: $company</p>
-                    <p style='font-size: 18px; margin: 0px;'>Activity: $activty</p>
-                    <p style='font-size: 18px; margin: 0px;'>Message: $msg</p>
-                    <p style='font-size:20px;'></p>
-                    <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                    <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                    <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                    <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                </div>
-                <table style='width: 100%;'>
-                    <tr>
-                        <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                    </tr>
-                </table>
-            </div>
-        </body>";
-        $mail = new PHPMailer(true);
-        try {
-            $mail->CharSet = 'UTF-8';
-            $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-            $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
-            $mail->IsHTML(true);
-            $mail->Subject = "ASK ABOUT SPONSORSHIP";
-            $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-            $mail->Body = $message;
-            $mail->IsSMTP();
-            //Send mail using GMAIL server
-            $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-            $mail->SMTPAuth = true;                          // Enable SMTP authentication
-            $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-            $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-            $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-            $mail->Port = 587;
-            $mail->send();
-            echo "1";
-        } catch (Exception $e) {
-            echo "2";
-            $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-        }
     }
     public function others_info()
     {
@@ -1871,96 +1496,6 @@ class Home extends CI_Controller
         $this->load->view('header', $data);
         $this->load->view('communique', $data);
         $this->load->view('footer');
-    }
-    public function newsletterEmailSend()
-    {
-        $date = date('Y-m-d');
-        $getSendEmailData = $this->db->query("SELECT * FROM sendemailtouser WHERE status IN ('pending','failed') AND created_date = '" . $date . "'")->result_array();
-        if (!empty($getSendEmailData)) {
-            foreach ($getSendEmailData as $mailData) {
-                $content = $mailData['content'];
-                $doc = new DOMDocument();
-                $doc->loadHTML($content);
-                $tags = $doc->getElementsByTagName('img');
-                $i = 1;
-                foreach ($tags as $tag) {
-                    $old_src = $tag->getAttribute('src');
-                    $whatIWant = substr($old_src, strpos($old_src, "makutano") + 9);
-                    $new_src_url = $whatIWant;
-                    $tag->setAttribute('src', 'cid:image_' . $i);
-                    $i++;
-                }
-                $description = $doc->saveHTML();
-                $optionsList = $this->db->query("SELECT * FROM options")->result();
-                //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
-                $admEmail = $optionsList[8]->option_value;
-                $address = $optionsList[6]->option_value;
-                if ($mailData['type'] == '1') {
-                    $getUserEmail = $this->db->query("SELECT * FROM email_subscription WHERE id = '" . $mailData['user_id'] . "' AND status = '1'")->row();
-                    $userEmail = $getUserEmail->user_email;
-                } else {
-                    $getUserEmail = $this->db->query("SELECT * FROM users WHERE id = '" . $mailData['user_id'] . "' AND status = '1'")->row();
-                    $userEmail = $getUserEmail->email;
-                }
-                $message = "
-                <body>
-                    <div style='width:600px;margin: 0 auto;background: #fff; border: 1px solid #e6e6e6;'>
-                        <div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'>
-                            <img src='cid:Logo' style='width:220px;float: right;margin-top: 0 auto;'>
-                            <div>$description</div>
-                            <div>
-                                <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                                <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
-                                <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                                <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                            </div>
-                        </div>
-                        <table style='width: 100%;'>
-                            <tr>
-                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
-                            </tr>
-                        </table>
-                    </div>
-                </body>";
-                $mail = new PHPMailer(true);
-                try {
-                    $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                    $mail->AddAddress($userEmail);
-                    $mail->IsHTML(true);
-                    $mail->Subject = $mailData['subject'];
-                    $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
-                    $doc = new DOMDocument();
-                    $doc->loadHTML($content);
-                    $tags = $doc->getElementsByTagName('img');
-                    $j = 1;
-                    foreach ($tags as $tag) {
-                        $old_src = $tag->getAttribute('src');
-                        $whatIWant = substr($old_src, strpos($old_src, "makutano") + 9);
-                        $new_src_url = $whatIWant;
-                        $mail->AddEmbeddedImage($new_src_url, 'image_' . $j);
-                        //$tag->setAttribute('data-src', $old_src);
-                        $j++;
-                    }
-                    $mail->Body = $message;
-                    $mail->IsSMTP();
-                    //Send mail using GMAIL server
-                    $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                    $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                    $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                    $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                    $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port = 587;
-                    if ($mail->send()) {
-                        $this->db->query("UPDATE sendemailtouser SET status = 'sent', updated_date = '" . $date . "' WHERE id = '" . $mailData['id'] . "'");
-                    } else {
-                        $this->db->query("UPDATE sendemailtouser SET status = 'failed', updated_date = '" . $date . "', reason = '" . $mail->ErrorInfo . "' WHERE id = '" . $mailData['id'] . "'");
-                    }
-                } catch (Exception $e) {
-                    $this->db->query("UPDATE sendemailtouser SET status = 'failed', updated_date = '" . $date . "', reason = '" . $mail->ErrorInfo . "' WHERE id = '" . $mailData['id'] . "'");
-                }
-            }
-        }
     }
     public function course_list(){
         $getCategotyListSql = "SELECT * from `sm_category` ORDER BY `id` DESC";

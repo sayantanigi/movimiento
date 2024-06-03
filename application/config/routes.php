@@ -43,30 +43,37 @@ $route['default_controller'] = 'home';
 $route['404_override'] = 'Override';
 $route['translate_uri_dashes'] = TRUE;
 /*------------FrontEnd Routes----------*/
-$route['home'] = "Home/index";
-$route['register'] = 'home/register';
-$route['email-verification/(:any)'] = "home/emailVerification/$1";
-$route['login'] = 'home/login';
-$route['login/(:any)'] = 'home/login/$1';
-$route['search_data'] = "home/searchData";
-$route['showCategoryWiseData/(:any)'] = "home/categoryWisesearchData/$1";
-$route['community'] = 'home/community';
-$route['community_details'] = 'home/community_details';
-$route['contact'] = 'home/contact';
+$route['home'] = 'Home/index';
+$route['register'] = 'Home/register';
+$route['email-verification/(:any)'] = 'Home/emailVerification/$1';
+$route['login'] = 'Home/login';
+$route['login/(:any)'] = 'Home/login/$1';
+$route['search_data'] = 'Home/searchData';
+$route['showCategoryWiseData/(:any)'] = 'Home/categoryWisesearchData/$1';
+$route['community'] = 'Home/community';
+$route['community_details'] = 'Home/community_details';
+$route['contact'] = 'Home/contact';
+$route['checkout'] = 'Home/checkout';
+$route['course-detail/(:any)'] = 'Home/courseDetail/$1';
+$route['community/(:any)'] = 'Home/community_details/$1';
+$route['forgot-password'] = 'Home/forgotPassword';
+$route['otp-verification/(:any)'] = 'Home/verifyOtp/$1';
+$route['course_list'] = 'Home/course_list';
+$route['success/(:any)'] = 'Home/success/$1';
+
 $route['student-dashboard'] = 'Users/index';
 $route['enrolled-courses'] = 'Users/enrolledCourse';
 $route['purchase-list'] = 'Users/purchaseList';
 $route['profile'] = 'Users/profile';
 $route['reviews'] = 'Users/reviews';
 $route['edit-profile'] = 'Users/editProfile';
+$route['event-booked'] = 'Users/eventBooked';
+
+
 $route['logout'] = 'supercontrol/home/logout';
 $route['consultant-dashboard'] = 'supercontrol/home';
-$route['course-detail/(:any)'] = "home/courseDetail/$1";
-$route['community/(:any)'] = "home/community_details/$1";
-$route['forgot-password'] = "home/forgotPassword";
-$route['otp-verification/(:any)'] = "home/verifyOtp/$1";
-$route['course_list'] = 'Home/course_list';
-$route['event-booked'] = 'Users/eventBooked';
+
+
 /*------------Admin Routes------------*/
 $route['admin'] = 'admin/users';
 $route['dashboard'] = 'admin/dashboard/index';
@@ -117,12 +124,10 @@ $route['dashboard'] = 'admin/dashboard/index';
 // $route['statuts'] = 'Home/statuts';
 // $route['category/(:any)'] = 'Home/categoryWiseList/$1';
 // $route['cart'] = 'Home/cart';
-// $route['checkout'] = "home/checkout";
 // $route['email_unsubscribe/(:any)'] = 'Home/email_unsubscribe';
 // $route['course-list'] = 'home/courseList';
 // $route['consulting'] = 'home/consulting';
 // $route['course-enrollment/(:any)'] = "home/courseEnrollment/$1";
-// $route['success/(:any)'] = "home/success/$1";;
 // $route['product-order-list'] = 'Users/productOrderList';
 // $route['search-query'] = 'Home/search_query';
 // $route['unsubscribe/(:any)'] = 'Home/unsubscribe/$1';

@@ -586,29 +586,12 @@
                                 <a href="<?php echo base_url()?>enrolled-courses" class="e-btn e-btn-7 w-100">Go to Dashboard <i class="far fa-arrow-right"></i></a>
                                 <?php } else {
                                 if (@$detail->course_fees != 'free') { ?>
-                                <!-- <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
+                                <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
                                     <div class="btn-part">
                                         <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
                                         <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Enroll</button>
+                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
                                     </div>
-                                </form> -->
-                                <!-- <form action="https://api.maxicashapp.com/PayEntryPost" method="POST"> -->
-                                <form action="https://api-testbed.maxicashapp.com/PayEntryPost" method="POST">
-                                    <input type="hidden" name="PayType" value="MaxiCash">
-                                    <input type="hidden" name="Amount" value="<?php echo (@$detail->price*100)?>">
-                                    <input type="hidden" name="Currency" value="MaxiDollar">
-                                    <input type="hidden" name="Telephone" value="<?= $getUserDetails->phone?>">
-                                    <input type="hidden" name="Email" value="<?= $getUserDetails->email?>">
-                                    <input type="hidden" name="MerchantID" value="f00fab442fcc420ab3d04765bebe1818">
-                                    <input type="hidden" name="MerchantPassword" value="dec9a3edff854eec82c2c354efc8ba9c">
-                                    <input type="hidden" name="Language" value="En">
-                                    <input type="hidden" name="Reference" value="txn_<?php echo rand()?>">
-                                    <input type="hidden" name="accepturl" value="<?= base_url()?>course-detail/<?= $detail->id?>">
-                                    <input type="hidden" name="cancelurl" value="<?= base_url()?>course-detail/<?= $detail->id?>">
-                                    <input type="hidden" name="declineurl" value="<?= base_url()?>course-detail/<?= $detail->id?>">
-                                    <input type="hidden" name="notifyurl" value="<?= base_url()?>course-detail/<?= $detail->id?>">
-                                    <button type="submit" name="enrollment" class="e-btn e-btn-7 w-100">Enroll</button>
                                 </form>
                                 <?php } else { ?>
                                 <div class="btn-part">
@@ -620,12 +603,14 @@
                                 if (@$detail->course_fees != 'free') { ?>
                                 <form action="<?= base_url('login/') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
                                     <div class="btn-part">
-                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Enroll</button>
+                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="btn readon2 orange-transparent">$<?php echo number_format(@$detail->price,2); ?></button>
+                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="btn readon2 orange-transparent">Buy Now</button>
                                     </div>
                                 </form>
                                 <?php } else { ?>
                                 <div class="btn-part">
-                                    <a href="<?= base_url('login/'.$detail->id) ?>" name="enrollment" id="course_activation1"  class="e-btn e-btn-7 w-100">Activate</a>
+                                    <button type="submit" name="enrollment" value="<?php echo @$detail->course_type; ?>" class="btn readon2 orange-transparent"><?php echo ucwords(@$detail->course_type); ?></button>
+                                    <a href="<?= base_url('login/') ?>" name="enrollment" id="course_activation1" class="btn readon2 orange-transparent">Activate</a>
                                 </div>
                             <?php } } } else if(empty($this->session->userdata('userType'))) { ?>
                                 <div class="btn-part">
