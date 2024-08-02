@@ -32,16 +32,15 @@
                         ?>
                         <a href="javascript:void(0)">
                             <?php if (!empty($userdetails->image)) { ?>
-                                <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userdetails->image ?>" />
+                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userdetails->image ?>" />
                             <?php } else { ?>
-                                <img src="<?= base_url() ?>images/no-user.png" />
+                            <img src="<?= base_url() ?>images/no-user.png" />
                             <?php } ?>
                         </a>
                     </div>
                     <div class="userComInfo">
                         <h6 class="fw-semibold mb-0"><a href="javascript:void(0)"><?= $name ?></a></h6>
-                        <span class="post-meta mb-2 d-block text-secondary">
-                            <small><?= date('M j, Y', strtotime($community_data->created_at)) ?></small></span>
+                        <span class="post-meta mb-2 d-block text-secondary"><small><?= date('M j, Y', strtotime($community_data->created_at)) ?></small></span>
                         <h2 class="h4 fw-bold communitytitle"><?= @$community_data->title ?></h2>
                         <div><?= @$community_data->description ?></div>
                         <ul class="d-flex align-items-center mt-3">
@@ -49,85 +48,73 @@
                             $chechis_like = $this->db->query("SELECT * FROM community_like WHERE community_id = '" . $community_data->id . "' AND user_id = '" . $this->session->userdata('user_id') . "' AND is_liked = 1")->num_rows();
                             $countchechis_like = $this->db->query("SELECT COUNT(id) as count FROM community_like WHERE community_id = '" . $community_data->id . "' AND is_liked = 1")->row();
                             if ($chechis_like > 0) { ?>
-                                <li class="me-4"><a href="javascript:void(0)"><i
-                                            class="fas fa-thumbs-up text-secondary change-color"
-                                            onclick="dislikecommunity()"></i> <sup
-                                            style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
+                            <li class="me-4"><a href="javascript:void(0)"><i class="fas fa-thumbs-up text-secondary change-color" onclick="dislikecommunity()"></i> <sup style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
                             <?php } else { ?>
-                                <li class="me-4"><a href="javascript:void(0)"><i class="fas fa-thumbs-up text-secondary"
-                                            onclick="likecommunity()"></i> <sup
-                                            style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
+                            <li class="me-4"><a href="javascript:void(0)"><i class="fas fa-thumbs-up text-secondary" onclick="likecommunity()"></i> <sup style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
                             <?php } ?>
                             <?php $commentCount = $this->db->query("SELECT count(id) as count FROM community_comment WHERE community_id = '" . $community_data->id . "'")->row(); ?>
-                            <li><a href="javascript:void(0)"><i class="fas fa-comment text-secondary"></i> <sup
-                                        style="top: -2px;"><?= $commentCount->count; ?></sup></a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-comment text-secondary"></i> <sup style="top: -2px;"><?= $commentCount->count; ?></sup></a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="latest-comments mb-95">
                     <h3><?= $commentCount->count; ?> Comments</h3>
                     <ul>
-                        <?php
-                        $commentList = $this->db->query("SELECT * FROM community_comment WHERE community_id = '" . $community_data->id . "' ORDER BY id DESC")->result_array();
-                        if (!empty($commentList)) {
-                            foreach ($commentList as $value) {
-                                $userData = $this->db->query("SELECT * FROM users WHERE id = '" . $value['user_id'] . "'")->row(); ?>
-                                <li>
-                                    <div class="comments-box grey-bg">
-                                        <div class="comments-info d-flex">
-                                            <div class="comments-avatar mr-20">
-                                                <?php if (!empty($userData->image)) { ?>
-                                                    <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData->image ?>" />
-                                                <?php } else { ?>
-                                                    <img src="<?= base_url() ?>images/no-user.png" />
-                                                <?php } ?>
-                                            </div>
-                                            <div class="avatar-name">
-                                                <h5><?= $value['full_name'] ?></h5>
-                                                <span
-                                                    class="post-meta"><?= date('M j, Y', strtotime($value['created_at'])) ?></span>
-                                            </div>
-                                        </div>
-                                        <div class="comments-text ml-65">
-                                            <p><?= $value['comment'] ?></p>
-                                            <div class="comments-replay">
-                                                <a href="javascript:void(0)"
-                                                    onclick="replyComment(<?= $value['id'] ?>)">Reply</a>
-                                            </div>
-                                        </div>
+                    <?php
+                    $commentList = $this->db->query("SELECT * FROM community_comment WHERE community_id = '" . $community_data->id . "' ORDER BY id DESC")->result_array();
+                    if (!empty($commentList)) {
+                        foreach ($commentList as $value) {
+                        $userData = $this->db->query("SELECT * FROM users WHERE id = '" . $value['user_id'] . "'")->row(); ?>
+                        <li>
+                            <div class="comments-box grey-bg">
+                                <div class="comments-info d-flex">
+                                    <div class="comments-avatar mr-20">
+                                    <?php if (!empty($userData->image)) { ?>
+                                        <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData->image ?>" />
+                                    <?php } else { ?>
+                                        <img src="<?= base_url() ?>images/no-user.png" />
+                                    <?php } ?>
                                     </div>
-                                </li>
-                                <?php
-                                $commentRply = $this->db->query("SELECT * FROM community_comment_rply WHERE community_id = '" . $community_data->id . "' AND comment_id = '" . $value['id'] . "'")->result_array();
-                                if (!empty($commentRply)) {
-                                    foreach ($commentRply as $data) {
-                                        $userData1 = $this->db->query("SELECT * FROM users WHERE id = '" . $data['user_id'] . "'")->row(); ?>
-                                        <li class="children">
-                                            <div class="comments-box grey-bg">
-                                                <div class="comments-info d-flex">
-                                                    <div class="comments-avatar mr-20">
-                                                        <?php if (!empty($userData1->image)) { ?>
-                                                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData1->image ?>" />
-                                                        <?php } else { ?>
-                                                            <img src="<?= base_url() ?>images/no-user.png" />
-                                                        <?php } ?>
-                                                    </div>
-                                                    <div class="avatar-name">
-                                                        <h5><?= $data['full_name'] ?></h5>
-                                                        <span
-                                                            class="post-meta"><?= date('M j, Y', strtotime($data['created_at'])) ?></span>
-                                                    </div>
-                                                </div>
-                                                <div class="comments-text ml-65">
-                                                    <p><?= $data['comment'] ?></p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    <?php }
-                                } ?>
-                            <?php }
-                        } else { ?>
-                            <li>No comment yet</li>
+                                    <div class="avatar-name">
+                                        <h5><?= $value['full_name'] ?></h5>
+                                        <span class="post-meta"><?= date('M j, Y', strtotime($value['created_at'])) ?></span>
+                                    </div>
+                                </div>
+                                <div class="comments-text ml-65">
+                                    <p><?= $value['comment'] ?></p>
+                                    <div class="comments-replay">
+                                        <a href="javascript:void(0)" onclick="replyComment(<?= $value['id'] ?>)">Reply</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <?php
+                        $commentRply = $this->db->query("SELECT * FROM community_comment_rply WHERE community_id = '" . $community_data->id . "' AND comment_id = '" . $value['id'] . "'")->result_array();
+                        if (!empty($commentRply)) {
+                        foreach ($commentRply as $data) {
+                        $userData1 = $this->db->query("SELECT * FROM users WHERE id = '" . $data['user_id'] . "'")->row(); ?>
+                        <li class="children">
+                            <div class="comments-box grey-bg">
+                                <div class="comments-info d-flex">
+                                    <div class="comments-avatar mr-20">
+                                        <?php if (!empty($userData1->image)) { ?>
+                                        <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData1->image ?>" />
+                                        <?php } else { ?>
+                                        <img src="<?= base_url() ?>images/no-user.png" />
+                                        <?php } ?>
+                                    </div>
+                                    <div class="avatar-name">
+                                        <h5><?= $data['full_name'] ?></h5>
+                                        <span class="post-meta"><?= date('M j, Y', strtotime($data['created_at'])) ?></span>
+                                    </div>
+                                </div>
+                                <div class="comments-text ml-65">
+                                    <p><?= $data['comment'] ?></p>
+                                </div>
+                            </div>
+                        </li>
+                        <?php } } } } else { ?>
+                        <li>No comment yet</li>
                         <?php } ?>
                     </ul>
                     <input type="hidden" name="comm_id" id="comm_id" value="<?= @$community_data->id ?>">
@@ -142,14 +129,12 @@
                         <div class="row">
                             <div class="col-xxl-6 col-xl-6 col-lg-6">
                                 <div class="blog__comment-input">
-                                    <input type="text" placeholder="Your Name" name="full_name" id="full_name"
-                                        value="<?= $getUser->full_name ?>" required readonly>
+                                    <input type="text" placeholder="Your Name" name="full_name" id="full_name" value="<?= $getUser->full_name ?>" required readonly>
                                 </div>
                             </div>
                             <div class="col-xxl-6 col-xl-6 col-lg-6">
                                 <div class="blog__comment-input">
-                                    <input type="email" placeholder="Your Email" name="email" id="email"
-                                        value="<?= $getUser->email ?>" required readonly>
+                                    <input type="email" placeholder="Your Email" name="email" id="email" value="<?= $getUser->email ?>" required readonly>
                                 </div>
                             </div>
                             <div class="col-xxl-12">
@@ -159,8 +144,7 @@
                             </div>
                             <div class="col-xxl-12">
                                 <div class="blog__comment-input">
-                                    <textarea placeholder="Enter your comment ..." name="comment"
-                                        id="comment"></textarea>
+                                    <textarea placeholder="Enter your comment ..." name="comment" id="comment"></textarea>
                                 </div>
                             </div>
                             <!-- <div class="col-xxl-12">
@@ -172,10 +156,8 @@
                             <div class="col-xxl-12">
                                 <div class="blog__comment-btn">
                                     <button type="button" class="e-btn" onclick="postComment()">Post Comment</button>
-                                    <input type="hidden" name="user_id" id="user_id"
-                                        value="<?= $this->session->userdata('user_id') ?>">
-                                    <input type="hidden" name="community_id" id="community_id"
-                                        value="<?= @$community_data->id ?>">
+                                    <input type="hidden" name="user_id" id="user_id" value="<?= $this->session->userdata('user_id') ?>">
+                                    <input type="hidden" name="community_id" id="community_id" value="<?= @$community_data->id ?>">
                                     <input type="hidden" name="comment_id" id="comment_id" value="">
                                 </div>
                             </div>
