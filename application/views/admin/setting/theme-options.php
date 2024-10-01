@@ -27,8 +27,9 @@ $arr_default['wemail'] = '';
 $arr_default['youtube'] = '';
 $arr_default['facebook'] = '';
 $arr_default['twitter'] = '';
-$arr_default['app_store_link'] = '';;
-$arr_default['play_store_link'] = '';;
+$arr_default['app_store_link'] = '';
+$arr_default['play_store_link'] = '';
+$arr_default['required_subscription'] = '';
 $arr_default['openh'] = '';
 $arr_default['course_price'] = '';
 $arr_default['map'] = '';
@@ -129,19 +130,26 @@ function get_option($fname) {
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">Subscription Required?</label>
+                        <div class="col-sm-8">
+                            <label class="switch">
+                                <input type="checkbox" id="required_subscription" name="required_subscription" <?php if(get_option('required_subscription') == '1') { echo 'checked';}?>>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
                         <label class="col-sm-2 control-label">Shipping Charge</label>
                         <div class="col-sm-8">
-                            <!-- <textarea class="form-control" name="shipping_charge" rows="6"><?= get_option('shipping_charge') ?></textarea> -->
                             <input type="text" name="shipping_charge" value="<?= get_option('shipping_charge'); ?>" placeholder="Shipping Charge" class="form-control input-sm" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tax (%)</label>
                         <div class="col-sm-8">
-                            <!-- <textarea class="form-control" name="tax" rows="6"><?= get_option('shipping_charge') ?></textarea> -->
                             <input type="text" name="tax" value="<?= get_option('tax'); ?>" placeholder="Tax (%)" class="form-control input-sm" />
                         </div>
-                    </div>
+                    </div> -->
                     <hr />
                     <div class="box-header with-border">
                         <h3 class="box-title">Footer Setting</h3>
@@ -207,6 +215,7 @@ function get_option($fname) {
                         $str = rtrim($str, ',');
                         ?>
                         <input type="hidden" name="fields" value="<?= $str; ?>" />
+                        <p style="display: inline-block; color: red; font-size: 14px; font-weight: bold; font-style: italic;">Note: Please click the <b>"Save Settings"</b> button to apply the changes on the website.</p>
                     </div>
                 </div>
             </div>
@@ -221,7 +230,52 @@ function get_option($fname) {
             <?= form_close(); ?>
         </div>
     </div>
-    <!-- /.nav-tabs-custom -->
 </section>
 </section>
-<!-- /.content -->
+<style>
+.switch {position: relative; display: inline-block; width: 55px; height: 25px;}
+.switch input {opacity: 0; width: 0; height: 0;}
+.slider {position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; -webkit-transition: .4s; transition: .4s;}
+.slider:before {position: absolute; content: ""; height: 18px; width: 20px; left: 4px; bottom: 4px; background-color: white; -webkit-transition: .4s; transition: .4s;}
+input:checked + .slider {background-color: #2196F3;}
+input:focus + .slider {box-shadow: 0 0 1px #2196F3;}
+input:checked + .slider:before {-webkit-transform: translateX(26px); -ms-transform: translateX(26px); transform: translateX(26px);}
+/* Rounded sliders */
+.slider.round {border-radius: 34px;}
+.slider.round:before {border-radius: 50%;}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#required_subscription").click(function(){
+        if($('#required_subscription').not(':checked').length){
+            $.confirm({
+                title: 'Confirm!',
+                content: "Are you sure you want to deactivate subscription?",
+                buttons: {
+                    confirm: function () {
+                        var value = $('#required_subscription').val('0');
+                    },
+                    cancel: function () {
+                        location.reload();
+                    },
+                }
+            });
+        } else {
+            $.confirm({
+                title: 'Confirm!',
+                content: "Are you sure you want to activate subscription?",
+                buttons: {
+                    confirm: function () {
+                        var value = $('#required_subscription').val('1');
+                    },
+                    cancel: function () {
+                        location.reload();
+                    },
+                }
+            });
+        }
+    })
+})
+</script>

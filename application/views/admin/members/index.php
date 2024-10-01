@@ -29,6 +29,7 @@
                             <th>Phone</th>
                             <th>Type</th>
                             <th>Date</th>
+                            <th>Email Verification</th>
                             <th>Status</th>
                             <th>Enrolled</th>
                             <th>Actions</th>
@@ -65,6 +66,14 @@
                                     </td>
                                     <td><?= date('d M Y', strtotime($member->created_at)); ?></td>
                                     <!-- <td><img src="<?= site_url('assets/images/cms/' . $member->image) ?>" title="<?= $pages->title ?>" width="80px" onerror="this.src='<?= site_url('assets/images/no-image.png'); ?>';"></td> -->
+                                    <td style="vertical-align: middle;">
+                                        <div class="checkbox checbox-switch switch-success">
+                                            <label>
+                                                <input type="checkbox" value="<?= @$member->email_verified ?>" <?= (@$member->email_verified == 1) ? 'checked="checked"' : ''; ?> onchange="changeUseremailverified(<?= @$member->id ?>, $(this))">
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </td>
                                     <td style="vertical-align: middle;">
                                         <div class="checkbox checbox-switch switch-success">
                                             <label>

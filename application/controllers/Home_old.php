@@ -339,7 +339,7 @@ class Home extends CI_Controller {
                 <div style='width:600px;margin: 0 auto;background: #fff; border: 1px solid #e6e6e6;'>
                     <div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'>
                         <img src='cid:Logo' style='width:100px;float: right;margin-top: 0 auto;'>
-                        <h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Makutano</span></h3>
+                        <h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Movimiento Latino University</span></h3>
                         <p style='font-size: 18px;'> Dear Admin,</p>
                         <p style='font-size: 18px;'>Please find the below details for contact query.</p>
                         <p style='font-size: 18px; margin: 0px;'>Name: $fname</p>
@@ -348,13 +348,13 @@ class Home extends CI_Controller {
                         <p style='font-size: 18px; margin: 0px;'>Message: $msg</p>
                         <p style='font-size: 20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                     </div>
                     <table style='width: 100%;'>
                         <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                         </tr>
                     </table>
                 </div>
@@ -362,20 +362,30 @@ class Home extends CI_Controller {
             $mail = new PHPMailer(true);
             try {
                 $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
+                $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
+                $mail->AddAddress('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->IsHTML(true);
                 $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
                 $mail->Subject = $subject;
                 $mail->Body = $message;
                 $mail->IsSMTP();
                 //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
+                /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->SMTPOptions = array(
+                        'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                $mail->Host = "smtp.gmail.com";
+                $mail->Port = 587; //587 465
+                $mail->Username = 'support@movimientolatinouniversity.com';
+                $mail->Password = 'hwulwujqxokpilbi';*/
+                $mail->Host = 'localhost';
+                $mail->SMTPAuth = false;
+                $mail->SMTPAutoTLS = false;
+                $mail->Port = 25;
                 $mail->send();
                 echo $msg = "Thank You for Contacting Us";
             } catch (Exception $e) {
@@ -426,7 +436,7 @@ class Home extends CI_Controller {
                 <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                     <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
                         <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Makutano</span></h3>
+                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Movimiento Latino University</span></h3>
                         <p style='font-size: 18px;'>Hello User,</p>
                         <p style='font-size: 18px;'>Thank you for Thank you for your email. Our contact person will reach you shortly.</p>
                         <p style='font-size: 18px; margin: 0px;'>First Name: $fname/p>
@@ -435,13 +445,13 @@ class Home extends CI_Controller {
                         <p style='font-size: 18px; margin: 0px;'>Message: $msg</p>
                         <p style='font-size: 20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                     </div>
                     <table style='width: 100%;'>
                         <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                         </tr>
                     </table>
                 </div>
@@ -450,8 +460,8 @@ class Home extends CI_Controller {
             try {
                 //Server settings
                 $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
+                $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
+                $mail->AddAddress('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->IsHTML(true);
                 $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
                 $mail->Subject = $subject;
@@ -459,12 +469,22 @@ class Home extends CI_Controller {
                 //Send email via SMTP
                 $mail->IsSMTP();
                 //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
+                /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->SMTPOptions = array(
+                        'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                $mail->Host = "smtp.gmail.com";
+                $mail->Port = 587; //587 465
+                $mail->Username = 'support@movimientolatinouniversity.com';
+                $mail->Password = 'hwulwujqxokpilbi';*/
+                $mail->Host = 'localhost';
+                $mail->SMTPAuth = false;
+                $mail->SMTPAutoTLS = false;
+                $mail->Port = 25;
                 $mail->send();
                 // echo 'Message has been sent';
             } catch (Exception $e) {
@@ -545,7 +565,7 @@ class Home extends CI_Controller {
             $lastId = $this->db->insert('users', $data);
             $userid = $this->db->insert_id();
 			if($userid) {
-				$subject = 'Verify Your Email Address From Makutano';
+				$subject = 'Verify Your Email Address From Movimiento Latino University';
 				$activationURL = base_url() . "email-verification/" . urlencode(base64_encode($otp));
                 $getOptionsSql = "SELECT * FROM `options`";
                 $optionsList = $this->db->query($getOptionsSql)->result();
@@ -557,20 +577,20 @@ class Home extends CI_Controller {
                     <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                         <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
                             <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                            <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
+                            <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Movimiento Latino University</span></h3>
                             <p style='font-size: 18px;'>Dear ".$first_name.",</p>
-                            <p style='font-size: 18px;'>Thank you for registration on <strong style='font-weight:bold;'>Makutano</strong>.</p>
+                            <p style='font-size: 18px;'>Thank you for registration on <strong style='font-weight:bold;'>Movimiento Latino University</strong>.</p>
                             <p style='font-size: 18px; margin: 0px;'>Please click on the below activation link to verify your email address.</p>
                             <p style='font-size: 18px; margin: 0px;'><a href=" . $activationURL . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
                             <p style='font-size:20px;'></p>
                             <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                             <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                             <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                         </div>
                         <table style='width: 100%;'>
                             <tr>
-                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                             </tr>
                         </table>
                     </div>
@@ -579,7 +599,7 @@ class Home extends CI_Controller {
                 $mail = new PHPMailer(true);
                 try {
                     $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
+                    $mail->SetFrom('support@movimientolatinouniversity.com', 'Makutano');
                     $mail->AddAddress($email);
                     $mail->IsHTML(true);
                     $mail->Subject = $subject;
@@ -587,12 +607,22 @@ class Home extends CI_Controller {
                     $mail->Body = $message;
                     $mail->IsSMTP();
                     //Send mail using GMAIL server
-                    $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                    $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                    $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                    $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                    $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port = 587;
+                    /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->SMTPOptions = array(
+                            'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    );
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->Port = 587; //587 465
+                    $mail->Username = 'support@movimientolatinouniversity.com';
+                    $mail->Password = 'hwulwujqxokpilbi';*/
+                    $mail->Host = 'localhost';
+                    $mail->SMTPAuth = false;
+                    $mail->SMTPAutoTLS = false;
+                    $mail->Port = 25;
                     if(!$mail->send()) {
                         $msg = "Error sending: " . $mail->ErrorInfo;
                     } else {
@@ -699,7 +729,7 @@ class Home extends CI_Controller {
                 'id' => $user_id
             );
             $this->Commonmodel->update_row('users', $data, $where);
-            $subject = 'Password reset from Makutano';
+            $subject = 'Password reset from Movimiento Latino University';
             $url = base_url() . "otp-verification/" . urlencode(base64_encode($otp));
             $getOptionsSql = "SELECT * FROM `options`";
             $optionsList = $this->db->query($getOptionsSql)->result();
@@ -711,20 +741,20 @@ class Home extends CI_Controller {
                 <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                     <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
                         <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
+                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Movimiento Latino University</span></h3>
                         <p style='font-size: 18px;'>Dear ".$name.",</p>
                         <p style='font-size: 18px;'></p>
                         <p style='font-size: 18px; margin: 0px;'>Please click on below link to reset your password.</p>
                         <p style='font-size: 18px; margin: 0px;'><a href=" . $url . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
                         <p style='font-size:20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                     </div>
                     <table style='width: 100%;'>
                         <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                         </tr>
                     </table>
                 </div>
@@ -733,7 +763,7 @@ class Home extends CI_Controller {
             try {
                 //Server settings
                 $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
+                $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->AddAddress($email);
                 $mail->IsHTML(true);
                 $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
@@ -742,12 +772,22 @@ class Home extends CI_Controller {
                 //Send email via SMTP
                 $mail->IsSMTP();
                 //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
+                /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->SMTPOptions = array(
+                        'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                $mail->Host = "smtp.gmail.com";
+                $mail->Port = 587; //587 465
+                $mail->Username = 'support@movimientolatinouniversity.com';
+                $mail->Password = 'hwulwujqxokpilbi';*/
+                $mail->Host = 'localhost';
+                $mail->SMTPAuth = false;
+                $mail->SMTPAutoTLS = false;
+                $mail->Port = 25;
                 $mail->send();
             } catch (Exception $e) {
                 $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
@@ -1073,7 +1113,7 @@ class Home extends CI_Controller {
                 <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                     <div style='padding: 30px 30px 15px 30px; box-sizing: border-box;'>
                         <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
+                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Movimiento Latino University</span></h3>
                         <p style='font-size: 18px; margin: 0px;'>Hello Admin,</p>
                         <p style='font-size: 18px; margin: 0px;'>Please find the below details submitted by the user for Youth Member Registration.</p><br/><br/>
                         <p style='font-size: 18px; margin: 0px;'>First Name: $fname</p>
@@ -1089,13 +1129,13 @@ class Home extends CI_Controller {
                         <p style='font-size: 18px; margin: 0px;'>Interest: $interest</p>
                         <p style='font-size: 20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                     </div>
                     <table style='width: 100%;'>
                         <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                         </tr>
                     </table>
                 </div>
@@ -1103,7 +1143,7 @@ class Home extends CI_Controller {
             $mail = new PHPMailer(true);
             try {
                 $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
+                $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->AddAddress($this->input->post('email'));
                 $mail->IsHTML(true);
                 $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
@@ -1111,12 +1151,22 @@ class Home extends CI_Controller {
                 $mail->Body = $message;
                 $mail->IsSMTP();
                 //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
+                /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->SMTPOptions = array(
+                        'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                $mail->Host = "smtp.gmail.com";
+                $mail->Port = 587; //587 465
+                $mail->Username = 'support@movimientolatinouniversity.com';
+                $mail->Password = 'hwulwujqxokpilbi';*/
+                $mail->Host = 'localhost';
+                $mail->SMTPAuth = false;
+                $mail->SMTPAutoTLS = false;
+                $mail->Port = 25;
                 $mail->send();
             } catch (Exception $e) {
                 $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
@@ -1226,21 +1276,21 @@ class Home extends CI_Controller {
                     <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                         <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
                             <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                            <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
+                            <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Movimiento Latino University</span></h3>
                             <p style='font-size: 18px;'> Dear User,</p>
                             <p style='font-size: 18px;'>Thank you so much for signing up to our newsletter.</p>
-                            <p style='font-size: 18px; margin: 0px;'>It is a delight to have you on board. You can also visit our blog to get more information about <a href='$baseurl'>Makutano.</a></p>
+                            <p style='font-size: 18px; margin: 0px;'>It is a delight to have you on board. You can also visit our blog to get more information about <a href='$baseurl'>Movimiento Latino University.</a></p>
                             <p>I'de like to share more great content with you in the future, but you can <a href='$unsubscribe'>Unsubscribe</a> at any time if you'd rathe not receive anything further.</p>
                             <p style='font-size: 18px; margin: 0px;'>In the meantime, if you'd like to check out more of our news and blogs, please swing by our <a href='$blog'>News & Blog</a></p>
                             <p style='font-size:20px;'></p>
                             <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                             <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                             <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                         </div>
                         <table style='width: 100%;'>
                             <tr>
-                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                             </tr>
                         </table>
                     </div>
@@ -1248,19 +1298,29 @@ class Home extends CI_Controller {
                 $mail = new PHPMailer(true);
                 try {
                     $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
+                    $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                     $mail->AddAddress($user_email);
                     $mail->IsHTML(true);
                     $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
                     $mail->Subject = "Email Subscription";
                     $mail->Body = $message;
                     $mail->IsSMTP();
-                    $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                    $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                    $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                    $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                    $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port = 587;
+                    /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->SMTPOptions = array(
+                            'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    );
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->Port = 587; //587 465
+                    $mail->Username = 'support@movimientolatinouniversity.com';
+                    $mail->Password = 'hwulwujqxokpilbi';*/
+                    $mail->Host = 'localhost';
+                    $mail->SMTPAuth = false;
+                    $mail->SMTPAutoTLS = false;
+                    $mail->Port = 25;
                     $mail->send();
                 } catch (Exception $e) {
                     $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
@@ -1305,7 +1365,7 @@ class Home extends CI_Controller {
                 <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                     <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
                         <img src='cid:Logo' style='width: 220px;float: right;margin-top: 0;'>
-                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Makutano</span></h3>
+                        <h3 style='padding-top: 40px;line-height: 50px;'>Greetings from<span style='font-weight: 900; font-size: 35px; color: #F44C0D; display: block'>Movimiento Latino University</span></h3>
                         <p style='font-size: 18px;'> Dear Admin,</p>
                         <p style='font-size: 18px;'>Please find the below details for contact query.</p>
                         <p style='font-size: 18px; margin: 0px;'>First Name: $fname/p>
@@ -1314,13 +1374,13 @@ class Home extends CI_Controller {
                         <p style='font-size: 18px; margin: 0px;'>Age: $message</p>
                         <p style='font-size:20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                     </div>
                     <table style='width: 100%;'>
                         <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                         </tr>
                     </table>
                 </div>
@@ -1328,20 +1388,30 @@ class Home extends CI_Controller {
             $mail = new PHPMailer(true);
             try {
                 $mail->CharSet = 'UTF-8';
-                $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-                $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
+                $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
+                $mail->AddAddress('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->IsHTML(true);
-                $mail->Subject = "Contact Makutano Institute";
+                $mail->Subject = "Contact Movimiento Latino University";
                 $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
                 $mail->Body = $message;
                 $mail->IsSMTP();
                 //Send mail using GMAIL server
-                $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 587;
+                /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->SMTPOptions = array(
+                        'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                $mail->Host = "smtp.gmail.com";
+                $mail->Port = 587; //587 465
+                $mail->Username = 'support@movimientolatinouniversity.com';
+                $mail->Password = 'hwulwujqxokpilbi';*/
+                $mail->Host = 'localhost';
+                $mail->SMTPAuth = false;
+                $mail->SMTPAutoTLS = false;
+                $mail->Port = 25;
                 $mail->send();
             } catch (Exception $e) {
                 $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
@@ -1437,7 +1507,7 @@ class Home extends CI_Controller {
             <div style='width:600px;margin: 0 auto;background: #fff; border: 1px solid #e6e6e6;'>
                 <div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'>
                     <img src='cid:Logo' style='width:220px;float: right;margin-top: 0 auto;'>
-                    <h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Makutano</span></h3>
+                    <h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Movimiento Latino University</span></h3>
                     <p style='font-size: 18px;'>Dear Admin,</p>
                     <p style='font-size: 18px;'>Please find the below details for contact sponsor.</p>
                     <p style='font-size: 18px; margin: 0px;'>First Name: $fname</p>
@@ -1450,13 +1520,13 @@ class Home extends CI_Controller {
                     <p style='font-size: 18px; margin: 0px;'>Message: $msg</p>
                     <p style='font-size:20px;'></p>
                     <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                    <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                    <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                     <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                     <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                 </div>
                 <table style='width: 100%;'>
                     <tr>
-                        <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                        <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                     </tr>
                 </table>
             </div>
@@ -1464,20 +1534,30 @@ class Home extends CI_Controller {
         $mail = new PHPMailer(true);
         try {
             $mail->CharSet = 'UTF-8';
-            $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
-            $mail->AddAddress('masterclass@makutano.cd', 'Makutano');
+            $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
+            $mail->AddAddress('support@movimientolatinouniversity.com', 'Movimiento Latino University');
             $mail->IsHTML(true);
             $mail->Subject = "ASK ABOUT SPONSORSHIP";
             $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
             $mail->Body = $message;
             $mail->IsSMTP();
             //Send mail using GMAIL server
-            $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-            $mail->SMTPAuth = true;                          // Enable SMTP authentication
-            $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-            $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-            $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-            $mail->Port = 587;
+            /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPOptions = array(
+                    'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587; //587 465
+            $mail->Username = 'support@movimientolatinouniversity.com';
+            $mail->Password = 'hwulwujqxokpilbi';*/
+            $mail->Host = 'localhost';
+            $mail->SMTPAuth = false;
+            $mail->SMTPAutoTLS = false;
+            $mail->Port = 25;
             $mail->send();
             echo "1";
         } catch (Exception $e) {
@@ -1613,14 +1693,14 @@ class Home extends CI_Controller {
                             <div>$description</div>
                             <div>
                                 <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                                <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
+                                <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
                                 <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                                 <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                             </div>
                         </div>
                         <table style='width: 100%;'>
                             <tr>
-                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
+                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
                             </tr>
                         </table>
                     </div>
@@ -1628,7 +1708,7 @@ class Home extends CI_Controller {
                 $mail = new PHPMailer(true);
                 try {
                     $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('masterclass@makutano.cd', 'Makutano');
+                    $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                     $mail->AddAddress($userEmail);
                     $mail->IsHTML(true);
                     $mail->Subject = $mailData['subject'];
@@ -1648,12 +1728,22 @@ class Home extends CI_Controller {
                     $mail->Body = $message;
                     $mail->IsSMTP();
                     //Send mail using GMAIL server
-                    $mail->Host = 'server286.web-hosting.com';       // Specify main and backup SMTP servers
-                    $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                    $mail->Username = 'masterclass@makutano.cd';     // SMTP username
-                    $mail->Password = 'LYUv9Vm8vrKG';                // SMTP password
-                    $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                    $mail->Port = 587;
+                    /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->SMTPOptions = array(
+                            'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    );
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->Port = 587; //587 465
+                    $mail->Username = 'support@movimientolatinouniversity.com';
+                    $mail->Password = 'hwulwujqxokpilbi';*/
+                    $mail->Host = 'localhost';
+                    $mail->SMTPAuth = false;
+                    $mail->SMTPAutoTLS = false;
+                    $mail->Port = 25;
                     if($mail->send()) {
                         $this->db->query("UPDATE sendemailtouser SET status = 'sent', updated_date = '".$date."' WHERE id = '".$mailData['id']."'");
                     } else {

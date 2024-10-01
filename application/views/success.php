@@ -72,26 +72,34 @@
                             $optionsList = $this->db->query($getOptionsSql)->result();
                             $imagePath = base_url().'uploads/logo/'.$optionsList[0]->option_value;
                             //$imagePath = base_url() . 'user_assets/images/C2C_Home/Header_Logo.png';
-                            $message = "<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'> <tbody> <tr> <td align='center'> <table class='col-600' width='600' border='0' align='center' cellpadding='0' cellspacing='0' style='margin-left:20px; margin-right:20px; border-left: 1px solid #dbd9d9; border-right: 1px solid #dbd9d9; border-top:2px solid #232323'> <tbody> <tr> <td height='35'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Raleway, sans-serif; font-size:16px; font-weight: bold; color:#2a3a4b;'> <img src='".$imagePath."'/> </td> </tr> <tr> <td height='35'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Raleway, sans-serif; font-size:16px; font-weight: bold; color:#2a3a4b;'>Dear ".ucwords($fullName).",</td> </tr> <tr> <td height='10'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Lato, sans-serif; font-size:16px; color:#444; line-height:24px; font-weight: 400;'>Congratulations! Your purchase on <strong style='font-weight:bold;'>Movimiento</strong> was successful. </td> </tr> <tr> <td height='10'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Lato, sans-serif; font-size:16px; color:#444; line-height:24px; font-weight: 400;'>Please click on the below link to view purchase invoice.</td> </tr> <tr> <td height='10'></td> </tr> <tr> <td align='left' style='text-align:center;padding:5px 10px;font-family: Lato, sans-serif; font-size:16px; color:#444; line-height:24px; font-weight: bold;'> <a href=".$invoice['hosted_invoice_url']." target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>Click Here</a> </td> </tr> <tr> <td height='30'></td> </tr> <tr> <td align='left' style='padding:0 10px;font-family: Lato, sans-serif; font-size:16px; color:#232323; line-height:24px; font-weight: 700;'>Thank you!</td> </tr> <tr> <td align='left' style='padding:0 10px;font-family: Lato, sans-serif; font-size:14px; color:#232323; line-height:24px; font-weight: 700;'>Sincerely</td> </tr> <tr> <td align='left' style='padding:0 10px;font-family: Lato, sans-serif; font-size:14px; color:#232323; line-height:24px; font-weight: 700;'>Movimiento</td> </tr> </tbody> </table> </td> </tr> </tbody> </table>";
+                            $message = "<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'> <tbody> <tr> <td align='center'> <table class='col-600' width='600' border='0' align='center' cellpadding='0' cellspacing='0' style='margin-left:20px; margin-right:20px; border-left: 1px solid #dbd9d9; border-right: 1px solid #dbd9d9; border-top:2px solid #232323'> <tbody> <tr> <td height='35'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Raleway, sans-serif; font-size:16px; font-weight: bold; color:#2a3a4b;'> <img src='".$imagePath."'/> </td> </tr> <tr> <td height='35'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Raleway, sans-serif; font-size:16px; font-weight: bold; color:#2a3a4b;'>Dear ".ucwords($fullName).",</td> </tr> <tr> <td height='10'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Lato, sans-serif; font-size:16px; color:#444; line-height:24px; font-weight: 400;'>Congratulations! Your purchase on <strong style='font-weight:bold;'>Movimiento Latino University</strong> was successful. </td> </tr> <tr> <td height='10'></td> </tr> <tr> <td align='left' style='padding:5px 10px;font-family: Lato, sans-serif; font-size:16px; color:#444; line-height:24px; font-weight: 400;'>Please click on the below link to view purchase invoice.</td> </tr> <tr> <td height='10'></td> </tr> <tr> <td align='left' style='text-align:center;padding:5px 10px;font-family: Lato, sans-serif; font-size:16px; color:#444; line-height:24px; font-weight: bold;'> <a href=".$invoice['hosted_invoice_url']." target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>Click Here</a> </td> </tr> <tr> <td height='30'></td> </tr> <tr> <td align='left' style='padding:0 10px;font-family: Lato, sans-serif; font-size:16px; color:#232323; line-height:24px; font-weight: 700;'>Thank you!</td> </tr> <tr> <td align='left' style='padding:0 10px;font-family: Lato, sans-serif; font-size:14px; color:#232323; line-height:24px; font-weight: 700;'>Sincerely</td> </tr> <tr> <td align='left' style='padding:0 10px;font-family: Lato, sans-serif; font-size:14px; color:#232323; line-height:24px; font-weight: 700;'>Movimiento Latino University</td> </tr> </tbody> </table> </td> </tr> </tbody> </table>";
                             $mail = new PHPMailer(true);
                             try {
                                 //Server settings
                                 $mail->CharSet = 'UTF-8';
-                                $mail->SetFrom('info@movimiento.com', 'movimiento');
+                                $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                                 $mail->AddAddress($userEmail);
                                 $mail->IsHTML(true);
                                 $mail->Subject = $subject;
                                 $mail->Body = $message;
                                 //Send email via SMTP
                                 $mail->IsSMTP();
-                                $mail->SMTPAuth   = true;
-                                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                                $mail->Host = 'smtp-relay.brevo.com';       // Specify main and backup SMTP servers
-                                $mail->SMTPAuth = true;                          // Enable SMTP authentication
-                                $mail->Username = 'sayantan@goigi.in';     // SMTP username
-                                $mail->Password = 'NWpyxa3UK2HDPSbs';                // SMTP password
-                                $mail->SMTPSecure = 'tls';                       // Enable TLS encryption, `ssl` also accepted
-                                $mail->Port = 587;
+                               /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                                $mail->SMTPOptions = array(
+                                        'ssl' => array(
+                                        'verify_peer' => false,
+                                        'verify_peer_name' => false,
+                                        'allow_self_signed' => true
+                                    )
+                                );
+                                $mail->Host = "smtp.gmail.com";
+                                $mail->Port = 587; //587 465
+                                $mail->Username = 'support@movimientolatinouniversity.com';
+                                $mail->Password = 'hwulwujqxokpilbi';*/
+                                $mail->Host = 'localhost';
+                                $mail->SMTPAuth = false;
+                                $mail->SMTPAutoTLS = false;
+                                $mail->Port = 25;
                                 $mail->send();
                                 // echo 'Message has been sent';
                             } catch (Exception $e) {

@@ -13,7 +13,7 @@
 <?php
 $url = $_SERVER['REQUEST_URI'];
 $url = explode('/', $url);
-$comm_id = $url[5];
+$comm_id = $url[4];
 ?>
 <section class="content">
     <div class="row">

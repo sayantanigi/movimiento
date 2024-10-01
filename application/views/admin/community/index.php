@@ -45,8 +45,10 @@
                             <td><?= $i ?></td>
                             <td>
                                 <?php
-                                $course_details = $this->db->query("SELECT * FROM courses WHERE id = '".$community_v->course_id."'")->row();
-                                echo $course_details->title;
+                                if(!empty($community_v->course_id)) {
+                                    $course_details = $this->db->query("SELECT * FROM courses WHERE id = '".$community_v->course_id."'")->row();
+                                    echo $course_details->title;
+                                }
                                 ?>
                             </td>
                             <td><?= $community_v->title ?></td>

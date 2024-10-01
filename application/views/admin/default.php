@@ -44,8 +44,9 @@
     <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
     <style>
     span.logo-lg h2 {margin-top: 7px !important;}
-    .content-wrapper{min-height: 682px !important; overflow-x: hidden; overflow-y: scroll; height: 500px;}
+    .content-wrapper{min-height: 648px !important; overflow-x: hidden; overflow-y: scroll; height: 500px;}
     .wrapper {position: initial;}
+    .cke_notification_warning {display: none !important;}
     </style>
     <?php
         $aid = $this->session->userdata('userid');
@@ -173,7 +174,7 @@
                     </li>
                     <li class="treeview <?= ($tab == 'add_cms' || $tab == 'cms') ? 'active' : ''; ?>">
                         <a href="#">
-                            <i class="fa fa-cog"></i>
+                            <i class="fa fa-file"></i>
                             <span>Content Management</span>
                             <span class="pull-right-container">
                                 <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
@@ -188,7 +189,7 @@
                     </li>
                     <li class="treeview <?= ($tab == 'add_comcat' || $tab == 'comcat_list' || $tab == 'add_comm' || $tab == 'comm_list') ? 'active' : ''; ?>">
                         <a href="#">
-                            <i class="fa fa-book"></i>
+                            <i class="fa fa-users"></i>
                             <span>Community </span>
                             <span class="pull-right-container">
                                 <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
@@ -209,9 +210,29 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="treeview <?= ($tab == 'add_subscription' || $tab == 'subscription') ? 'active' : ''; ?>">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-money"></i>
+                            <span>Subscription</span>
+                            <span class="pull-right-container">
+                                <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="<?= ($tab == 'add_subscription') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('subscription/add') ?>"><i class="fa fa-circle"></i> Add Subscription</a>
+                            </li>
+                            <li class="<?= ($tab == 'subscription') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('subscription') ?>"><i class="fa fa-circle"></i> Subscription Lists</a>
+                            </li>
+                            <!-- <li class="<?= ($tab == 'subscriber_list') ? 'active' : ''; ?>">
+                                <a href="<?= admin_url('subscriber_list') ?>"><i class="fa fa-circle"></i> Subscriber Lists</a>
+                            </li> -->
+                        </ul>
+                    </li>
                     <li class="treeview <?= ($tab == 'cert_apply' || $tab == 'rv_cont' || $tab == 'contacts' || $tab == 'cert_contacts' || $tab == 'contacts_stay') ? 'active' : ''; ?>">
                         <a href="#">
-                            <i class="fa fa-envelope"></i>
+                            <i class="fa fa-address-card"></i>
                             <span>Contact Management</span>
                             <span class="pull-right-container">
                                 <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
@@ -274,10 +295,10 @@
         <div class="content-wrapper">
             <?php $this->load->view($main); ?>
         </div>
+        <footer class="main-footer" style="text-align: center">
+            <strong>Copyright &copy; <?= date('Y') ?> <a href="<?= base_url()?>">Movimiento Latino University</a></strong>. All Rights Reserved.
+        </footer>
     </div>
-    <footer class="main-footer" style="text-align: center">
-        <strong>Copyright &copy; <?= date('Y') ?> <a href="https://techg.igiapp.com/movimiento">Movimiento</a></strong> Latino University. All Rights Reserved.
-    </footer>
     <div class="control-sidebar-bg"></div>
     <style>
         .red {color: #dc3545;}#output_image {width: 60px;height: 60px;object-fit: cover;border: 1px solid #ccc;padding: 2px;border-radius: 5px;margin-top: 0;}.error {width: 100%;margin-top: .25rem;font-size: .875em;color: #dc3545;}.invalid-feedback {width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;font-weight: 500;}.is-invalid {border-color: #dc3545 !important;}.truncate {width: 150px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.truncate_desc {width: 200px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.truncate_name {width: 100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.checkbox.checbox-switch label, .checkbox-inline.checbox-switch {display: inline-block;position: relative;padding-left: 0;}.checkbox.checbox-switch label input, .checkbox-inline.checbox-switch input {display: none;}.checkbox.checbox-switch label span, .checkbox-inline.checbox-switch span {width: 35px;border-radius: 20px;height: 18px;border: 1px solid #dbdbdb;background-color: rgb(255, 255, 255);border-color: rgb(223, 223, 223);box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;display: inline-block;vertical-align: middle;margin-right: 5px;}.checkbox.checbox-switch label span:before, .checkbox-inline.checbox-switch span:before {display: inline-block;width: 16px;height: 16px;border-radius: 50%;background: rgb(255, 255, 255);content: " ";top: 0;position: relative;left: 0;transition: all 0.3s ease;box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);}.checkbox.checbox-switch label>input:checked+span:before, .checkbox-inline.checbox-switch>input:checked+span:before {left: 17px;}.checkbox.checbox-switch label>input:checked+span, .checkbox-inline.checbox-switch>input:checked+span {background-color: rgb(180, 182, 183);border-color: rgb(180, 182, 183);box-shadow: rgb(180, 182, 183) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch label>input:checked:disabled+span, .checkbox-inline.checbox-switch>input:checked:disabled+span {background-color: rgb(220, 220, 220);border-color: rgb(220, 220, 220);box-shadow: rgb(220, 220, 220) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch label>input:disabled+span, .checkbox-inline.checbox-switch>input:disabled+span {background-color: rgb(232, 235, 238);border-color: rgb(255, 255, 255);}.checkbox.checbox-switch label>input:disabled+span:before, .checkbox-inline.checbox-switch>input:disabled+span:before {background-color: rgb(248, 249, 250);border-color: rgb(243, 243, 243);box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);}.checkbox.checbox-switch.switch-light label>input:checked+span, .checkbox-inline.checbox-switch.switch-light>input:checked+span {background-color: rgb(248, 249, 250);border-color: rgb(248, 249, 250);box-shadow: rgb(248, 249, 250) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-dark label>input:checked+span, .checkbox-inline.checbox-switch.switch-dark>input:checked+span {background-color: rgb(52, 58, 64);border-color: rgb(52, 58, 64);box-shadow: rgb(52, 58, 64) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-dark label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-dark>input:checked:disabled+span {background-color: rgb(100, 102, 104);border-color: rgb(100, 102, 104);box-shadow: rgb(100, 102, 104) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-success label>input:checked+span, .checkbox-inline.checbox-switch.switch-success>input:checked+span {background-color: rgb(40, 167, 69);border-color: rgb(40, 167, 69);box-shadow: rgb(40, 167, 69) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-success label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-success>input:checked:disabled+span {background-color: rgb(153, 217, 168);border-color: rgb(153, 217, 168);box-shadow: rgb(153, 217, 168) 0px 0px 0px 8px inset;}.checkbox.checbox-switch.switch-danger label>input:checked+span, .checkbox-inline.checbox-switch.switch-danger>input:checked+span {background-color: rgb(200, 35, 51);border-color: rgb(200, 35, 51);box-shadow: rgb(200, 35, 51) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-danger label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-danger>input:checked:disabled+span {background-color: rgb(216, 119, 129);border-color: rgb(216, 119, 129);box-shadow: rgb(216, 119, 129) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-primary label>input:checked+span, .checkbox-inline.checbox-switch.switch-primary>input:checked+span {background-color: rgb(0, 105, 217);border-color: rgb(0, 105, 217);box-shadow: rgb(0, 105, 217) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-primary label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-primary>input:checked:disabled+span {background-color: rgb(109, 163, 221);border-color: rgb(109, 163, 221);box-shadow: rgb(109, 163, 221) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-info label>input:checked+span, .checkbox-inline.checbox-switch.switch-info>input:checked+span {background-color: rgb(23, 162, 184);border-color: rgb(23, 162, 184);box-shadow: rgb(23, 162, 184) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-info label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-info>input:checked:disabled+span {background-color: rgb(102, 192, 206);border-color: rgb(102, 192, 206);box-shadow: rgb(102, 192, 206) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-warning label>input:checked+span, .checkbox-inline.checbox-switch.switch-warning>input:checked+span {background-color: rgb(255, 193, 7);border-color: rgb(255, 193, 7);box-shadow: rgb(255, 193, 7) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}.checkbox.checbox-switch.switch-warning label>input:checked:disabled+span, .checkbox-inline.checbox-switch.switch-warning>input:checked:disabled+span {background-color: rgb(226, 195, 102);border-color: rgb(226, 195, 102);box-shadow: rgb(226, 195, 102) 0px 0px 0px 8px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;}
@@ -447,6 +468,32 @@
                 });
         }
 
+        function changeUseremailverified(id, thisSwitch) {
+            var newStatus;
+            if (thisSwitch.val() == 1) {
+                thisSwitch.val('0');
+                newStatus = '0';
+            } else {
+                thisSwitch.val('1');
+                newStatus = '1';
+            }
+            $.ajax({
+                url: '<?= admin_url('members/changeUseremailverified') ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    user_id: String(id),
+                    email_verified: String(newStatus)
+                },
+            })
+                .done(function (data) {
+                    alert_func(data);
+                })
+                .fail(function (data) {
+                    console.log(data);
+                });
+        }
+
         function changeBannerStatus(id, thisSwitch) {
             var newStatus;
             if (thisSwitch.val() == 1) {
@@ -520,6 +567,7 @@
                     console.log(data);
                 });
         }
+
         function changeProductStatus(id, thisSwitch) {
             var newStatus;
             if (thisSwitch.val() == 1) {
@@ -545,6 +593,7 @@
                     console.log(data);
                 });
         }
+
         jQuery(document).ready(function ($) {
             $('#vid_type').hide();
             $('#video_link').hide();
@@ -664,14 +713,17 @@
                     return false;
                 }
             });
+            $(".confirm").click(function () {
+                location.reload();
+            });
         });
 
-        CKEDITOR.replace('editor1');
+        // CKEDITOR.replace('editor1');
         CKEDITOR.replace('editor2');
-        CKEDITOR.replace('editor3');
-        CKEDITOR.replace('editor4');
-        CKEDITOR.replace('editor5');
-        CKEDITOR.replace('editor6');
+        // CKEDITOR.replace('editor3');
+        // CKEDITOR.replace('editor4');
+        // CKEDITOR.replace('editor5');
+        // CKEDITOR.replace('editor6');
 
         $(document).ready(function () {
             var i = 1;
@@ -734,6 +786,48 @@
                     console.log(e);
                     $("#courselist").html(e);
                 });
+        }
+
+        function changeSubscribeStatus(id, thisSwitch) {
+            var newStatus;
+            if (thisSwitch.val() == 1) {
+                thisSwitch.val('0');
+                newStatus = '0';
+            } else {
+                thisSwitch.val('1');
+                newStatus = '1';
+            }
+            $.ajax({
+                url: '<?= admin_url('subscription/changeStatus') ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    id: String(id),
+                    status: String(newStatus)
+                },
+            })
+            .done(function (data) {
+                alert_func(data);
+            })
+            .fail(function (data) {
+                console.log(data);
+            });
+        }
+
+        function deleteSubscribe(id) {
+            $.ajax({
+                url: '<?= admin_url('subscription/deletesubscribe') ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {id: String(id)},
+            })
+            .done(function (data) {
+                alert_func(data);
+                //location.reload();
+            })
+            .fail(function (data) {
+                console.log(data);
+            });
         }
     </script>
 </body>

@@ -1531,7 +1531,9 @@ class Course extends CI_Controller {
     public function purchased_course() {
     	$user_id = $this->session->userdata('user_id');
     	$get_Course = $this->db->query("SELECT group_concat(id) as course_id FROM courses WHERE user_id = '".$user_id."'")->row();
-    	$data['getPurchasedList'] = $this->db->query("SELECT * FROM course_enrollment WHERE course_id IN (".$get_Course->course_id.") ORDER BY course_id DESC")->result_array();
+    	if(!empty($get_Course->course_id)) {
+    	    $data['getPurchasedList'] = $this->db->query("SELECT * FROM course_enrollment WHERE course_id IN (".$get_Course->course_id.") ORDER BY course_id DESC")->result_array();
+    	}
     	$data['title'] = "Course Purchased List";
     	$data['nl2'] = "Course Purchased List";
 		$this->load->view('supercontrol/header', $data);

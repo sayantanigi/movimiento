@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 error_reporting(0);
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 class Members extends AI_Controller {
     public function __construct() {
         parent::__construct();
@@ -68,6 +71,22 @@ class Members extends AI_Controller {
                 $msg = 'User account deactivated successfully!';
             }
             if ($this->Commonmodel->update_row('users', ['status' => $status], ['id' => $userId])) {
+                echo '["' . $msg . '", "success", "#A5DC86"]';
+            } else {
+                echo '["Some error occured, Please try again!", "error", "#DD6B55"]';
+            }
+        }
+    }
+    public function changeUseremailverified() {
+        if ($this->input->post('user_id')) {
+            $userId = $this->input->post('user_id');
+            $email_verified = $this->input->post('email_verified');
+            if ($email_verified == 1) {
+                $msg = 'Email verified';
+            } else {
+                $msg = 'Email unverified';
+            }
+            if ($this->Commonmodel->update_row('users', ['email_verified' => $email_verified], ['id' => $userId])) {
                 echo '["' . $msg . '", "success", "#A5DC86"]';
             } else {
                 echo '["Some error occured, Please try again!", "error", "#DD6B55"]';
@@ -157,7 +176,60 @@ class Members extends AI_Controller {
             }
             $gn_user_id = $this->Commonmodel->add_details('users', $mydata);
             if ($gn_user_id) {
-                $msg = '["New User added successfully!", "success", "#36A1EA"]';
+                $subject = 'Login Credential for Movimiento Latino University';
+                $getOptionsSql = "SELECT * FROM `options`";
+                $optionsList = $this->db->query($getOptionsSql)->result();
+                $admEmail = $optionsList[8]->option_value;
+                $address = $optionsList[6]->option_value;
+                $message = "
+                <body>
+                    <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
+                        <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
+                            <img src='cid:Logo' style='width: 220px; float: right; margin-top: 0'>
+                            <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento Latino University</span></h3>
+                            <p style='font-size: 14px;'>Dear " . $this->testInput($this->input->post('full_name')) . ",</p>
+                            <p style='font-size: 14px;'>You have successfully registered on <strong style='font-weight:bold;'>Movimiento Latino University</strong> by admin.</p>
+                            <p style='font-size: 14px;margin: 0 0 18px 0;'>Please find the below login credential.</p>
+                            <p style='font-size: 14px; margin: 0px;'>Email Address: <b>". $this->testInput($this->input->post('email'))."</b></p>
+                            <p style='font-size: 14px; margin: 0px;'>Password: <b>".$this->input->post('password')."</b></p>
+                            <p style='font-size:40px;'></p>
+                            <p style='font-size: 14px;margin: 0;list-style: none'>Sincerly</p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
+                        </div>
+                        <table style='width: 100%;'>
+                            <tr>
+                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy;".date('Y')." Movimiento Latino University. All rights reserved.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </body>";
+                require 'vendor/autoload.php';
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->CharSet = 'UTF-8';
+                    $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
+                    $mail->AddAddress($email);
+                    $mail->IsHTML(true);
+                    $mail->Subject = $subject;
+                    $mail->AddEmbeddedImage('uploads/logo/logo.PNG', 'Logo');
+                    $mail->Body = $message;
+                    $mail->IsSMTP();
+                    //Send mail using GMAIL server
+                    $mail->SMTPAuth   = true;
+                    $mail->Host = 'localhost';
+                    $mail->SMTPAuth = false;
+                    $mail->SMTPAutoTLS = false;
+                    $mail->Port = 25;
+                    if (!$mail->send()) {
+                        $msg = "Error sending: " . $mail->ErrorInfo;
+                    } else {
+                        $msg = '["New User added successfully!", "success", "#36A1EA"]';
+                    }
+                } catch (Exception $e) {
+                    $msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
             } else {
                 $msg = '["User with same role exist!", "error", "#e50914"]';
             }
@@ -198,7 +270,7 @@ class Members extends AI_Controller {
                     $error = array('error' => $this->upload->display_errors());
                     $msg = '["' . $error['error'] . '", "error", "#e50914"]';
                 } else {
-                    // Uploaded file data 
+                    // Uploaded file data
                     $fileData = $this->upload->data();
                     $mydata['image'] = $fileData['file_name'];
                 }
