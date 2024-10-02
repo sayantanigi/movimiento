@@ -82,6 +82,7 @@ class Subscription extends Admin_Controller {
             $subscription_type = $this->input->post('subscription_type');
             $subscription_amount = $this->input->post('subscription_amount');
             $payment_link = $this->input->post('payment_link');
+            $price_key = $this->input->post('price_key');
             $subscription_duration = $this->input->post('subscription_duration');
             $subscription_description = $this->input->post('subscription_description');
             $status = $this->input->post('status');
@@ -92,16 +93,22 @@ class Subscription extends Admin_Controller {
                 'subscription_type' => $subscription_type,
                 'subscription_amount' => $subscription_amount,
                 'payment_link' => $payment_link,
+                'price_key' => $price_key,
                 'subscription_duration' => $subscription_duration,
                 'subscription_description' => $subscription_description,
                 'status' => $status,
                 'created_date' => date("Y-m-d h:i:s")
             );
-            $result = $this->Commonmodel->add_details('subscription', $mydata);
-            if ($result) {
-                $msg = '["Subscription added successfully!", "success", "#36A1EA"]';
+            $checkdata = $this->db->query("SELECT * FROM subscription WHERE subscription_name LIKE '%".$this->input->post('subscription_name')."%'")->row();
+            if(empty($checkdata)) {
+                $result = $this->Commonmodel->add_details('subscription', $mydata);
+                if ($result) {
+                    $msg = '["Subscription added successfully!", "success", "#36A1EA"]';
+                } else {
+                    $msg = '["subscription with same name already exist!", "error", "#e50914"]';
+                }
             } else {
-                $msg = '["subscription with same name already exist!", "error", "#e50914"]';
+                $msg = '["subscription with same name already exist! Unable to update", "error", "#e50914"]';
             }
             $this->session->set_flashdata('msg', $msg);
             redirect(admin_url('subscription'), 'refresh');
@@ -115,6 +122,7 @@ class Subscription extends Admin_Controller {
             $subscription_type = $this->input->post('subscription_type');
             $subscription_amount = $this->input->post('subscription_amount');
             $payment_link = $this->input->post('payment_link');
+            $price_key = $this->input->post('price_key');
             $subscription_duration = $this->input->post('subscription_duration');
             $subscription_description = $this->input->post('subscription_description');
             $status = $this->input->post('status');
@@ -126,21 +134,17 @@ class Subscription extends Admin_Controller {
                 'subscription_type' => $subscription_type,
                 'subscription_amount' => $subscription_amount,
                 'payment_link' => $payment_link,
+                'price_key' => $price_key,
                 'subscription_duration' => $subscription_duration,
                 'subscription_description' => $subscription_description,
                 'status' => $status,
                 'created_date' => date("Y-m-d h:i:s")
             );
-            $checkdata = $this->db->query("SELECT * FROM subscription WHERE subscription_name LIKE '%".$this->input->post('subscription_name')."%'")->row();
-            if(empty($checkdata)){
-                $gn_user_id = $this->Commonmodel->update_row('subscription', $mydata, $where);
-                if ($gn_user_id) {
-                    $msg = '["Subscription updated successfully!", "success", "#36A1EA"]';
-                } else {
-                    $msg = '["Subscription not updated"!, "error", "#e50914"]';
-                }
+            $gn_user_id = $this->Commonmodel->update_row('subscription', $mydata, $where);
+            if ($gn_user_id) {
+                $msg = '["Subscription updated successfully!", "success", "#36A1EA"]';
             } else {
-                $msg = '["subscription with same name already exist! Unable to update", "error", "#e50914"]';
+                $msg = '["Subscription not updated"!, "error", "#e50914"]';
             }
         }
         $this->session->set_flashdata('msg', $msg);

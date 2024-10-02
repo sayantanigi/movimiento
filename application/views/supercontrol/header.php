@@ -27,8 +27,8 @@
     <style>
     .cke_notification_warning {display: none !important;}
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <?php $getOptionsSql = "SELECT * FROM `options`";
 $optionsList = $this->db->query($getOptionsSql)->result();?>
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">

@@ -66,14 +66,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-10">
+                                    <div class="col-sm-10">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Price ID (Stripe Price ID) <span style="color: red">*</span></label>
                                                 <input type="text" name="price_key" value="<?= @$subscription->price_key ?>" class="form-control price_key" id="exampleInputEmaila1" placeholder="Price ID (Stripe Price ID)" required>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     <div class="col-sm-10">
                                         <div class="col-sm-6">
                                             <div class="form-group">
@@ -83,14 +83,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="col-sm-10">
+                                <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Subscription Duration (in days)</label>
-                                            <textarea name="subscription_duration" id="editor1"><?= @$subscription->subscription_duration ?></textarea>
+                                            <input type="text" name="subscription_duration" value="<?= @$subscription->subscription_duration ?>" class="form-control" id="exampleInputEmaila1" placeholder="Enter Duration. Ex: 30 days" required>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">

@@ -27,6 +27,7 @@
                             <th style="width: 8%;">Subscription User Type</th>
                             <th style="width: 8%;">Subscription Type</th>
                             <th style="width: 5%;">Subscription Amount</th>
+                            <th style="width: 5%;">Subscription Duration</th>
                             <th style="width: 5%;">Payment Link</th>
                             <th style="width: 15%;">Description</th>
                             <!-- <th>Syllabus</th> -->
@@ -80,6 +81,9 @@
                                             $price = '$' . number_format($subscription_v->subscription_amount, 2);
                                         } ?>
                                         <p style="margin:0px;"><b>Price </b>: <?php echo $price; ?></p>
+                                    </td>
+                                    <td style="word-wrap: break-word;">
+                                        <?= ucwords($subscription_v->subscription_duration); ?>
                                     </td>
                                     <td style="word-wrap: break-word;">
                                         <div class="truncate1">

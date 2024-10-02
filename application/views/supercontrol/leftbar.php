@@ -9,7 +9,7 @@ $nl2 = $this->uri->segment(3);
         </li>
         <li class="sidebar-search-wrapper"> </li>
         <li class="nav-item start ">
-            <a href="<?php echo base_url() ?>supercontrol/home" class="nav-link ">  <i class="fa fa-th-list"></i><span class="title">Dashboard</span> </a>
+            <a href="<?php echo base_url() ?>supercontrol/home" class="nav-link <?php if ($nl == "") { ?>active open<?php } ?>">  <i class="fa fa-th-list"></i><span class="title">Dashboard</span> </a>
             <ul class="sub-menu">
                 <li class="nav-item start ">
                     <a href="<?php echo base_url() ?>supercontrol/home" class="nav-link "> <i class="icon-list"></i> <span class="title">View Dashboard</span> </a>
@@ -78,7 +78,26 @@ $nl2 = $this->uri->segment(3);
                 </li>
             </ul>
         </li>
-        <li class="nav-item <?php if ($nl == "") { ?>active open<?php } ?>">
+        <li class="nav-item <?php if ($nl2 == "add_comm_cat" || $nl2 == "comm_cat" || $nl2 == "add_comm" || $nl2 == "comm") { ?>active open<?php } ?>">
+            <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-th-list"></i>
+                <span class="title">Subscription</span>
+                <span class="addindividual"></span>
+                <span class="arrow addindividual"></span>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item <?php if ($nl == "comm") { ?>active open<?php } ?>">
+                    <a href="<?php echo base_url(); ?>supercontrol/subscription" class="nav-link ">
+                        <span class="title">Subscription List </span>
+                    </a>
+                </li>
+                <li class="nav-item <?php if ($nl == "add_comm") { ?> active open<?php } ?>">
+                    <a href="<?php echo base_url(); ?>supercontrol/subscription/purchased_subscription" class="nav-link ">
+                        <span class="title">Purchased Subscription list</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
             <a href="<?php echo base_url(); ?>logout" class="nav-link ">
                 <i class="icon-logout"></i>
                 <span class="title">Logout</span>

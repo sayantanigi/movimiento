@@ -72,7 +72,8 @@ $route['event-booked'] = 'Users/eventBooked';
 
 $route['logout'] = 'supercontrol/home/logout';
 $route['consultant-dashboard'] = 'supercontrol/home';
-
+$route['stripe/(:any)'] = "supercontrol/Stripe/index/$1";
+$route['supercontrol/thank_you'] = "supercontrol/Subscription/thank_you";
 
 /*------------Admin Routes------------*/
 $route['admin'] = 'admin/users';
