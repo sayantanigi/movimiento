@@ -64,7 +64,7 @@ class Home extends CI_Controller
             $lastId = $this->db->insert('users', $data);
             $userid = $this->db->insert_id();
             if ($userid) {
-                $subject = 'Verify Your Email Address From Movimiento Latino University';
+                $subject = 'Verify Your Email Address From Movimiento';
                 $activationURL = base_url() . "email-verification/" . urlencode(base64_encode($otp));
                 $getOptionsSql = "SELECT * FROM `options`";
                 $optionsList = $this->db->query($getOptionsSql)->result();
@@ -76,20 +76,20 @@ class Home extends CI_Controller
                     <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                         <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
                             <img src='cid:Logo' style='width: 220px; float: right; margin-top: 0'>
-                            <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento Latino University</span></h3>
+                            <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento</span></h3>
                             <p style='font-size: 14px;'>Dear " . $full_name . ",</p>
-                            <p style='font-size: 14px;'>Thank you for registration on <strong style='font-weight:bold;'>Movimiento Latino University</strong>.</p>
+                            <p style='font-size: 14px;'>Thank you for registration on <strong style='font-weight:bold;'>Movimiento</strong>.</p>
                             <p style='font-size: 14px;margin: 0 0 18px 0;'>Please click on the below activation link to verify your email address.</p>
                             <p style='font-size: 14px; margin: 0px;'><a href=" . $activationURL . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
                             <p style='font-size:40px;'></p>
                             <p style='font-size: 14px;margin: 0;list-style: none'>Sincerly</p>
-                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                            <p style='font-size: 12px; margin: 0px; list-style: none'><b>movimiento</b></p>
                             <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                             <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                         </div>
                         <table style='width: 100%;'>
                             <tr>
-                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy;".date('Y')." Movimiento Latino University. All rights reserved.</td>
+                                <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento. All rights reserved.</td>
                             </tr>
                         </table>
                     </div>
@@ -97,45 +97,31 @@ class Home extends CI_Controller
                 require 'vendor/autoload.php';
                 $mail = new PHPMailer(true);
                 try {
-                    //$mail->SMTPDebug = 2;
                     $mail->CharSet = 'UTF-8';
                     $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                     $mail->AddAddress($email);
                     $mail->IsHTML(true);
                     $mail->Subject = $subject;
-                    $mail->AddEmbeddedImage('uploads/logo/logo.PNG', 'Logo');
+                    $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
                     $mail->Body = $message;
                     $mail->IsSMTP();
                     //Send mail using GMAIL server
-                    $mail->SMTPAuth   = true;
-                    /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                    $mail->SMTPOptions = array(
-                            'ssl' => array(
-                            'verify_peer' => false,
-                            'verify_peer_name' => false,
-                            'allow_self_signed' => true
-                        )
-                    );*/
-                    $mail->Host = "smtp.gmail.com";
-                    $mail->Port = 587; //587 465
-                    $mail->Username = 'support@movimientolatinouniversity.com';
-                    $mail->Password = 'jgurhqgigtnbyvlr';
-                    /*$mail->Host = 'localhost';
+                    $mail->Host = 'localhost';
                     $mail->SMTPAuth = false;
                     $mail->SMTPAutoTLS = false;
-                    $mail->Port = 25;*/
+                    $mail->Port = 25;
                     if (!$mail->send()) {
                         $msg = "Error sending: " . $mail->ErrorInfo;
                     } else {
                         $msg = "An email has been sent to your email address containing an activation link. Please click on the link to activate your account. If you do not click the link your account will remain inactive and you will not receive further emails. If you do not receive the email within a few minutes, please check your spam folder.";
                     }
+                    $this->session->set_flashdata('success', $msg);
                 } catch (Exception $e) {
-                    $msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                    $this->session->set_flashdata('message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
                 }
             } else {
-                $msg = "Opps, Try again!";
+                $this->session->set_flashdata('error', 'Opps, Try again!');
             }
-            $this->session->set_flashdata('success', $msg);
             redirect(base_url('register'), 'refresh');
         }
     }
@@ -195,20 +181,20 @@ class Home extends CI_Controller
                 <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
                     <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
                         <img src='cid:Logo' style='width: 220px; float: right; margin-top: 0'>
-                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento Latino University</span></h3>
+                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento</span></h3>
                         <p style='font-size: 14px;'>Dear " . $full_name . ",</p>
                         <p style='font-size: 18px;'></p>
                         <p style='font-size: 18px; margin: 30px 0;'>Please click on below link to reset your password.</p>
                         <p style='font-size: 18px; margin: 0px;'><a href=" . $url . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
                         <p style='font-size:20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento</b></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                     </div>
                     <table style='width: 100%;'>
                         <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento. All rights reserved.</td>
                         </tr>
                     </table>
                 </div>
@@ -220,22 +206,10 @@ class Home extends CI_Controller
                 $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->AddAddress($email);
                 $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/' . $optionsList[0]->option_value, 'Logo');
+                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
                 $mail->Subject = $subject;
                 $mail->Body = $message;
                 $mail->IsSMTP();
-                /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->SMTPOptions = array(
-                        'ssl' => array(
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                        'allow_self_signed' => true
-                    )
-                );
-                $mail->Host = "smtp.gmail.com";
-                $mail->Port = 587; //587 465
-                $mail->Username = 'support@movimientolatinouniversity.com';
-                $mail->Password = 'hwulwujqxokpilbi';*/
                 $mail->Host = 'localhost';
                 $mail->SMTPAuth = false;
                 $mail->SMTPAutoTLS = false;
@@ -371,7 +345,7 @@ class Home extends CI_Controller
                 <div style='width:600px;margin: 0 auto;background: #fff; border: 1px solid #e6e6e6;'>
                     <div style='padding: 30px 30px 15px 30px;box-sizing: border-box;'>
                         <img src='cid:Logo' style='width:100px;float: right;margin-top: 0 auto;'>
-                        <h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Movimiento Latino University</span></h3>
+                        <h3 style='padding-top:40px; line-height: 30px;'>Greetings from<span style='font-weight: 900;font-size: 35px;color: #F44C0D; display: block;'>Makutano</span></h3>
                         <p style='font-size: 18px;'> Dear Admin,</p>
                         <p style='font-size: 18px;'>Please find the below details for contact query.</p>
                         <p style='font-size: 18px; margin: 0px;'>Name: $fname</p>
@@ -379,13 +353,13 @@ class Home extends CI_Controller
                         <p style='font-size: 18px; margin: 0px;'>Message: $msg</p>
                         <p style='font-size: 20px;'></p>
                         <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Makutano</b></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
                         <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
                     </div>
                     <table style='width: 100%;'>
                         <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
+                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Makutano. All rights reserved.</td>
                         </tr>
                     </table>
                 </div>
@@ -395,23 +369,11 @@ class Home extends CI_Controller
                 $mail->CharSet = 'UTF-8';
                 $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/logo.PNG', 'Logo');
+                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
                 $mail->Subject = $subject;
                 $mail->Body = $message;
                 $mail->IsSMTP();
                 //Send mail using GMAIL server
-                /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->SMTPOptions = array(
-                        'ssl' => array(
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                        'allow_self_signed' => true
-                    )
-                );
-                $mail->Host = "smtp.gmail.com";
-                $mail->Port = 587; //587 465
-                $mail->Username = 'support@movimientolatinouniversity.com';
-                $mail->Password = 'hwulwujqxokpilbi';*/
                 $mail->Host = 'localhost';
                 $mail->SMTPAuth = false;
                 $mail->SMTPAutoTLS = false;
@@ -437,17 +399,28 @@ class Home extends CI_Controller
             $this->session->set_userdata('user_id', @$user->id);
             $this->session->set_userdata('first_name', @$user->fname);
             $this->session->set_userdata('userType', @$user->userType);
+            //echo $user->is_reset; die();
             if (@$user->userType == '1') {
                 if (@$course_id != 'login') {
                     $this->session->set_flashdata('success', 'Logged in successfully.');
                     redirect(base_url('course-detail/' . @$course_id), 'refresh');
                 } else {
-                    $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
-                    redirect(base_url('student-dashboard'), 'refresh');
+                    if($user->is_reset == '0') {
+                        redirect(base_url('reset_password'));
+                    } else {
+                        $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+                        redirect(base_url('student-dashboard'), 'refresh');
+                    }
                 }
             } else {
-                $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
-                redirect(base_url('consultant-dashboard'), 'refresh');
+                $checkSudscriptionData = $this->db->query("SELECT * FROM user_subscription WHERE employer_id = '".$user->id."' AND status = '1'")->row();
+                if (!empty($checkSudscriptionData)) {
+                    $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+                    redirect(base_url('consultant-dashboard'), 'refresh');
+                } else {
+                    $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+                    redirect(base_url('supercontrol/subscription'), 'refresh');
+                }
             }
         } else {
             $this->session->set_flashdata('error', 'Invalid email/password, Please try again!');
@@ -462,8 +435,30 @@ class Home extends CI_Controller
             $this->load->view('footer');
         }
     }
-    public function courseDetail($id)
-    {
+
+    public function reset_password(){
+        $data = array('title' => 'Password Reset Page');
+        $this->load->view('header', $data);
+        $this->load->view('password_reset');
+        $this->load->view('footer');
+    }
+    public function changePassword() {
+        $old_password = $this->input->post('old_password');
+        $password = $this->input->post('password');
+        $confirm_password = $this->input->post('confirm_password');
+        $getUserDetailss = $this->db->query("SELECT * FROM users WHERE id = '".$this->session->userdata('user_id')."'")->row();
+        $existingPass = base64_decode($getUserDetailss->password);
+        if($existingPass != $old_password) {
+            $this->session->set_flashdata('error', 'Old password is incorrect.');
+            redirect(base_url('reset_password'), 'refresh');
+        } else {
+            $this->db->query("UPDATE users SET is_reset = '1', password = '".base64_encode($password)."' WHERE id = '".$this->session->userdata('user_id')."'");
+            $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+            redirect(base_url('student-dashboard'), 'refresh');
+        }
+
+    }
+    public function courseDetail($id) {
         $data = array('title' => 'Course Details', 'page' => 'course');
         $where = array('id' => $id);
         $data['detail'] = $this->Commonmodel->fetch_row('courses', $where);
@@ -472,16 +467,14 @@ class Home extends CI_Controller
         $this->load->view('course-detail');
         $this->load->view('footer');
     }
-    public function searchData()
-    {
+    public function searchData() {
         $keyword = $this->input->post('search_data');
         $data['search_result'] = $this->db->query("SELECT * FROM courses WHERE (title LIKE '%" . $keyword . "%' OR heading_1 LIKE '%" . $keyword . "%' OR heading_2 LIKE '%" . $keyword . "%' OR description LIKE '%" . $keyword . "%' OR program_overview LIKE '%" . $keyword . "%' OR objectives LIKE '%" . $keyword . "%' OR curriculam LIKE '%" . $keyword . "%' OR career_paths LIKE '%" . $keyword . "%') AND status = '1'")->result_array();
         $this->load->view('header', $data);
         $this->load->view('search_page', $data);
         $this->load->view('footer', $data);
     }
-    public function categoryWisesearchData($slug)
-    {
+    public function categoryWisesearchData($slug) {
         $getcategoryId = $this->db->query("SELECT * FROM sm_category WHERE category_link like '%".$slug."%'")->row();
         $id = $getcategoryId->id;
         $data['search_result'] = $this->db->query("SELECT * FROM courses WHERE cat_id = '".$id."'")->result_array();
@@ -735,8 +728,7 @@ class Home extends CI_Controller
         $this->load->view('terms');
         $this->load->view('footer');
     }
-    public function consulting()
-    {
+    public function consulting() {
         $data = array('title' => 'Consulting', 'page' => 'consulting');
         $getConsultDataSql = "SELECT * FROM `cms` WHERE `id` = 21";
         $consult_data = $this->db->query($getConsultDataSql);
@@ -745,8 +737,7 @@ class Home extends CI_Controller
         $this->load->view('consulting');
         $this->load->view('footer');
     }
-    public function privacy_policy()
-    {
+    public function privacy_policy() {
         $data = array('title' => 'Privacy Policy', 'page' => 'terms');
         $getAboutDataSql = "SELECT * FROM `cms` WHERE `id` = 2";
         $about_data = $this->db->query($getAboutDataSql);
@@ -755,8 +746,7 @@ class Home extends CI_Controller
         $this->load->view('privacy');
         $this->load->view('footer');
     }
-    public function refund_policy()
-    {
+    public function refund_policy() {
         $data = array('title' => 'Refund Policy', 'page' => 'terms');
         $getAboutDataSql = "SELECT * FROM `cms` WHERE `id` = 22";
         $about_data = $this->db->query($getAboutDataSql);
@@ -765,8 +755,7 @@ class Home extends CI_Controller
         $this->load->view('refund');
         $this->load->view('footer');
     }
-    public function courseList()
-    {
+    public function courseList() {
         $data = array('title' => 'Course List', 'page' => 'course');
         $getCourseListSql = "SELECT * from `courses` WHERE `status` = '1' ORDER BY `id` DESC";
         $data['list'] = $this->Commonmodel->fetch_all_join($getCourseListSql);
@@ -775,8 +764,7 @@ class Home extends CI_Controller
         $this->load->view('course-list');
         $this->load->view('footer');
     }
-    public function searchByInputValue()
-    {
+    public function searchByInputValue() {
         $input_data = $this->input->post('input_data');
         $getfilteredCourseListSql = "SELECT * from `courses` WHERE `title` like '%" . $input_data . "%'";
         $filteredCourseList = $this->Commonmodel->fetch_all_join($getfilteredCourseListSql);
@@ -815,8 +803,7 @@ class Home extends CI_Controller
         }
         echo $html;
     }
-    public function searchUsingSortBy()
-    {
+    public function searchUsingSortBy() {
         if ($this->input->post('sortBy_data') == 'new_first') {
             $getfilteredCourseListSql = "SELECT * FROM `courses` where status = 1 ORDER BY `id` DESC";
             $filteredCourseList = $this->Commonmodel->fetch_all_join($getfilteredCourseListSql);
@@ -877,8 +864,7 @@ class Home extends CI_Controller
         }
         echo $html;
     }
-    public function searchUsingFilterBy()
-    {
+    public function searchUsingFilterBy() {
         $cat_id = $this->input->post('filterBy_data');
         $getfilteredCourseListSql = "SELECT * FROM `courses` where `cat_id`= $cat_id AND status = 1 ORDER BY `price` ASC";
         $filteredCourseList = $this->Commonmodel->fetch_all_join($getfilteredCourseListSql);
@@ -917,8 +903,7 @@ class Home extends CI_Controller
         }
         echo $html;
     }
-    public function courseEnrollment($course_id = null)
-    {
+    public function courseEnrollment($course_id = null) {
         $user_id = $this->session->userdata('user_id');
         $isLoggedIn = $this->session->userdata('isLoggedIn');
         $data = array(
@@ -945,15 +930,13 @@ class Home extends CI_Controller
 		$this->load->view('checkout');
 		$this->load->view('footer');
     }
-    public function success($id)
-    {
+    public function success($id) {
         $data['p_id'] = $id;
         $this->load->view('header');
         $this->load->view('success', $data);
         $this->load->view('footer');
     }
-    public function email_unsubscribe()
-    {
+    public function email_unsubscribe() {
         $id = $this->uri->segment(2);
         $data = array(
             'title' => 'Email Unsubscribe Page',
@@ -964,8 +947,7 @@ class Home extends CI_Controller
         $this->load->view('email_unsubscibe');
         $this->load->view('footer');
     }
-    public function EmailUnsubcribeSubmit()
-    {
+    public function EmailUnsubcribeSubmit() {
         $email = $this->input->post("email");
         $date = date('Y-m-d h:i:s');
         $isExitSql = "SELECT * FROM `email_unsubscribe_list` WHERE `email_id` = '" . $email . "'";
@@ -1019,8 +1001,7 @@ class Home extends CI_Controller
             redirect(base_url('login'), 'refresh');
         }
     }
-    public function generate_otp($length)
-    {
+    public function generate_otp($length) {
         $characters = '123456789';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -1029,15 +1010,13 @@ class Home extends CI_Controller
         }
         return $randomString;
     }
-    public function testInput($data)
-    {
+    public function testInput($data) {
         $data = trim($data);
         $data = stripcslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
-    public function passwordReset($email)
-    {
+    public function passwordReset($email) {
         $data = array(
             'title' => 'Password Reset Page',
         );
@@ -1056,8 +1035,7 @@ class Home extends CI_Controller
         $this->load->view('password-reset');
         $this->load->view('footer');
     }
-    public function savereSetPassword()
-    {
+    public function savereSetPassword() {
         $this->form_validation->set_rules('userId', 'user Id', 'trim|required');
         if ($this->form_validation->run() == false) {
             echo validation_errors();

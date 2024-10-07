@@ -1,7 +1,10 @@
 <?php
-class Settings extends Admin_Controller {
+class Settings extends Admin_Controller
+{
     var $global;
-    function __construct() {
+
+    function __construct()
+    {
         parent::__construct();
         $this->load->model('Setting_model');
         $this->load->model('Commonmodel');
@@ -11,6 +14,7 @@ class Settings extends Admin_Controller {
         $this->data['tab'] = 'settings';
         $this->admin_login();
     }
+
     public function index() {
         $this->data['main'] = admin_view('setting/theme-options');
         $this->data['options'] = $this->Setting_model->all_options();
@@ -28,7 +32,7 @@ class Settings extends Admin_Controller {
                     $error = array('error' => $this->upload->display_errors());
                     $msg = '["' . $error['error'] . '", "error", "#e50914"]';
                 } else {
-                    // Uploaded file data
+                    // Uploaded file data 
                     $fileData = $this->upload->data();
                     $l['option_name'] = 'logo';
                     $l['option_value'] = $fileData['file_name'];

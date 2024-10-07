@@ -72,16 +72,16 @@ class Payment extends CI_Controller
 				$transid = $resp_dec["payment"]["id"];
 
 				$enrollmentData = array(
-					'currency' => 'USD',
-					'currency_symbol' => '$',
-					'course_id' => $data['course_id'],
-					'user_id' => $user_id,
-					'enrollment_price' => $data['course_price'],
-					'transaction_id' => $transid,
-					'price_cents' => $price,
-					'payment_status' => $status,
-					'order_id' => $orderId,
-					//'enrollment_date' 			=> date('Y-m-d H:i:s')
+					'currency' 				    => 'USD',
+					'currency_symbol' 		    => '$',
+					'course_id' 				=> $data['course_id'],
+					'user_id' 				    => $user_id,
+					'enrollment_price' 		    => $data['course_price'],
+					'transaction_id' 			=> $transid,
+					'price_cents' 				=> $price,
+					'payment_status'            => $status,
+					'order_id'            		=> $orderId,
+					// 'enrollment_date' 			=> date('Y-m-d H:i:s')
 				);
 
 				//insert code
@@ -100,45 +100,37 @@ class Payment extends CI_Controller
 					$email=@$fetch_data->email;
 					$enrollment_id=base64_encode($fetch_data->enrollment_id);
 
+					
+
+
+
+
 					// $subject = $sub;
 					$subject = 'Course Enrollment';
-					$getOptionsSql = "SELECT * FROM `options`";
-            		$optionsList = $this->db->query($getOptionsSql)->result();
-					$imagePath = base_url().'uploads/logo/'.$optionsList[0]->option_value;
+					$imagePath = base_url() . 'user_assets/images/C2C_Home/mailhead.jpg';
 					$unsubscribe = base_url() . 'email_unsubscribe/'.$enrollment_id;
-					$message = "<table style='width: 100%;'><tr><td><table style='width: 800px; height: 800px; margin: 0 auto; border: 1px solid #bbb;'><tr><td colspan='3' style='height: 250px;'><img src='" . $imagePath . "'></td></tr><tr><td style='width: 100px; height: 410px;'></td><td style='width: 600px; height: 410px;'><table style='width: 100%; height: 410px;'><tr><td colspan='2' style='text-align: center; font-size: 25px; font-weight: 600;'>Course Enrollment from Movimiento Latino University</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Buyer Name</td><td style='width: 50%; color: #8d8d8d;'>$user_name</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Course Name</td><td style='width: 50%; color: #8d8d8d;'>$course_name</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Order Id</td><td style='width: 50%; color: #8d8d8d;'>$orderId</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Enrollment Date</td><td style='width: 50%; color: #8d8d8d;'>$enrollment_date</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Enrollment Price</td><td style='width: 50%; color: #8d8d8d;'>$enrollment_price</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Transaction Id</td><td style='width: 50%;color: #8d8d8d;'>$transaction_id</td></tr></table></td><td style='width: 100px; height: 410px;'></td></tr><tr><td style='width: 100px;'></td><td style='border-top: 1px solid #8d8d8d; border-bottom: 1px solid #8d8d8d; height: 100px; text-align: center; width: 600px;'></td><td style='width: 100px;'></td></tr><tr><td colspan='3' style='height: 40px;'></td></tr></table></td></tr></table>";
+					$message = "<table style='width: 100%;'><tr><td><table style='width: 800px; height: 800px; margin: 0 auto; border: 1px solid #bbb;'><tr><td colspan='3' style='height: 250px;'><img src='" . $imagePath . "'></td></tr><tr><td style='width: 100px; height: 410px;'></td><td style='width: 600px; height: 410px;'><table style='width: 100%; height: 410px;'><tr><td colspan='2' style='text-align: center; font-size: 25px; font-weight: 600;'>Course Enrollment from Concept To Creation</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Buyer Name</td><td style='width: 50%; color: #8d8d8d;'>$user_name</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Course Name</td><td style='width: 50%; color: #8d8d8d;'>$course_name</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Order Id</td><td style='width: 50%; color: #8d8d8d;'>$orderId</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Enrollment Date</td><td style='width: 50%; color: #8d8d8d;'>$enrollment_date</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Enrollment Price</td><td style='width: 50%; color: #8d8d8d;'>$enrollment_price</td></tr><tr><td style='width: 50%; font-size: 18px; font-weight: 600;'>Transaction Id</td><td style='width: 50%;color: #8d8d8d;'>$transaction_id</td></tr></table></td><td style='width: 100px; height: 410px;'></td></tr><tr><td style='width: 100px;'></td><td style='border-top: 1px solid #8d8d8d; border-bottom: 1px solid #8d8d8d; height: 100px; text-align: center; width: 600px;'><p style='width: 400px; margin: auto; color: #8d8d8d;'>call at 1800-126-457-5 <a href='$unsubscribe'>Click to Unsubscribe</a></p></td><td style='width: 100px;'></td></tr><tr><td colspan='3' style='height: 40px;'></td></tr></table></td></tr></table>";
 					$mail = new PHPMailer(true);
 					try {
 						//Server settings
 						$mail->CharSet = 'UTF-8';
 						$mail->SetFrom($email);
-						$mail->AddAddress($email, 'Movimiento Latino University');
+						$mail->AddAddress($email, 'ContactToCreation');
 						$mail->IsHTML(true);
 						$mail->Subject = $subject;
 						$mail->Body = $message;
 						//Send email via SMTP
 						$mail->IsSMTP();
-						/*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                        $mail->SMTPOptions = array(
-                                'ssl' => array(
-                                'verify_peer' => false,
-                                'verify_peer_name' => false,
-                                'allow_self_signed' => true
-                            )
-                        );
-                        $mail->Host = "smtp.gmail.com";
-                        $mail->Port = 587; //587 465
-                        $mail->Username = 'support@movimientolatinouniversity.com';
-                        $mail->Password = 'hwulwujqxokpilbi';*/
-                        $mail->Host = 'localhost';
-                        $mail->SMTPAuth = false;
-                        $mail->SMTPAutoTLS = false;
-                        $mail->Port = 25;
 						$mail->send();
 						// echo 'Message has been sent';
 					} catch (Exception $e) {
 						$this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
 					}
+					// echo $msg = "Thank You for Contacting Us";
+
+
+
+
 					$this->session->set_flashdata('success', 'Thanks! Your enrollment is successfull.');
 				} else {
 					$this->session->set_flashdata('error', 'Sorry! enrollment is not done.');

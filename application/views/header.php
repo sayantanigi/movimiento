@@ -51,7 +51,7 @@ $optionsList = $this->db->query($getOptionsSql)->result();
             <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
     </div>
-    <header>
+    <header style="display: <?php if($this->uri->segment(1) == 'reset_password') {echo "none"; } else { echo ""; }?>">
         <div id="header-sticky" class="header__area header__transparent header__padding">
             <div class="container-fluid">
                 <div class="row align-items-center">

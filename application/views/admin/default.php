@@ -823,7 +823,9 @@
             })
             .done(function (data) {
                 alert_func(data);
-                //location.reload();
+                setTimeout(() => {
+                    location.reload();
+                }, 3000);
             })
             .fail(function (data) {
                 console.log(data);

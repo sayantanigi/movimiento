@@ -146,6 +146,18 @@ $(function() {
         }
     });
 
+    $('#eyer').click(function() {
+        if ($(this).hasClass('fa-eye-slash')) {
+            $(this).removeClass('fa-eye-slash');
+            $(this).addClass('fa-eye');
+            $('#old_password').attr('type', 'text');
+        } else {
+            $(this).removeClass('fa-eye');
+            $(this).addClass('fa-eye-slash');
+            $('#old_password').attr('type', 'password');
+        }
+    });
+
     if($('#otp').val().length == 0) {
         $('.reset_pass').attr("disabled", 'disabled');
     }
@@ -1978,7 +1990,7 @@ return this.each(function(){
       if(field.val() != '' && field.val() != prevHtml) {
          var html = "<li><span>"+ (time.val() ? time.val() : "00:00") +"</span>"+field.val()+"</li>";
          prevHtml = field.val();
-         
+
          list.append(html);
 
          setInterval(function(){
@@ -1988,7 +2000,7 @@ return this.each(function(){
 
       return false;
    });
-}); 
+});
 }
 
 $(function(){
@@ -2025,10 +2037,10 @@ function setCelendarDay(milliseconds){
 
       $.each(data.days, function(){
          var obj = this;
-         
+
          if(date == obj.day) {
             var items = obj.data;
-            
+
             list.html('');
 
             $.each(items, function(){

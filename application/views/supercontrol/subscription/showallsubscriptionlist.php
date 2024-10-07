@@ -21,7 +21,7 @@
         <div class="page-content">
             <div class="page-bar">
                 <ul class="page-breadcrumb">
-                    <li><a href="<?php echo base_url(); ?>supercontrol/home">Home</a><i class="fa fa-circle"></i> </li>
+                    <li><span>Home</span><i class="fa fa-circle"></i> </li>
                     <li><span>Supercontrol Panel</span> <i class="fa fa-circle"></i></li>
                     <li><span>Show Subscription List </span></li>
                 </ul>
@@ -43,20 +43,23 @@
                                                     <div class="desc"><?= $subscription['subscription_name']?></div>
                                                 </div>
                                                 <div class="details">
+                                                    <div class="desc"><?= "$".$subscription['subscription_amount']." per ".$subscription['subscription_duration']; ?></div>
+                                                </div>
+                                                <div class="details">
                                                     <div class="desc"><?= $subscription['subscription_description']?></div>
                                                 </div>
-                                                <a class="more" href="<?= $subscription['payment_link']?>">Subscribe</a>
-                                                <!-- <?php if($subscription['subscription_type'] == 'paid') { ?>
-                                                <a class="more" href="<?= base_url('stripe/'.base64_encode($subscription['price_key']))?>">Subscribe</a>
+                                                <!-- <a class="more" href="<?= $subscription['payment_link']?>">Subscribe</a> -->
+                                                <?php if($subscription['subscription_type'] == 'paid') { ?>
+                                                <a class="more" href="<?= base_url('supercontrol/stripe/'.base64_encode($subscription['price_key']))?>">Subscribe</a>
                                                 <?php } else { ?>
-                                                <a href="javascript:void(0);" class="btn btn-primary getSubscription_<?php echo $subscription['id']?>" id="getSubscription_<?php echo $subscription['id']?>">Subscribe</a>
+                                                <a href="javascript:void(0);" class="more getSubscription_<?php echo $subscription['id']?>" id="getSubscription_<?php echo $subscription['id']?>">Subscribe</a>
                                                 <input type="hidden" name="user_id_<?php echo $subscription['id']?>" id="user_id_<?php echo $subscription['id']?>" value="<?php echo $_SESSION['afrebay']['userId']?>">
                                                 <input type="hidden" name="sub_id_<?php echo $subscription['id']?>" id="sub_id_<?php echo $subscription['id']?>" value="<?php echo $subscription['id']?>">
                                                 <input type="hidden" name="sub_name_<?php echo $subscription['id']?>" id="sub_name_<?php echo $subscription['id']?>" value="<?php echo $subscription['subscription_name']?>">
                                                 <input type="hidden" name="user_email_<?php echo $subscription['id']?>" id="user_email_<?php echo $subscription['id']?>" value="<?php echo $_SESSION['afrebay']['userEmail']?>">
                                                 <input type="hidden" name="sub_price_<?php echo $subscription['id']?>" id="sub_price_<?php echo $subscription['id']?>" value="<?php echo $subscription['subscription_amount']?>">
                                                 <input type="hidden" name="sub_duration_<?php echo $subscription['id']?>" id="sub_duration_<?php echo $subscription['id']?>" value="<?php echo $subscription['subscription_duration']?>">
-                                                <?php } ?> -->
+                                                <?php } ?>
                                             </div>
                                         </div>
                                 <?php } } ?>

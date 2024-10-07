@@ -613,13 +613,9 @@
                                     <a href="<?= base_url('login/') ?>" name="enrollment" id="course_activation1" class="btn readon2 orange-transparent">Activate</a>
                                 </div>
                             <?php } } } else if(empty($this->session->userdata('userType'))) { ?>
-                                <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
-                                    <div class="btn-part">
-                                        <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
-                                        <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
-                                    </div>
-                                </form>
+                                <div class="btn-part">
+                                    <a href="<?= base_url('login/'.$detail->id) ?>" name="enrollment" id="course_activation1"  class="e-btn e-btn-7 w-100">Activate</a>
+                                </div>
                             <?php } ?>
                             </div>
                         </div>

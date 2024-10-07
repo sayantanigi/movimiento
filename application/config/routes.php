@@ -57,10 +57,10 @@ $route['checkout'] = 'Home/checkout';
 $route['course-detail/(:any)'] = 'Home/courseDetail/$1';
 $route['community/(:any)'] = 'Home/community_details/$1';
 $route['forgot-password'] = 'Home/forgotPassword';
+$route['reset_password'] = 'Home/reset_password';
 $route['otp-verification/(:any)'] = 'Home/verifyOtp/$1';
 $route['course_list'] = 'Home/course_list';
 $route['success/(:any)'] = 'Home/success/$1';
-
 $route['student-dashboard'] = 'Users/index';
 $route['enrolled-courses'] = 'Users/enrolledCourse';
 $route['purchase-list'] = 'Users/purchaseList';
@@ -68,18 +68,12 @@ $route['profile'] = 'Users/profile';
 $route['reviews'] = 'Users/reviews';
 $route['edit-profile'] = 'Users/editProfile';
 $route['event-booked'] = 'Users/eventBooked';
-
-
 $route['logout'] = 'supercontrol/home/logout';
 $route['consultant-dashboard'] = 'supercontrol/home';
-$route['stripe/(:any)'] = "supercontrol/Stripe/index/$1";
+$route['supercontrol/stripe/(:any)'] = "supercontrol/Subscription/stripe/$1";
 $route['supercontrol/thank_you'] = "supercontrol/Subscription/thank_you";
-
-/*------------Admin Routes------------*/
 $route['admin'] = 'admin/users';
 $route['dashboard'] = 'admin/dashboard/index';
-
-
 
 
 // $route['about'] = 'Home/about';

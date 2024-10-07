@@ -74,14 +74,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-10">
+                                    <!-- <div class="col-sm-10">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Payment Link (Stripe Payment Link) <span style="color: red">*</span></label>
                                                 <input type="text" name="payment_link" value="<?= @$subscription->payment_link ?>" class="form-control payment_link" id="exampleInputEmaila1" placeholder="https://buy.stripe.com/****_******************" required>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">

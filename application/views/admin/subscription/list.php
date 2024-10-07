@@ -28,7 +28,7 @@
                             <th style="width: 8%;">Subscription Type</th>
                             <th style="width: 5%;">Subscription Amount</th>
                             <th style="width: 5%;">Subscription Duration</th>
-                            <th style="width: 5%;">Payment Link</th>
+                            <!-- <th style="width: 5%;">Payment Link</th> -->
                             <th style="width: 15%;">Description</th>
                             <!-- <th>Syllabus</th> -->
                         </tr>
@@ -85,7 +85,7 @@
                                     <td style="word-wrap: break-word;">
                                         <?= ucwords($subscription_v->subscription_duration); ?>
                                     </td>
-                                    <td style="word-wrap: break-word;">
+                                    <!-- <td style="word-wrap: break-word;">
                                         <div class="truncate1">
                                             <?php if (@$subscription_v->payment_link) {
                                                 echo @$subscription_v->payment_link;
@@ -93,7 +93,7 @@
                                                 echo "&#8212;";
                                             } ?>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td style="word-wrap: break-word;">
                                         <div class="truncate1">
                                             <?php if (@$subscription_v->subscription_description) {

@@ -2,7 +2,6 @@
 .dashboard-stat .visual>i {margin-left: 0;}
 .dashboard-stat .visual {height: 150px !important;}
 .dashboard-stat .details .desc {font: 30px;}
-.page-content {min-height: auto !important;}
 </style>
 <div class="page-container">
 	<div class="page-sidebar-wrapper">
@@ -36,25 +35,6 @@
 						<a class="more" href="<?php echo base_url(); ?>supercontrol/course/purchased_course"> View more <i class="m-icon-swapright m-icon-white"></i> </a>
 					</div>
 				</div>
-			</div>
-		</div>
-        <div class="page-content">
-			<h3 class="page-title"> Subscription Package</h3>
-			<div class="row">
-                <?php
-                $getsubscriptionList = $this->db->query("SELECT * FROM subscription WHERE status = '1'")->result_array();
-                if(!empty($getsubscriptionList)) {
-                    foreach ($getsubscriptionList as $key => $subscription) { ?>
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <div class="dashboard-stat red">
-                                <div class="visual"> <i class="fa fa-picture-o"></i> </div>
-                                <div class="details">
-                                    <div class="desc"><?= $subscription['subscription_description']?></div>
-                                </div>
-                                <a class="more" href="<?php echo base_url(); ?>supercontrol/course/show_all_courses"> Subscribe <i class="m-icon-swapright m-icon-white"></i> </a>
-                            </div>
-                        </div>
-                <?php } } ?>
 			</div>
 			<div class="clearfix"></div>
 		</div>

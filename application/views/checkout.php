@@ -7,6 +7,10 @@ $checkout_session = \Stripe\Checkout\Session::create([
     'success_url' => base_url('success/{CHECKOUT_SESSION_ID}'),
     'cancel_url' => base_url('course-list'),
     'payment_method_types' => ['card'],
+    'phone_number_collection' => [
+        'enabled' => true,
+    ],
+    'billing_address_collection' => 'required',
     'mode' => 'payment',
     'invoice_creation' => ['enabled' => true],
     'line_items' => [['price' => $price_key, 'quantity' => 1]],

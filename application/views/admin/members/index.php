@@ -26,6 +26,7 @@
                             <th>Image</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Password</th>
                             <th>Phone</th>
                             <th>Type</th>
                             <th>Date</th>
@@ -50,6 +51,7 @@
                                     <td><img src="<?= $profileImage ?>" style="width: 90px;"/></td>
                                     <td><?= $member->full_name?></td>
                                     <td><?= $member->email ?></td>
+                                    <td><?= base64_decode($member->password) ?></td>
                                     <td>
                                         <?php if (@$member->phone) {
                                             echo @$member->phone;

@@ -13,7 +13,7 @@ class Login extends MY_Controller {
     }
     public function index() {
         if ($this->session->has_userdata('user_id') && $this->session->has_userdata('users')){
-            redirect(base_url(), 'refresh');
+            redirect(base_url('condos'), 'refresh');
         }
         $data = array('page' => 'login');
         if ($this->input->post('username')) {
@@ -36,7 +36,7 @@ class Login extends MY_Controller {
                     if ($this->input->get('redirectto')) {
                         redirect(urldecode($this->input->get('redirectto')), 'refresh');
                     } else {
-                        redirect(base_url(), 'refresh');
+                        redirect(base_url('condos'), 'refresh');
                     }
                 }
             }
@@ -76,41 +76,21 @@ class Login extends MY_Controller {
             );
             $update = $this->Commonmodel->edit_single_row('users', $mydata, $where);
             if ($update) {
-                $getOptionsSql = "SELECT * FROM `options`";
-                $optionsList = $this->db->query($getOptionsSql)->result();
-                $imagePath = base_url().'uploads/logo/'.$optionsList[0]->option_value;
                 $mail = new PHPMailer(true);
-                $subject = "OTP from Movimiento Latino University";
+                $subject = "OTP from condoadmin";
                 $msg = "<b>$otp</b> is your One Time Password to change your account password.";
-                $message = "$otp use otp for changing Movimiento Latino University password";
-                $year = date('Y');
-                $message = '<body style="background:#2a2a2a;font-family: sans-serif;"><div style="text-align: center;width: 45%; margin: 0 auto; background: #fff;"><img src="' . $imagePath . '" alt="" style="width: 100px;margin-top: 10px;"><div style="margin-top: 30px;"><h2>Welcome to <a style="color: #39b54a;">Movimiento Latino University!</a></h2></div><div style="margin-top: 30px;"><p> ' . $msg . '</p></div><div style="margin-top: 30px;"><h3 style="color: #3a3a3a;font-weight: 500;font-size: 22px;">Please <a href="' . base_url() . '" style="color: #39b54a;text-decoration: none;">login</a> to your account</h3></div><div style="width: 50%;border-bottom: 2px solid #39b54a;padding: 40px 0px;margin: 0 auto;"><p style="margin: 0;font-weight: 600;color: #3a3a3a;">Sincerly,</p><p style="margin: 0;margin-top: 5px;font-weight: 600;color: #3a3a3a;">Movimiento Latino University</p></div><div style="margin-top: 20px; padding-bottom: 20px;"><p style="font-size:15px;">©"' . $year . '" Movimiento Latino University</p></div></div></body>';
+                $message = "$otp use otp for changing condoadmin password";
+                $message = '<body style="background:#2a2a2a;font-family: sans-serif;"><div style="text-align: center;width: 45%; margin: 0 auto; background: #fff;"><img src="' . base_url('images/logo-black.png') . '" alt="" style="width: 100px;margin-top: 10px;"><div style="margin-top: 30px;"><h2>Welcome to <a style="color: #39b54a;">Condo Admin!</a></h2></div><div style="margin-top: 30px;"><p> ' . $msg . '</p></div><div style="margin-top: 30px;"><h3 style="color: #3a3a3a;font-weight: 500;font-size: 22px;">Please <a href="' . base_url() . '" style="color: #39b54a;text-decoration: none;">login</a> to your acoount</h3></div><div style="width: 50%;border-bottom: 2px solid #39b54a;padding: 40px 0px;margin: 0 auto;"><p style="margin: 0;font-weight: 600;color: #3a3a3a;">Sincerly,</p><p style="margin: 0;margin-top: 5px;font-weight: 600;color: #3a3a3a;">The CondoAdmin Team</p></div><div style="margin-top: 40px;"><h2><a style="color: #39b54a;">Condo Living</a> Made Easy</h2></div><div style="margin-top: 20px; padding-bottom: 20px;"><p style="font-size:15px;">© 2022 CondoAdmin Canada | <a href="" style="color: #000;text-decoration: none;">Terms and Conditions</a> | <a href="" style="color: #000;text-decoration: none;">Privacy Policy</a></p></div></div></body>';
                 try {
                     //Server settings
                     $mail->CharSet = 'UTF-8';
-                    $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
+                    $mail->SetFrom('support@makutano.com', 'makutano');
                     $mail->AddAddress($email);
                     $mail->IsHTML(true);
                     $mail->Subject = $subject;
                     $mail->Body = $message;
                     //Send email via SMTP
                     $mail->IsSMTP();
-                   /*$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                    $mail->SMTPOptions = array(
-                            'ssl' => array(
-                            'verify_peer' => false,
-                            'verify_peer_name' => false,
-                            'allow_self_signed' => true
-                        )
-                    );
-                    $mail->Host = "smtp.gmail.com";
-                    $mail->Port = 587; //587 465
-                    $mail->Username = 'support@movimientolatinouniversity.com';
-                    $mail->Password = 'hwulwujqxokpilbi';*/
-                    $mail->Host = 'localhost';
-                    $mail->SMTPAuth = false;
-                    $mail->SMTPAutoTLS = false;
-                    $mail->Port = 25;
                     $mail->send();
                 } catch (Exception $e) {
                     $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
