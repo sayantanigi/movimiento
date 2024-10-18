@@ -22,7 +22,7 @@
                                 <div class="col-sm-10">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Category</label>
+                                            <label for="exampleInputEmail1">Course Category <span style="color:red">*</span></label>
                                             <select name="frm[cat_id]" class="form-control">
                                                 <option value="">Choose</option>
                                                 <?php foreach ($course_cat as $cat) { ?>
@@ -33,7 +33,7 @@
                                     </div>
                                     <!-- <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Mode</label>
+                                            <label for="exampleInputEmail1">Course Mode <span style="color:red">*</span></label>
                                             <select name="frm[mode_id]" class="form-control">
                                                 <option value="">Choose</option>
                                                 <?php foreach ($course_mode as $mode) { ?>
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Level</label>
+                                            <label for="exampleInputEmail1">Course Level <span style="color:red">*</span></label>
                                             <select name="frm[level_id]" class="form-control">
                                                 <option value="">Choose</option>
                                                 <?php foreach ($course_level as $level) { ?>
@@ -55,7 +55,7 @@
                                     </div> -->
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Name</label>
+                                            <label for="exampleInputEmail1">Course Name <span style="color:red">*</span></label>
                                             <input type="text" name="frm[title]" value="<?= $course->title ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter Course Name">
                                         </div>
                                     </div>
@@ -136,7 +136,7 @@
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Fees <span style="color: red">*</span></label>
+                                            <label for="exampleInputEmail1">Course Fees <span style="color:red">*</span></label>
                                             <select class="form-control" name="frm[course_fees]" id="course_fees" required>
                                                 <option value="">Choose</option>
                                                 <option value="free" <?php if ($course->course_fees == 'free') { echo "selected"; } ?>>Free</option>
@@ -149,7 +149,7 @@
                                     <div class="col-sm-10">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Course Price(In $)</label>
+                                                <label for="exampleInputEmail1">Course Price(In $) <span style="color:red">*</span></label>
                                                 <input type="text" name="frm[price]" value="<?= @$course->price ?>" class="form-control price" id="exampleInputEmail1" placeholder="Enter Price">
                                             </div>
                                         </div>
@@ -157,7 +157,7 @@
                                     <div class="col-sm-10">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Price ID (Stripe Price ID) <span style="color: red">*</span></label>
+                                                <label for="exampleInputEmail1">Price ID (Stripe Price ID) <span style="color:red">*</span></label>
                                                 <input type="text" name="frm[price_key]" value="<?= $course->price_key ?>" class="form-control price_key" id="exampleInputEmaila1" placeholder="Price ID (Stripe Price ID)" required>
                                             </div>
                                         </div>
@@ -166,7 +166,7 @@
                                 <!-- <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Type<span style="color: red">*</span></label>
+                                            <label for="exampleInputEmail1">Course Type<span style="color:red">*</span></label>
                                             <select class="form-control" name="frm[course_type]" id="course_type" required>
                                                 <option value="">Choose</option>
                                                 <option value="Upcoming Courses" <?php if ($course->course_type == 'Upcoming Courses') { echo "selected"; } ?>>Upcoming Courses</option>
@@ -178,8 +178,8 @@
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Certificate <span style="color: red">*</span></label>
-                                            <select class="form-control" name="frm[course_certificate]" id="course_certificate" required>
+                                            <label for="exampleInputEmail1">Course Certificate </label>
+                                            <select class="form-control" name="frm[course_certificate]" id="course_certificate">
                                                 <option value="">Choose</option>
                                                 <option value="Certificate of Completion" <?php if ($course->course_certificate == 'Certificate of Completion') { echo "selected"; } ?>>Certificate of Completion</option>
                                                 <option value="Certificate of Attendance" <?php if ($course->course_certificate == 'Certificate of Attendance') { echo "selected"; } ?>>Certificate of Attendance</option>
@@ -208,7 +208,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <img src="<?= site_url('assets/images/courses/' . $course->image) ?>" onerror="this.src='<?= site_url() ?>assets/images/no-image.png';" class="img-responsive" style="width:100px">
-                                            <label for="exampleInputEmail1">Image</label>
+                                            <label for="exampleInputEmail1">Image </label>
                                             <input type="file" name="image" value="<?= $course->video ?>" class="form-control" id="exampleInputEmail1">
                                         </div>
                                     </div>

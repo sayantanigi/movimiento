@@ -95,7 +95,7 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Subscription Description</label>
-                                            <textarea name="subscription_description" id="editor2"><?= @$subscription->subscription_description ?></textarea>
+                                            <textarea name="subscription_description" id="editor1"><?= @$subscription->subscription_description ?></textarea>
                                         </div>
                                     </div>
                                 </div>

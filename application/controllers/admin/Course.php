@@ -290,6 +290,7 @@ class Course extends Admin_Controller {
                 $data = $this->upload->data();
                 $formdata['image'] = $data['file_name'];
             }
+            
             $id = $this->Course_model->save($formdata);
             //echo $this->db->last_query();die();
             $this->session->set_flashdata("success", "Course detail saved");
