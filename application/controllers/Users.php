@@ -32,6 +32,19 @@ class Users extends CI_Controller {
 		$this->load->view('dashboard');
 		$this->load->view('footer');
 	}
+    public function subscription() {
+        $data = array('title' => 'Subscription', 'page' => 'Subscription');
+        $user_id = $this->session->userdata('user_id');
+		$isLoggedIn = $this->session->userdata('isLoggedIn');
+		$where = array('id' => $user_id);
+		$data['user'] = $this->Commonmodel->fetch_row('users', $where);
+		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
+		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
+		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
+        $this->load->view('header', $data);
+		$this->load->view('subscription');
+		$this->load->view('footer');
+    }
 	public function profile() {
 		$data = array('title' => 'Student Profile','page' => 'profile');
 		$user_id = $this->session->userdata('user_id');
@@ -111,6 +124,7 @@ class Users extends CI_Controller {
 		$phone_code = $this->input->post('phone_code');
 		$phone_country = $this->input->post('phone_country');
 		$phone_st_country = $this->input->post('phone_st_country');
+        $subscription_type = $this->input->post('subscription_type');
 		$check_email = $this->db->get_where('users', array('email' => $email, 'id !=' => $user_id))->num_rows();
 		if ($check_email > 0) {
 			$this->session->set_flashdata('error', 'The email id you are trying to use is already registered. Please try unique email address!');
@@ -126,6 +140,7 @@ class Users extends CI_Controller {
 			'phone_code' => $phone_code,
 			'phone_country' => $phone_country,
 			'phone_st_country' => $phone_st_country,
+            'subscription_type' => $subscription_type,
 			'user_bio' => $this->input->post('user_bio')
 		);
 		//print_r($mydata); die();
@@ -167,7 +182,11 @@ class Users extends CI_Controller {
 			}
 		}
 		$this->session->set_flashdata('msg', $msg);
-		redirect(base_url('profile'), 'refresh');
+        if($subscription_type == '2') {
+            redirect(base_url('subscription'), 'refresh');
+        } else {
+            redirect(base_url('edit-profile'), 'refresh');
+        }
 	}
 	public function enrolledCourse() {
 		$data = array(
@@ -312,7 +331,7 @@ class Users extends CI_Controller {
 		    $getuserIDsql = $this->db->query("SELECT GROUP_CONCAT(user_id) AS user_id FROM courses WHERE id IN ($getcourseIDSql->course_id)")->row();
 		    $data['event'] = $this->db->query("SELECT * FROM events WHERE uploaded_by IN ($getuserIDsql->user_id,0)")->result_array();
 		}
-		
+
 		$getBookedSql = "SELECT * FROM `event_booked` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
@@ -477,6 +496,18 @@ class Users extends CI_Controller {
 			}
 		}
 	}
+    public function stripe($price_key) {
+        $data['amount']= base64_decode($price_key);
+        $this->load->view('header');
+        $this->load->view('user_subscription/product_form',$data);
+        $this->load->view('footer');
+    }
+    public function thank_you($id) {
+        $data['s_id'] = $id;
+        $this->load->view('header');
+		$this->load->view('user_subscription/thank_you', $data);
+		$this->load->view('footer');
+    }
 	public function logout() {
 		session_destroy();
 		$this->session->set_flashdata('success', 'You have successfully logout!');

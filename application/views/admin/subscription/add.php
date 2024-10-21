@@ -39,7 +39,7 @@
                                             <label for="exampleInputEmail1">Subscription Plan for Specific User Type <span style="color: red">*</span></label>
                                             <select class="form-control" name="subscription_user_type" id="subscription_user_type" required>
                                                 <option value="">Choose</option>
-                                                <!-- <option value="free" <?php if (@$subscription->subscription_user_type == '1') { echo "selected"; } ?>>Student</option> -->
+                                                <option value="1" <?php if (@$subscription->subscription_user_type == '1') { echo "selected"; } ?>>Student</option>
                                                 <option value="2" <?php if (@$subscription->subscription_user_type == '2') { echo "selected"; } ?>>Instructor</option>
                                             </select>
                                         </div>

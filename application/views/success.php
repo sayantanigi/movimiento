@@ -84,11 +84,11 @@ function generatePassword($length = 12, $useUppercase = true, $useLowercase = tr
                                 'email_verified' => '1',
                                 'status' => '1',
                             );
-                            $getUserdetails = $this->db->query("SELECT * FROM users WHERE email = '".$userEmail."'")->row();
+                            $getUserdetails = $this->db->query("SELECT * FROM users WHERE email = '".$session['customer_details']['email']."'")->row();
                             if(empty($getUserdetails)) {
                                 $this->db->insert('users', $userDetails);
                                 $user_id = $this->db->insert_id();
-                                $extraInfo = '<p class="card-text">Alse you will received an email containing your login credential.</p>';
+                                $extraInfo = '<p class="card-text">Also you will received an email containing your login credential.</p>';
                             } else {
                                 $user_id = $getUserdetails->id;
                                 $extraInfo = '';

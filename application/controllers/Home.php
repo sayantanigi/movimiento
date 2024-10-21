@@ -15,19 +15,18 @@ class Home extends CI_Controller
         $this->load->library('session');
         require 'vendor/autoload.php';
     }
-    public function index()
-    {
+    public function index() {
         $data = array('title' => 'Home', 'page' => 'home');
         $getCategotyListSql = "SELECT * from `sm_category` ORDER BY `id` DESC";
         $data['category_list'] = $this->db->query($getCategotyListSql)->result_array();
-        $getcourselistsql = "SELECT * from `courses` WHERE `status` = '1' AND assigned_instrustor IS NOT NULL ORDER BY `id` DESC limit 12";
+        //$getcourselistsql = "SELECT * from `courses` WHERE `status` = '1' AND assigned_instrustor IS NOT NULL ORDER BY `id` DESC limit 12";
+        $getcourselistsql = "SELECT * from `courses` WHERE (user_id != '' OR assigned_instrustor != '') AND `status` = '1' ORDER BY `id` DESC limit 12";
         $data['course_list'] = $this->Commonmodel->fetch_all_join($getcourselistsql);
         $this->load->view('header', $data);
         $this->load->view('home');
         $this->load->view('footer');
     }
-    public function register()
-    {
+    public function register() {
         $data = array(
             'title' => 'Student Registration',
             'page' => 'register',
@@ -36,11 +35,11 @@ class Home extends CI_Controller
         $this->load->view('register');
         $this->load->view('footer');
     }
-    public function studentRegistration()
-    {
+    public function studentRegistration() {
         $email = $this->input->post('email');
         $full_name = $this->testInput($this->input->post('full_name'));
         $userType = $this->input->post('user_type');
+        //$subscriptionType = $this->input->post('subscription_type');
         $check_email = $this->db->get_where('users', array('email' => $email))->num_rows();
         if ($check_email > 0) {
             $this->session->set_flashdata('error', 'The email id you are trying to use is already registered. Please login, or create a new account using a unique email address!');
@@ -58,6 +57,8 @@ class Home extends CI_Controller
                 'email_verified' => '0',
                 'status' => '0',
                 'userType' => $userType,
+                'is_reset' => '1',
+                //'subscription_type' => $subscriptionType,
                 'created_at' => date('Y-m-d H:i:s')
             );
             //insert code
@@ -125,8 +126,7 @@ class Home extends CI_Controller
             redirect(base_url('register'), 'refresh');
         }
     }
-    public function login($course_id = null)
-    {
+    public function login($course_id = null) {
         if ($this->session->has_userdata('isLoggedIn') && $this->session->has_userdata('user_id')) :
             redirect(base_url('student-dashboard'), 'refresh');
         endif;
@@ -139,8 +139,7 @@ class Home extends CI_Controller
         $this->load->view('login');
         $this->load->view('footer');
     }
-    public function forgotPassword()
-    {
+    public function forgotPassword() {
         $data = array(
             'title' => 'Forgot Password',
             'page' => 'forgotpassword',
@@ -228,8 +227,7 @@ class Home extends CI_Controller
         }
         redirect(base_url('home/forgotPassword'), 'refresh');
     }
-    public function verifyOtp($otp = null)
-    {
+    public function verifyOtp($otp = null) {
         if (empty($otp)) {
             $this->session->set_flashdata('error', 'You have not permission to access this page!');
             redirect(base_url('reset-password'), 'refresh');
@@ -255,8 +253,7 @@ class Home extends CI_Controller
             $this->load->view('footer');
         }
     }
-    public function resetPwdCust()
-    {
+    public function resetPwdCust() {
         $user_id = $this->input->post('user_id');
         $otp = base64_decode($this->input->post('otp'));
         $password = $this->input->post('password');
@@ -294,23 +291,20 @@ class Home extends CI_Controller
             $this->load->view('footer');
         }
     }
-    public function community()
-    {
+    public function community() {
         $data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
         $data['community'] = $this->db->query("SELECT * FROM community WHERE status = '1' AND is_delete = '1' ORDER BY id DESC")->result_array();
         $this->load->view('header');
         $this->load->view('community', $data);
         $this->load->view('footer');
     }
-    public function community_details($slug)
-    {
+    public function community_details($slug) {
         $data['community_data'] = $this->db->query("SELECT * FROM community WHERE slug LIKE '%" . $slug . "%'")->row();
         $this->load->view('header', $data);
         $this->load->view('community-details', $data);
         $this->load->view('footer');
     }
-    public function contact()
-    {
+    public function contact() {
         $data = array(
             'title' => 'Contact Us',
             'page' => 'contact',
@@ -387,8 +381,7 @@ class Home extends CI_Controller
             echo $msg = "Oops, Try again!";
         }
     }
-    public function studentLoginCheck()
-    {
+    public function studentLoginCheck() {
         $email = $this->input->post('email');
         $password = base64_encode($this->input->post('password'));
         $course_id = $this->input->post('course_id');
@@ -408,8 +401,14 @@ class Home extends CI_Controller
                     if($user->is_reset == '0') {
                         redirect(base_url('reset_password'));
                     } else {
-                        $this->session->set_flashdata('success', 'Great! You have logged in successfully.');
-                        redirect(base_url('student-dashboard'), 'refresh');
+                        $checkSudscriptionData = $this->db->query("SELECT * FROM user_subscription WHERE employer_id = '".$user->id."' AND status = '1'")->row();
+                        if (!empty($checkSudscriptionData)) {
+                            //$this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+                            redirect(base_url('student-dashboard'), 'refresh');
+                        } else {
+                            //$this->session->set_flashdata('success', 'Great! You have logged in successfully.');
+                            redirect(base_url('edit-profile'), 'refresh');
+                        }
                     }
                 }
             } else {
@@ -435,7 +434,17 @@ class Home extends CI_Controller
             $this->load->view('footer');
         }
     }
-
+    public function subscription() {
+        $subscription_list =  $this->db->query("SELECT * FROM subscription WHERE subscription_user_type = '".$_SESSION['userType']."' AND status = '1'")->result_array();
+        $data = array(
+            'title' => 'Subscription',
+            'page' => 'Subscription',
+            'subscription_list' => @$subscription_list,
+        );
+        $this->load->view('header', $data);
+        $this->load->view('subscription');
+        $this->load->view('footer');
+    }
     public function reset_password(){
         $data = array('title' => 'Password Reset Page');
         $this->load->view('header', $data);

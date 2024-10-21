@@ -86,13 +86,18 @@
                                 </div>
                             </div>
                             <div class="p_check mb-10" style="color:red">Password and Confirm Password does not match</div>
-                            <div class="sign__action d-flex justify-content-between mb-10">
-                                <div class="sign__agree d-flex align-items-center">
-                                    <input class="m-check-input" type="checkbox" id="m-agree">
-                                    <label class="m-check-label" for="m-agree">I agree to the <a href="javascript:void(0)" id="exampleModal">Terms & Conditions</a></label>
+                            <!-- <div class="sign__input-wrapper mb-10">
+                                <h5>Subscription Type</h5>
+                                <div class="sign__input">
+                                    <select name="subscription_type" id="subscription_type" class="form-control" style="width: 100%;" required="">
+                                        <option value="">Select option</option>
+                                        <option value="1">Apply free subscription</option>
+                                        <option value="2">Apply paid subscription</option>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="tc_check mb-10" style="color:red">Please check the checkbox</div>
+                                <p style="color: red; margin-top: 10px" class="free_sub"><b>Note:</b> Each course need to purchase for free subscribers.</>
+                                <p style="color: red; margin-top: 10px" class="paid_sub"><b>Note:</b> One time payment, No need to purchase each course for paid subscribers.</p>
+                            </div> -->
                             <div class="sign__input-wrapper mb-10">
                                 <div class="e-btn w-50 reg_cstm_scls" onclick="get_value(1)">
                                     <span class="user-tab cstm_text1" user_type="1">Student</span>
@@ -102,6 +107,13 @@
                                 </div>
                                 <input type="hidden" name="user_type" id="user_type" required>
                             </div>
+                            <div class="sign__action d-flex justify-content-between mb-10">
+                                <div class="sign__agree d-flex align-items-center">
+                                    <input class="m-check-input" type="checkbox" id="m-agree">
+                                    <label class="m-check-label" for="m-agree">I agree to the <a href="javascript:void(0)" id="exampleModal">Terms & Conditions</a></label>
+                                </div>
+                            </div>
+                            <div class="tc_check mb-10" style="color:red">Please check the checkbox</div>
                             <button class="e-btn w-100 text-capitalize"> <span></span> Register Now</button>
                             <div class="sign__new text-center mt-20">
                                 <p>Already in Registered ? <a href="<?= base_url()?>login"> Log In</a></p>

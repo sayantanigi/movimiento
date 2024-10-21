@@ -55,7 +55,7 @@ $data = array(
                 <h3 class="page__title">Student Dashboard</h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?= base_url()?>home">Home</a></li>
+                        <li class="breadcrumb-item">Home</li>
                         <li class="breadcrumb-item active" aria-current="page">Student Dashboard</li>
                     </ol>
                 </nav>
@@ -97,6 +97,7 @@ $data = array(
         <div class="row">
             <?php $this->load->view('leftbar_dash'); ?>
             <div class="col-lg-8">
+                <p id="error_msg" style="text-align: center;color: red;font-size: 18px;padding: 10px;border: 1px solid;">Please complete your profile to access all the menu tab.</p>
                 <div class="card">
                     <div class="card-body p-4">
                         <h2 class="h5 fw-bold text-uppercase">Update Profile</h2>
@@ -135,15 +136,15 @@ $data = array(
                                 action="<?= base_url('users/profileUpdate') ?>">
                                 <div class="row g-4">
                                     <div class="col-lg-6">
-                                        <label class="Heading">Full Name</label>
+                                        <label class="Heading">Full Name <span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="first_name" placeholder="First Name" value="<?php echo @$user->full_name; ?>">
                                     </div>
                                     <div class="col-lg-6">
-                                        <label>Email Id</label>
+                                        <label>Email Id <span style="color: red">*</span></label>
                                         <input type="email" class="form-control" name="email" placeholder="Email" value="<?php echo @$user->email; ?>">
                                     </div>
                                     <div class="col-lg-6">
-                                        <label class="Heading">Phone Number</label>
+                                        <label class="Heading">Phone Number <span style="color: red">*</span></label>
                                         <input type="text" id="phone" class="form-control" name="phone" placeholder="Phone Number" required="" value="<?php echo @$user->phone; ?>" maxlength="10">
                                         <input type="hidden" name="phone_full" id="phone_full" value="<?php echo @$user->phone_full; ?>">
                                         <input type="hidden" name="phone_code" id="phone_code" value="<?php echo @$user->phone_code; ?>">
@@ -158,9 +159,19 @@ $data = array(
                                     <div class="col-lg-2 text-center">
                                         <img id="output_image" src="<?= $profileImage ?>" />
                                     </div>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <label class="Heading">Skill/Occupation</label>
                                         <input type="text" class="form-control" name="skills" placeholder="Skill/Occupation" value="<?php echo @$user->skills; ?>">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="Heading">Subscription Type <span style="color: red">*</span></label>
+                                        <select name="subscription_type" id="subscription_type" class="form-control" style="width: 100%;" required="">
+                                            <option value="">Select option</option>
+                                            <option value="1" <?php if(@$user->subscription_type == '1') {echo "selected";}?>>Apply free subscription</option>
+                                            <option value="2" <?php if(@$user->subscription_type == '2') {echo "selected";}?>>Apply paid subscription</option>
+                                        </select>
+                                        <p style="color: red; margin-top: 10px" class="free_sub"><b>Note:</b> Each course need to purchase for free subscribers.</p>
+                                        <p style="color: red; margin-top: 10px" class="paid_sub"><b>Note:</b> One time payment, No need to purchase each course for paid subscribers.</p>
                                     </div>
                                     <div class="col-lg-12">
                                         <label class="Heading">Bio</label>
@@ -172,7 +183,6 @@ $data = array(
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
                 <div class="card mt-4">
@@ -208,6 +218,11 @@ $data = array(
         </div>
     </div>
 </section>
+<style>
+.free_sub, .paid_sub {display: none;}
+#error_msg {display: none;}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 function preview_image(event) {
     var reader = new FileReader();
@@ -217,4 +232,17 @@ function preview_image(event) {
     }
     reader.readAsDataURL(event.target.files[0]);
 }
+$('#subscription_type').on('click', function(){
+    var sub_type = $('#subscription_type').val();
+    if(sub_type == '1') {
+        $('.free_sub').show();
+        $('.paid_sub').hide();
+    } else if(sub_type == '2') {
+        $('.paid_sub').show();
+        $('.free_sub').hide();
+    } else {
+        $('.free_sub').hide();
+        $('.paid_sub').hide();
+    }
+})
 </script>

@@ -78,7 +78,24 @@ $optionsList = $this->db->query($getOptionsSql)->result();
                                     if(!empty($this->session->userdata('user_id'))) {
                                         if($this->session->userdata('userType') == '1') { ?>
                                         <ul style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                                            <li style="margin-right: 15px;"><a href="<?= base_url()?>student-dashboard" class="e-btn">Dashboard</a></li>
+                                            <?php
+                                            $userDetails = $this->Commonmodel->fetch_row('users', array('id' => $this->session->userdata('user_id')));
+                                            if($userDetails->subscription_type == '1') {
+                                                $url = base_url('student-dashboard');
+                                            } else if($userDetails->subscription_type == '2') {
+                                                $checksubscription = $this->db->query("SELECT * FROM user_subscription WHERE employer_id = '".$this->session->userdata('user_id')."' AND status = '1'")->result_array();
+                                                if(!empty($checksubscription)) {
+                                                    $url = base_url('student-dashboard');
+                                                } else {
+                                                    $url = base_url('subscription');
+                                                }
+                                            } else {
+                                                $url = base_url('edit-profile');
+                                            }
+                                            ?>
+                                            <li style="margin-right: 15px;">
+                                                <a href="<?= $url; ?>" class="e-btn">Dashboard</a>
+                                            </li>
                                             <div id="google_translate_element"></div>
                                         </ul>
                                         <?php } else { ?>
