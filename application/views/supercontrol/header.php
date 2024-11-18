@@ -27,6 +27,7 @@
     <style>
     .cke_notification_warning {display: none !important;}
     </style>
+    
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <?php $getOptionsSql = "SELECT * FROM `options`";

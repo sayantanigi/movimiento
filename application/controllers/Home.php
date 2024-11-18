@@ -54,8 +54,8 @@ class Home extends CI_Controller
                 'email' => $email,
                 'password' => base64_encode($this->input->post('password')),
                 'otp' => $otp,
-                'email_verified' => '0',
-                'status' => '0',
+                'email_verified' => '1',
+                'status' => '1',
                 'userType' => $userType,
                 'is_reset' => '1',
                 //'subscription_type' => $subscriptionType,
@@ -65,7 +65,7 @@ class Home extends CI_Controller
             $lastId = $this->db->insert('users', $data);
             $userid = $this->db->insert_id();
             if ($userid) {
-                $subject = 'Verify Your Email Address From Movimiento';
+                /*$subject = 'Verify Your Email Address From Movimiento';
                 $activationURL = base_url() . "email-verification/" . urlencode(base64_encode($otp));
                 $getOptionsSql = "SELECT * FROM `options`";
                 $optionsList = $this->db->query($getOptionsSql)->result();
@@ -103,7 +103,7 @@ class Home extends CI_Controller
                     $mail->AddAddress($email);
                     $mail->IsHTML(true);
                     $mail->Subject = $subject;
-                    $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
+                    $mail->AddEmbeddedImage('uploads/logo/logo2.png', 'Logo');
                     $mail->Body = $message;
                     $mail->IsSMTP();
                     //Send mail using GMAIL server
@@ -119,7 +119,9 @@ class Home extends CI_Controller
                     $this->session->set_flashdata('success', $msg);
                 } catch (Exception $e) {
                     $this->session->set_flashdata('message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-                }
+                }*/
+                $msg = "You have successfully registered with us. You can now login with your credential.";
+                $this->session->set_flashdata('success', $msg);
             } else {
                 $this->session->set_flashdata('error', 'Opps, Try again!');
             }
@@ -128,7 +130,11 @@ class Home extends CI_Controller
     }
     public function login($course_id = null) {
         if ($this->session->has_userdata('isLoggedIn') && $this->session->has_userdata('user_id')) :
-            redirect(base_url('student-dashboard'), 'refresh');
+            if($this->session->userdata('userType') == '2') {
+                redirect(base_url('consultant-dashboard'), 'refresh');
+            } else {
+                redirect(base_url('student-dashboard'), 'refresh');
+            }
         endif;
         $data = array(
             'title' => 'Sign In',
@@ -205,7 +211,7 @@ class Home extends CI_Controller
                 $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->AddAddress($email);
                 $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
+                $mail->AddEmbeddedImage('uploads/logo/logo2.png', 'Logo');
                 $mail->Subject = $subject;
                 $mail->Body = $message;
                 $mail->IsSMTP();
@@ -331,7 +337,7 @@ class Home extends CI_Controller
             $subject = $sub;
             $getOptionsSql = "SELECT * FROM `options`";
             $optionsList = $this->db->query($getOptionsSql)->result();
-            //$imagePath = base_url().'uploads/logo/Logo-Makutano-inblock.png';
+            //$imagePath = base_url().'uploads/logo/logo2.png';
             $admEmail = $optionsList[8]->option_value;
             $address = $optionsList[6]->option_value;
             $message = "
@@ -363,7 +369,7 @@ class Home extends CI_Controller
                 $mail->CharSet = 'UTF-8';
                 $mail->SetFrom('support@movimientolatinouniversity.com', 'Movimiento Latino University');
                 $mail->IsHTML(true);
-                $mail->AddEmbeddedImage('uploads/logo/Logo-Makutano-inblock.png', 'Logo');
+                $mail->AddEmbeddedImage('uploads/logo/logo2.png', 'Logo');
                 $mail->Subject = $subject;
                 $mail->Body = $message;
                 $mail->IsSMTP();
@@ -392,7 +398,7 @@ class Home extends CI_Controller
             $this->session->set_userdata('user_id', @$user->id);
             $this->session->set_userdata('first_name', @$user->fname);
             $this->session->set_userdata('userType', @$user->userType);
-            //echo $user->is_reset; die();
+            //echo @$user->userType; die();
             if (@$user->userType == '1') {
                 if (@$course_id != 'login') {
                     $this->session->set_flashdata('success', 'Logged in successfully.');
@@ -664,8 +670,7 @@ class Home extends CI_Controller
             echo "Error while posting comment.";
         }
     }
-    public function postCommentRply()
-    {
+    public function postCommentRply() {
         $commentData = array(
             'user_id' => @$this->session->userdata('user_id'),
             'community_id' => $_POST['community_id'],
@@ -684,8 +689,7 @@ class Home extends CI_Controller
             echo "Error while posting comment.";
         }
     }
-    public function likecommunity()
-    {
+    public function likecommunity() {
         $likeData = array(
             'user_id' => @$this->session->userdata('user_id'),
             'community_id' => $_POST['community_id'],
@@ -711,12 +715,10 @@ class Home extends CI_Controller
             echo "liked";
         }
     }
-    public function dislikecommunity()
-    {
+    public function dislikecommunity() {
         $this->db->query("UPDATE community_like SET is_liked = '0' WHERE user_id = '" . $this->session->userdata('user_id') . "' AND community_id = '" . $_POST['community_id'] . "'");
     }
-    public function about()
-    {
+    public function about() {
         $data = array('title' => 'About Us', 'page' => 'about');
         $getAboutDataSql = "SELECT * FROM `cms` WHERE `id` = 1";
         $about_data = $this->db->query($getAboutDataSql);
@@ -727,8 +729,7 @@ class Home extends CI_Controller
         $this->load->view('about');
         $this->load->view('footer');
     }
-    public function term_conditions()
-    {
+    public function term_conditions() {
         $data = array('title' => 'Terms & Condition', 'page' => 'terms');
         $getAboutDataSql = "SELECT * FROM `cms` WHERE `id` = 12";
         $about_data = $this->db->query($getAboutDataSql);

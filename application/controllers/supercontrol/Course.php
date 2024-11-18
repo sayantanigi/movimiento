@@ -164,7 +164,8 @@ class Course extends CI_Controller {
 	}
 	function show_all_courses() {
 		$user = $this->session->userdata('user_id');
-		$queryallcat = $this->db->get_where('courses', array('user_id' => $user, 'status' => '1'))->result();
+		//$queryallcat = $this->db->get_where('courses', array('user_id' => $user, 'status' => '1'))->result();
+        $queryallcat = $this->db->query("SELECT * FROM `courses` WHERE user_id = $user OR assigned_instrustor = $user AND status = '1'")->result();
 		$data['eloca'] = $queryallcat;
 		$data['title'] = "course List";
 		$this->load->view('supercontrol/header', $data);

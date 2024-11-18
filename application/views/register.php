@@ -1,3 +1,10 @@
+<style>
+.alert-success {
+    font-size: 15px;
+    padding: 10px;
+    text-align: center;
+}
+</style>
 <section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="assets/img/page-title/page-title-2.jpg">
     <div class="container">
         <div class="row">
