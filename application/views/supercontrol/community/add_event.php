@@ -9,7 +9,7 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
 <?php
 $url = $_SERVER['REQUEST_URI'];
 $url = explode('/', $url);
-$comm_id = $url[5];
+$comm_id = $url[4];
 ?>
 <div class="page-container">
     <div class="page-sidebar-wrapper">
@@ -36,7 +36,7 @@ $comm_id = $url[5];
                                 <div class="portlet box blue-hoki">
                                     <div class="portlet-body form">
                                         <!-- BEGIN FORM-->
-                                        <form action="<?php echo base_url().'supercontrol/community/add_event/'.@$event->community_id.'/'.@$event->id?>" class="form-horizontal" method="post" enctype="multipart/form-data" onsubmit="check()">
+                                        <form action="<?php echo base_url().'supercontrol/community/add_event/'.@$comm_id.'/'.@$event->id?>" class="form-horizontal" method="post" enctype="multipart/form-data" onsubmit="check()">
                                             <div class="form-body">
                                                 <div class="form-group">
                                                     <label class="col-md-3 control-label"><b>Event Title *</b></label>
@@ -84,6 +84,13 @@ $comm_id = $url[5];
                                                                 <option value="Monthly" <?php if (@$event->event_repeat == 'Monthly') { echo 'selected';} ?>>Monthly</option>
                                                                 <option value="Yearly" <?php if (@$event->event_repeat == 'Yearly') { echo 'selected';} ?>>Yearly</option>
                                                             </select>
+                                                        <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Event Link</b></label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" name="frm[event_link]" required="" id="event_link" class="form-control" placeholder="Event Link" onkeyup="leftTrim(this)" value="<?= $event->event_link ?>"/>
                                                         <label id="errorBox"></label>
                                                     </div>
                                                 </div>

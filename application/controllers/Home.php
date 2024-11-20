@@ -637,8 +637,7 @@ class Home extends CI_Controller
         $data['reviewList'] = $this->db->query($getAllReviewSql)->result();
         $this->load->view('ajax-reviews', $data);
     }
-    public function postComment()
-    {
+    public function postComment() {
         if (!empty($_POST['comment_id'])) {
             $commentData = array(
                 'user_id' => @$this->session->userdata('user_id'),
@@ -665,7 +664,7 @@ class Home extends CI_Controller
         }
         $insert_id = $this->db->insert_id();
         if ($insert_id > 0) {
-            echo "Post comment successfully.";
+            echo "Post comment successful.";
         } else {
             echo "Error while posting comment.";
         }
@@ -1543,10 +1542,21 @@ class Home extends CI_Controller
                 } else {
                     $full_name = "Admin";
                 }
-                $html .= '<li><p>Event Title: <span>'.$event['event_title'].'</span></p><p>Event Date: <span>'.$date.'</span></p>
-                <p>Organized By: <span>'.$full_name.'</span>
-                </p>
-            </li>';
+                $html .= '<li><p>Event Title: <span>'.$event['event_title'].'</span></p><p>Event Date: <span>'.$date.'</span></p><p>Organized By: <span>'.$full_name.'</span></p>';
+                if(!empty($this->session->userdata('user_id'))) {
+                    $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$event['community_id']."'")->row();
+                    $course_id = $getcourseId->course_id;
+                    $userId = $this->session->userdata('user_id');
+                    $checkpurchasedata = $this->db->query("SELECT * FROM course_enrollment WHERE course_id = '".$course_id."' AND user_id = '".$userId."'")->result();
+                    if(!empty($checkpurchasedata)) {
+                        $html .= '<a href='.$event['event_link'].' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>';
+                    } else {
+                        $html .= '<a href="javascript:void(0)" onclick="alertForSubscription()"  style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>';
+                    }
+                } else {
+                $html .= '<a href='.base_url('login').' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>';
+                }
+                $html .= '</li>';
             }
         } else {
             $html = '<li>No Data found!</li>';

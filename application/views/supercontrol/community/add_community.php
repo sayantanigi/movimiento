@@ -71,9 +71,9 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                     </div>
                                                 </div> -->
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Courses</b></label>
+                                                    <label class="col-md-3 control-label"><b>Courses *</b></label>
                                                     <div class="col-md-8">
-                                                        <select name="frm[course_id]" class="form-control">
+                                                        <select name="frm[course_id]" class="form-control" required>
                                                             <option value="">Select option</option>
                                                             <?php
                                                             if(!empty($course_list)) {

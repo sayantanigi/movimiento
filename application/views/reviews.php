@@ -165,4 +165,46 @@ function timeAgo($time_ago)  {
                                                 <div class="rating me-2" style="width: 120px;">
                                                 <?php
                                                 $rating = $this->db->query("SELECT * FROM course_reviews WHERE course_id = '".$value->course_id."'")->result_array();
-                                                $totalrate = $this-
+                                                $totalrate = $this->db->query("SELECT SUM(rating) as total FROM course_reviews WHERE course_id = '".$value->course_id."'")->row();
+                                                if(!empty($rating)) {
+                                                    $rate = round($totalrate->total/count($rating), 0);
+                                                    foreach (range(1,5) as $i) {
+                                                        if($rate > 0) {
+                                                            echo '<span class="active"><i class="fas fa-star"></i></span>';
+                                                        } else {
+                                                            echo '<span><i class="fas fa-star zero"></i></span>';
+                                                        }  $rate--;
+                                                    }
+                                                    echo "(".round($totalrate->total/count($rating), 0).")";
+                                                } else {
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo '<span><i class="fas fa-star zero"></i></span>';
+                                                    echo "(0)";
+                                                } ?>
+                                                </div>
+                                                <div class="b2 text-light mb-0" style="color: #000 !important">Good</div>
+                                                <div class="rating-count" style=" width: 120px; text-align: end; "><?php echo timeAgo($value->review_date); ?></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <!-- <a class="btn btn-outline-primary btn-sm" href="#" title="Edit"><i class="far fa-edit"></i></a> -->
+                                                <a class="btn btn-outline-danger btn-sm" href="javascript:void(0)" title="Delete" onclick="deleteReview(<?= $value->review_id?>)"><i class="far fa-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php } } else  { ?>
+                                        <td class='text-danger' style='text-align: center; color: #000 !important;' colspan='3'>No review found!</td>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -56,10 +56,11 @@
                                     </div> -->
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course</label>
-                                            <select name="frm[course_id]" class="form-control">
+                                            <label for="exampleInputEmail1">Course <span style="color: red">*</span></label>
+                                            <select name="frm[course_id]" class="form-control" required>
                                                 <option value="">Select option</option>
                                                 <?php
+                                                print_r($course_list);
                                                 if(!empty($course_list)) {
                                                 foreach ($course_list as $course_list_v) { ?>
                                                 <option value="<?= $course_list_v['id']?>" <?php if($course_list_v['id'] == $community->course_id) { echo "selected"; }?>><?= $course_list_v['title']?></option>

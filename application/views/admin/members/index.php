@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <style>
 .form-control {margin-bottom: 15px;}
 </style>
@@ -20,22 +22,24 @@
                     <a href="<?= admin_url('members/add/') ?>" class="pull-right btn btn-primary"><span class="fa fa-plus"></span> Add New</a>
                 </div>
                 <div class="box-body">
-                    <table class="table">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Password</th>
-                            <th>Phone</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Email Verification</th>
-                            <th>Status</th>
-                            <th>Enrolled</th>
-                            <th>Actions</th>
-                            <!-- <th>Reply</th> -->
-                        </tr>
+                    <table class="table" id="userTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Phone</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Email Verification</th>
+                                <th>Status</th>
+                                <th>Enrolled</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <?php
                         if (!empty($members)) {
                             $i = 1;
@@ -134,9 +138,10 @@
                         } else {
                             echo "<tr><td colspan='7' class='text-center red'><h3>No record available!</h3></td></tr>";
                         } ?>
+                        </tbody>
                     </table>
                 </div>
-                <div class="box-footer clearfix">
+                <div class="box-footer clearfix" style="display: none;">
                     <?= $paginate ?>
                 </div>
             </div>
@@ -144,6 +149,9 @@
     </div>
 
     <script>
+        $(document).ready( function () {
+            $('#userTable').DataTable();
+        } );
         function deleteUsers(id) {
             swal({
                 title: 'Are You sure want to delete this user?',

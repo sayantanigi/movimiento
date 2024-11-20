@@ -77,6 +77,14 @@ $comm_id = $url[4];
                                 <div class="col-sm-12">
                                     <div class="col-sm-12">
                                         <div class="form-group">
+                                            <label for="exampleInputEmail1">Event Link</label>
+                                            <input type="text" name="frm[event_link]" value="<?= @$event->event_link ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter Event Link" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
                                             <label for="exampleInputEmail1">Event Description</label>
                                             <textarea name="frm[event_description]" value="<?= @$event->event_description ?>" id="editor1"><?= @$event->event_description ?></textarea>
                                         </div>

@@ -42,6 +42,10 @@ $activeCourse = 0;
 if (!empty($active_data)) {
     $activeCourse = $active_data->activeCourse;
 }
+$data = array(
+    'ctn_enrolment' => @$ctn_enrolment,
+    'courseArray' => count($courseArray)
+);
 ?>
 <section class="page__title-area page__title-height page__title-overlay d-flex align-items-center" data-background="<?= base_url()?>assets/img/page-title/page-title-2.jpg">
     <div class="container">
@@ -132,6 +136,7 @@ if (!empty($active_data)) {
                                                     <img src="<?= base_url() ?>assets/img/favicon.png" alt="" style="width: 20px; height: 20px;">
                                                 </div>
                                                 <h6><a href="javascript:void(0)" style="font-size: 13px">Admin</a></h6>
+                                                <a href="<?= $data['event_link'] ?>" style="font-size: 13px;margin-left: 58px;background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;" target="_blank">Join Event</a>
                                             </div>
                                             <?php } ?>
                                         </div>

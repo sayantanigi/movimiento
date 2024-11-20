@@ -328,11 +328,18 @@ class Users extends CI_Controller {
 		$data['user'] = $this->Commonmodel->fetch_row('users', $where);
 		$getcourseIDSql = $this->db->query("SELECT GROUP_CONCAT(course_id) AS course_id FROM course_enrollment WHERE user_id = '".$user_id."'")->row();
 		if(!empty($getcourseIDSql->course_id)) {
-		    $getuserIDsql = $this->db->query("SELECT GROUP_CONCAT(user_id) AS user_id FROM courses WHERE id IN ($getcourseIDSql->course_id)")->row();
-		    $data['event'] = $this->db->query("SELECT * FROM events WHERE uploaded_by IN ($getuserIDsql->user_id,0)")->result_array();
+            $getuserIDsql = $this->db->query("SELECT GROUP_CONCAT(user_id) AS user_id FROM courses WHERE id IN ($getcourseIDSql->course_id)")->row();
+            if(!empty($getuserIDsql->user_id)) {
+                $userid = $getuserIDsql->user_id;
+            } else {
+                $userid = '0';
+            }
+		    //$data['event'] = $this->db->query("SELECT * FROM events WHERE uploaded_by IN ($userid,0) AND event_status = '1'")->result_array();
+            $commdata = $this->db->query("SELECT * FROM community WHERE course_id = '".$getcourseIDSql->course_id."' AND status = '1'")->row();
+            $data['event'] = $this->db->query("SELECT * FROM events WHERE community_id = '".$commdata->id."' AND event_status = '1'")->result_array();
 		}
 
-		$getBookedSql = "SELECT * FROM `event_booked` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
+		//$getBookedSql = "SELECT * FROM `event_booked` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
 		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();

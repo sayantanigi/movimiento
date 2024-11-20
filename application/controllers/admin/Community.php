@@ -122,7 +122,7 @@ class Community extends Admin_Controller {
         $this->data['main'] = admin_view('community/add');
         $this->data['community'] = $this->Community_model->getNew();
         //$this->data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
-        $this->data['course_list'] = $this->db->query("SELECT * FROM courses WHERE status = '1' AND (assigned_instrustor IS NOT NULL OR assigned_instrustor != '')")->result_array();
+        $this->data['course_list'] = $this->db->query("SELECT * FROM courses WHERE status = '1' AND (assigned_instrustor IS NOT NULL OR user_id != '')")->result_array();
         $this->data['community']->gender = "Male";
         if ($id) {
             $this->data['title'] = 'Update Community';

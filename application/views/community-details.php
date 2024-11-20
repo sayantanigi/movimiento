@@ -7,7 +7,7 @@
                     <h3 class="page__title">Community</h3>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="<?= base_url()?>">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Community</li>
                         </ol>
                     </nav>
@@ -179,13 +179,13 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="job-overview" id="job-overview">
+                        <div class="job-overview" id="job-overview1" style="margin-bottom: 10px;">
                             <h3>All Events</h3>
-                            <ul id="filterEvent">
-                            <?php
-                            $event_list = $this->db->query("SELECT * FROM events WHERE community_id = '".@$community_data->id."' AND event_status = '1'")->result_array();
-                            if(!empty($event_list)) {
-                            foreach ($event_list as $evnt) { ?>
+                            <ul id="filterEvent1">
+                                <?php
+                                $event_list = $this->db->query("SELECT * FROM events WHERE event_status = '1' and community_id= '".@$community_data->id."'")->result_array();
+                                if(!empty($event_list)) {
+                                foreach ($event_list as $evnt) { ?>
                                 <li>
                                     <p>Event Title: <span><?= $evnt['event_title']?></span></p>
                                     <p>Event Date: <span>
@@ -204,10 +204,68 @@
                                             echo "Admin";
                                         }?></span>
                                     </p>
+                                    <?php
+                                    if(!empty($this->session->userdata('user_id'))) {
+                                        $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$evnt['community_id']."'")->row();
+                                        $course_id = $getcourseId->course_id;
+                                        $userId = $this->session->userdata('user_id');
+                                        $checkpurchasedata = $this->db->query("SELECT * FROM course_enrollment WHERE course_id = '".$course_id."' AND user_id = '".$userId."'")->result();
+                                        if(!empty($checkpurchasedata)) { ?>
+                                            <a href="<?= $evnt['event_link']?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                            <?php } else { ?>
+                                            <a href="javascript:void(0)" onclick='alertForSubscription()' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                            <?php } ?>
+                                    <?php } else { ?>
+                                        <a href="<?= base_url('login') ?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                    <?php } ?>
                                 </li>
-                            <?php } } else { ?>
-                            <li>No Event Created Yet</li>
-                            <?php } ?>
+                                <?php } } else { ?>
+                                <li>No Event Created Yet</li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                        <div class="job-overview" id="job-overview">
+                            <h3>Todays Events</h3>
+                            <ul id="filterEvent">
+                                <?php
+                                $event_list = $this->db->query("SELECT * FROM events WHERE community_id = '".@$community_data->id."' AND event_status = '1'")->result_array();
+                                if(!empty($event_list)) {
+                                foreach ($event_list as $evnt) { ?>
+                                <li>
+                                    <p>Event Title: <span><?= $evnt['event_title']?></span></p>
+                                    <p>Event Date: <span>
+                                        <?php
+                                        $from_date = date('d-m-Y h:i a', strtotime($evnt['event_from_date']." ".$evnt['event_from_time']));
+                                        $to_date = date('d-m-Y h:i a', strtotime($evnt['event_to_date']." ".$evnt['event_to_time']));
+                                        echo $from_date." to ".$to_date." (".$evnt['event_repeat'].")";
+                                        ?>
+                                    </span></p>
+                                    <p>Organized By: <span>
+                                        <?php
+                                        if($evnt['uploaded_by'] != '0') {
+                                            $user_details = $this->db->query("SELECT * FROM users WHERE id = '".$evnt['uploaded_by']."'")->row();
+                                            echo $user_details->full_name;
+                                        } else {
+                                            echo "Admin";
+                                        }?></span>
+                                    </p>
+                                    <?php if(!empty($this->session->userdata('user_id'))) {
+                                        $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$evnt['community_id']."'")->row();
+                                        $course_id = $getcourseId->course_id;
+                                        $userId = $this->session->userdata('user_id');
+                                        $checkpurchasedata = $this->db->query("SELECT * FROM course_enrollment WHERE course_id = '".$course_id."' AND user_id = '".$userId."'")->result();
+                                        if(!empty($checkpurchasedata)) { ?>
+                                            <a href="<?= $evnt['event_link']?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                            <?php } else { ?>
+                                            <a href="javascript:void(0)" onclick='alertForSubscription()' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                            <?php } ?>
+                                    <?php } else { ?>
+                                        <a href="<?= base_url('login') ?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                    <?php } ?>
+                                </li>
+                                <?php } } else { ?>
+                                <li>No Event Created Yet</li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -313,9 +371,15 @@ function dislikecommunity() {
 // for reply each Comment
 function replyComment(id) {
     $('html, body').animate({ scrollTop: $(".blog__comment").offset().top - 180 }, 0);
-    $('#comment_id').val(id)
+    $('#comment_id').val(id);
+    $('.blog__comment h3').text("Write your Reply");
+    $('.blog__comment-btn button').text("Post Reply");
+    $(".blog__comment-input textarea").attr("placeholder", "Enter your reply");
 }
 </script>
+<link href="<?= base_url('assets/sweetalert/sweetalert.css') ?>" rel="stylesheet" type="text/css">
+<script src="<?= base_url('assets/sweetalert/sweetalert.min.js') ?>"></script>
+<script src="<?= base_url('assets/sweetalert/jquery.sweet-alert.custom.js') ?>"></script>
 <script>
 (function ($, undefined) {
     var $window = $(window);
@@ -2080,4 +2144,21 @@ function replyComment(id) {
             });
         }
     });
+    function alertForSubscription(id) {
+        swal({
+            title: 'You need to purchase event related course first.',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#36A1EA',
+            cancelButtonColor: '#e50914',
+            confirmButtonText: 'Ok',
+            //cancelButtonText: 'No',
+            closeOnConfirm: true,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                //window.location.href = '<?= base_url('supercontrol/subscription') ?>';
+            }
+        });
+    }
 </script>

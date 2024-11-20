@@ -50,7 +50,7 @@ class Community extends CI_Controller {
             redirect(base_url('supercontrol/community'));
         }
 		//$data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
-        $data['course_list'] = $this->db->query("SELECT * FROM courses WHERE user_id = '".$this->session->userdata('user_id')."' AND status = '1'")->result_array();
+        $data['course_list'] = $this->db->query("SELECT * FROM courses WHERE status = '1' AND (assigned_instrustor IS NOT NULL OR user_id != '')")->result_array();
         $data['title'] = 'Community Category List';
         $data['tab'] = 'add_comm';
         $this->load->view('supercontrol/header', $data);
