@@ -82,7 +82,7 @@
                             <div class="p_check mb-10" style="color:red">Password and Confirm Password does not match</div>
                             <button class="e-btn w-100 text-capitalize reset_pass" id="reset_pass"> <span></span>Reset</button>
                             <input type="hidden" id="otp" name="otp" value="<?= base64_decode($otp);?>">
-                            <input type="hidden" id="user_id" name="user_id" value="<?= $user_id;?>">
+                            <input type="hidden" id="user_id" name="user_id" value="<?= @$user_id;?>">
                             <div class="sign__new text-center mt-20">
                                 <p>Do not have account? <a href="<?php echo base_url('register') ?>"> Sign Up</a></p>
                             </div>

@@ -204,7 +204,7 @@
                                             echo "Admin";
                                         }?></span>
                                     </p>
-                                    <?php
+                                    <!-- <?php
                                     if(!empty($this->session->userdata('user_id'))) {
                                         $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$evnt['community_id']."'")->row();
                                         $course_id = $getcourseId->course_id;
@@ -217,7 +217,7 @@
                                             <?php } ?>
                                     <?php } else { ?>
                                         <a href="<?= base_url('login') ?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
-                                    <?php } ?>
+                                    <?php } ?> -->
                                 </li>
                                 <?php } } else { ?>
                                 <li>No Event Created Yet</li>

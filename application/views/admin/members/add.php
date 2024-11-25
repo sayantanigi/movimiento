@@ -95,8 +95,8 @@
                                 <div class="col-sm-12">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="status">User Type</label>
-                                            <select name="userType" class="form-control">
+                                            <label for="status">User Type<span class="red">*</span></label>
+                                            <select name="userType" class="form-control" required>
                                                 <option value="">Select User Type</option>
                                                 <option value="1" <?= (@$member->userType == 1) ? 'selected' : ''; ?>>Student </option>
                                                 <option value="2" <?= (@$member->userType == 2) ? 'selected' : ''; ?>>Instructor </option>
