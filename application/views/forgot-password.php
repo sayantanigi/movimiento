@@ -61,7 +61,7 @@
                             <div class="sign__input-wrapper mb-25">
                                 <h5>Email Address</h5>
                                 <div class="sign__input">
-                                    <input type="text" placeholder="E-mail address" name="email" required="">
+                                    <input type="email" placeholder="E-mail address" name="email" required="">
                                     <i class="fal fa-envelope"></i>
                                 </div>
                             </div>

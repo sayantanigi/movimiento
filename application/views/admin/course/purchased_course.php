@@ -47,7 +47,7 @@
                             </td>
                             <td>
                                 <?php if($course['price_cents'] > 0) {
-                                    echo "$".$course['price_cents'];
+                                    echo "$".$course['enrollment_price'];
                                 } else {
                                     echo "Free";
                                 } ?></td>

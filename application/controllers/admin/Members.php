@@ -22,7 +22,7 @@ class Members extends AI_Controller {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
-        $show_per_page = 20;
+        $show_per_page = 10000000;
         $offset = ($page - 1) * $show_per_page;
         $this->data['title'] = 'Members';
         $this->data['tab'] = 'members';

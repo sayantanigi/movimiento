@@ -87,7 +87,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <?php if($i['price_cents'] > 0) {
-                                                                            echo "$".$i['price_cents'];
+                                                                            echo "$".$i['enrollment_price'];
                                                                         } else {
                                                                             echo "Free";
                                                                         } ?></td>
@@ -113,3 +113,8 @@
     </div>
 </div>
 <?php //$this->load->view ('footer');?>
+<script>
+ $(document).ready( function () {
+    $('#sample_1').DataTable();
+});
+</script>

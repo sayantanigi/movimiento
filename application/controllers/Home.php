@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
-error_reporting(0);
+error_reporting(E_ALL);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -181,30 +181,37 @@ class Home extends CI_Controller
             $optionsList = $this->db->query($getOptionsSql)->result();
             $address = $optionsList[6]->option_value;
             $admEmail = $optionsList[8]->option_value;
-            $message = "
-            <body>
-                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
-                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
-                        <img src='cid:Logo' style='width: 220px; float: right; margin-top: 0'>
-                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento</span></h3>
-                        <p style='font-size: 14px;'>Dear " . $full_name . ",</p>
-                        <p style='font-size: 18px;'></p>
-                        <p style='font-size: 18px; margin: 30px 0;'>Please click on below link to reset your password.</p>
-                        <p style='font-size: 18px; margin: 0px;'><a href=" . $url . " target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p>
-                        <p style='font-size:20px;'></p>
-                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento</b></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p>
-                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p>
-                    </div>
-                    <table style='width: 100%;'>
-                        <tr>
-                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento. All rights reserved.</td>
-                        </tr>
-                    </table>
-                </div>
-            </body>";
-            $mail = new PHPMailer(true);
+
+            $to1 = $this->input->post('email'); // Recipient's email address
+            $subject1 = $subject;
+            $boundary1 = md5(uniqid(time())); // Generate a unique boundary for separating email parts
+            $headers1 = "From: <support@movimientolatinouniversity.com>\r\n";
+            $headers1 .= "MIME-Version: 1.0\r\n";
+            $headers1 .= "Content-Type: multipart/related; boundary=\"$boundary1\"\r\n";
+            $message1 = "--$boundary1\r\n";
+            $message1 .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $message1 .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+
+            $message1 .= "<body><div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'><div style='padding: 30px 30px 15px 30px; box-sizing: border-box'><img src='cid:Logo' style='width: 220px; float: right; margin-top: 0'><h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento</span></h3><p style='font-size: 14px;'>Dear ".$full_name.",</p><p style='font-size: 18px;'></p><p style='font-size: 18px; margin: 30px 0;'>Please click on below link to reset your password.</p><p style='font-size: 18px; margin: 0px;'><a href=".$url." target='_blank' style='background:#232323;color:#fff;padding:10px;text-decoration:none;line-height:24px;'>click here</a></p><p style='font-size:20px;'></p><p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p><p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento</b></p><p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b> <span>$address</span></p><p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b> <span>$admEmail</span></p></div><table style='width: 100%;'><tr><td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento. All rights reserved.</td></tr></table></div></body>\r\n";
+
+            $message1 .= "--$boundary1\r\n";
+            $message1 .= "Content-Type: image/png; name=\"logo.png\"\r\n";
+            $message1 .= "Content-Transfer-Encoding: base64\r\n";
+            $message1 .= "Content-Disposition: inline; filename=\"logo.png\"\r\n";
+            $message1 .= "Content-ID: <logo>\r\n\r\n";
+            $logoPath1 = "uploads/logo/logo2.png"; // Provide the correct path to your logo file
+            $logoData1 = file_get_contents($logoPath1);
+            $message1 .= chunk_split(base64_encode($logoData1)) . "\r\n";
+            $message1 .= "--$boundary1--";
+            if(mail($to1, $subject1, $message1, $headers1)) {
+                $msg = "An email has been sent to your email address containing an reset password link. Please click on the link to change your account. If you do not receive the email within a few minutes, please check your spam folder.";
+                $this->session->set_flashdata('success', $msg);
+            } else {
+                $msg = "Email could not be sent. Please try again";
+                $this->session->set_flashdata('error', $msg);
+            }
+
+            /*$mail = new PHPMailer(true);
             try {
                 //Server settings
                 $mail->CharSet = 'UTF-8';
@@ -227,11 +234,11 @@ class Home extends CI_Controller
                 $this->session->set_flashdata('success', $msg);
             } catch (Exception $e) {
                 $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-            }
+            }*/
         } else {
             $this->session->set_flashdata('error', 'Opps, Try again!');
         }
-        redirect(base_url('home/forgotPassword'), 'refresh');
+        //redirect(base_url('home/forgotPassword'), 'refresh');
     }
     public function verifyOtp($otp = null) {
         if (empty($otp)) {
