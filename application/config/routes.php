@@ -72,6 +72,7 @@ $route['reviews'] = 'Users/reviews';
 $route['edit-profile'] = 'Users/editProfile';
 $route['community'] = 'Users/community';
 $route['community_details'] = 'Users/community_details';
+$route['community/(:any)'] = 'Users/community_details/$1';
 $route['event-booked'] = 'Users/eventBooked';
 $route['logout'] = 'supercontrol/home/logout';
 $route['consultant-dashboard'] = 'supercontrol/home';

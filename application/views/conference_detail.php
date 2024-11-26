@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="sidebar__widget-content">
                                         <div class="sidebar__category">
-                                            <?php 
+                                            <?php
                                             $recentNews = $this->db->query("SELECT * FROM conference WHERE id != '".$conference_details->id."' AND status = '1'")->result_array();
                                             if(!empty($recentNews)) {
                                             foreach ($recentNews as $value) { ?>

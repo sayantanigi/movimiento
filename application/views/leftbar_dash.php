@@ -63,7 +63,7 @@
                         } else {
                             echo 'javascript:void(0)" onclick="show_err_msg()';
                         } ?>">
-                            <i class="fa fa-calendar"></i>
+                            <i class="fa fa-circle"></i>
                             <span>Community</span>
                         </a>
                     </li>

@@ -1,5 +1,54 @@
+<?php
+$user_id = $this->session->userdata('user_id');
+$userDetails = $this->Commonmodel->fetch_row('users', array('id' => $user_id));
+//print_r($userDetails); die();
+$completedCourse = 0;
+$courseArray = array();
+
+if (!empty($enrolments)) {
+    foreach ($enrolments as $key => $value) {
+        $totalModuleSql = "SELECT * FROM `course_modules` WHERE `course_id` = '" . @$value->course_id . "'";
+        $totalmodule = $this->db->query($totalModuleSql)->num_rows();
+        $moduleData = $this->db->query($totalModuleSql)->result();
+        $moduleArray = array();
+        if (!empty($moduleData)) {
+            foreach ($moduleData as $keyn => $item) {
+                $totalMaterialSql = "SELECT * FROM `course_materials` WHERE `course_id` = '" . @$value->course_id . "' AND `module` = '" . @$item->id . "'";
+                $totalmaterial = $this->db->query($totalMaterialSql)->num_rows();
+                $getAttemptModuleSql = "SELECT COUNT(*) as attemptModule FROM `course_enrollment_status` where `course_id` = '" . @$value->course_id . "' and `module` = '" . $item->id . "' and `enrollment_id` = '" . @$value->enrollment_id . "'";
+                $attemptModuleRow = $this->db->query($getAttemptModuleSql)->row();
+                $totalComModule = 0;
+                if (@$totalmaterial == @$attemptModuleRow->attemptModule && @$totalmaterial != '0') {
+                    $totalComModule++;
+                    $moduleArray[] = $item->id;
+                }
+                // echo "<br> Course Id = ".@$value->course_id." Total Module ".$totalmodule." ModuleId = ".$item->id." Material ".$totalmaterial." attempt = ".@$attemptModuleRow->attemptModule." Completed = ".$totalComModule;
+            }
+        }
+        if (@$totalmodule == count($moduleArray)) {
+            $courseArray[] = $value->course_id;
+
+        }
+    }
+}
+$condition = "";
+if (!empty($courseArray)) {
+    $courseIds = implode("', '", $courseArray);
+    $condition = " AND course_id NOT IN('$courseIds')";
+}
+$getEnrolmentSql = "SELECT COUNT(DISTINCT `enrollment_id`) AS activeCourse FROM `course_enrollment_status` WHERE `user_id` = '" . $user_id . "' $condition";
+$active_data = $this->db->query($getEnrolmentSql)->row();
+$activeCourse = 0;
+if (!empty($active_data)) {
+    $activeCourse = $active_data->activeCourse;
+}
+$data = array(
+    'ctn_enrolment' => @$ctn_enrolment,
+    'courseArray' => count($courseArray)
+);
+?>
 <section class="page__title-area page__title-height page__title-overlay d-flex align-items-center"
-    data-background="<?= base_url() ?>assets/img/page-title/page-title-2.jpg">
+    data-background="assets/img/page-title/page-title-2.jpg">
     <div class="container">
         <div class="row">
             <div class="col-xxl-12">
@@ -7,7 +56,7 @@
                     <h3 class="page__title">Community</h3>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="<?= base_url()?>">Home</a></li>
+                            <li class="breadcrumb-item"><a href="<?= base_url() ?>home">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Community</li>
                         </ol>
                     </nav>
@@ -16,262 +65,298 @@
         </div>
     </div>
 </section>
-<section class="pt-100 pb-145">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <div class="communityList  d-flex  p-3 mb-3">
-                    <div class="userIcon-com me-3">
-                        <?php
-                        if (!empty(@$community_data->uploaded_by)) {
-                            $userdetails = $this->db->query("SELECT * FROM users WHERE id = '" . @$community_data->uploaded_by . "'")->row();
-                            $name = $userdetails->full_name;
-                        } else {
-                            $name = "Admin";
-                        }
-                        ?>
-                        <a href="javascript:void(0)">
-                            <?php if (!empty($userdetails->image)) { ?>
-                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userdetails->image ?>" />
-                            <?php } else { ?>
-                            <img src="<?= base_url() ?>images/no-user.png" />
-                            <?php } ?>
-                        </a>
+<section class="pb-145">
+    <div class="rbt-dashboard-content-wrapper">
+        <div class="container">
+            <div class="rbt-tutor-information">
+                <div class="rbt-tutor-information-left d-flex align-items-center">
+                    <div class="thumbnail rbt-avatars size-lg">
+                        <?php if (!empty($userDetails->image)) { ?>
+                            <img src="<?= base_url() ?>/uploads/profile_pictures/<?= $userDetails->image ?>" alt="">
+                        <?php } else { ?>
+                            <img src="images/no-user.png" alt="">
+                        <?php } ?>
                     </div>
-                    <div class="userComInfo">
-                        <h6 class="fw-semibold mb-0"><a href="javascript:void(0)"><?= $name ?></a></h6>
-                        <span class="post-meta mb-2 d-block text-secondary"><small><?= date('M j, Y', strtotime($community_data->created_at)) ?></small></span>
-                        <h2 class="h4 fw-bold communitytitle"><?= @$community_data->title ?></h2>
-                        <div><?= @$community_data->description ?></div>
-                        <ul class="d-flex align-items-center mt-3">
-                            <?php
-                            $chechis_like = $this->db->query("SELECT * FROM community_like WHERE community_id = '" . $community_data->id . "' AND user_id = '" . $this->session->userdata('user_id') . "' AND is_liked = 1")->num_rows();
-                            $countchechis_like = $this->db->query("SELECT COUNT(id) as count FROM community_like WHERE community_id = '" . $community_data->id . "' AND is_liked = 1")->row();
-                            if ($chechis_like > 0) { ?>
-                            <li class="me-4"><a href="javascript:void(0)"><i class="fas fa-thumbs-up text-secondary change-color" onclick="dislikecommunity()"></i> <sup style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
-                            <?php } else { ?>
-                            <li class="me-4"><a href="javascript:void(0)"><i class="fas fa-thumbs-up text-secondary" onclick="likecommunity()"></i> <sup style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
-                            <?php } ?>
-                            <?php $commentCount = $this->db->query("SELECT count(id) as count FROM community_comment WHERE community_id = '" . $community_data->id . "'")->row(); ?>
-                            <li><a href="javascript:void(0)"><i class="fas fa-comment text-secondary"></i> <sup style="top: -2px;"><?= $commentCount->count; ?></sup></a></li>
+                    <div class="tutor-content">
+                        <h5 class="title h4 fw-bold text-white">
+                            <?= ucwords($userDetails->full_name) ?>
+                        </h5>
+                        <ul class="listRbt mt--5">
+                            <li><i class="far fa-book-alt"></i>
+                                <?php echo @$ctn_enrolment; ?> Courses Enroled
+                            </li>
+                            <li><i class="far fa-file-certificate"></i>
+                                <?php echo count($courseArray); ?> Certificate
+                            </li>
                         </ul>
                     </div>
                 </div>
-                <div class="latest-comments mb-95">
-                    <h3><?= $commentCount->count; ?> Comments</h3>
-                    <ul>
-                    <?php
-                    $commentList = $this->db->query("SELECT * FROM community_comment WHERE community_id = '" . $community_data->id . "' ORDER BY id DESC")->result_array();
-                    if (!empty($commentList)) {
-                        foreach ($commentList as $value) {
-                        $userData = $this->db->query("SELECT * FROM users WHERE id = '" . $value['user_id'] . "'")->row(); ?>
-                        <li>
-                            <div class="comments-box grey-bg">
-                                <div class="comments-info d-flex">
-                                    <div class="comments-avatar mr-20">
-                                    <?php if (!empty($userData->image)) { ?>
-                                        <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData->image ?>" />
-                                    <?php } else { ?>
-                                        <img src="<?= base_url() ?>images/no-user.png" />
-                                    <?php } ?>
-                                    </div>
-                                    <div class="avatar-name">
-                                        <h5><?= $value['full_name'] ?></h5>
-                                        <span class="post-meta"><?= date('M j, Y', strtotime($value['created_at'])) ?></span>
-                                    </div>
-                                </div>
-                                <div class="comments-text ml-65">
-                                    <p><?= $value['comment'] ?></p>
-                                    <div class="comments-replay">
-                                        <a href="javascript:void(0)" onclick="replyComment(<?= $value['id'] ?>)">Reply</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <?php
-                        $commentRply = $this->db->query("SELECT * FROM community_comment_rply WHERE community_id = '" . $community_data->id . "' AND comment_id = '" . $value['id'] . "'")->result_array();
-                        if (!empty($commentRply)) {
-                        foreach ($commentRply as $data) {
-                        $userData1 = $this->db->query("SELECT * FROM users WHERE id = '" . $data['user_id'] . "'")->row(); ?>
-                        <li class="children">
-                            <div class="comments-box grey-bg">
-                                <div class="comments-info d-flex">
-                                    <div class="comments-avatar mr-20">
-                                        <?php if (!empty($userData1->image)) { ?>
-                                        <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData1->image ?>" />
-                                        <?php } else { ?>
-                                        <img src="<?= base_url() ?>images/no-user.png" />
-                                        <?php } ?>
-                                    </div>
-                                    <div class="avatar-name">
-                                        <h5><?= $data['full_name'] ?></h5>
-                                        <span class="post-meta"><?= date('M j, Y', strtotime($data['created_at'])) ?></span>
-                                    </div>
-                                </div>
-                                <div class="comments-text ml-65">
-                                    <p><?= $data['comment'] ?></p>
-                                </div>
-                            </div>
-                        </li>
-                        <?php } } } } else { ?>
-                        <li>No comment yet</li>
-                        <?php } ?>
-                    </ul>
-                    <input type="hidden" name="comm_id" id="comm_id" value="<?= @$community_data->id ?>">
-                </div>
-                <?php
-                if (!empty($this->session->userdata('user_id'))) {
-                $getUser = $this->db->query("SELECT * FROM users WHERE id = '" . $this->session->userdata('user_id') . "'")->row();
-                ?>
-                <div class="blog__comment">
-                    <h3>Write a Comment</h3>
-                    <form action="#" id="contact-form">
-                        <div class="row">
-                            <div class="col-xxl-6 col-xl-6 col-lg-6">
-                                <div class="blog__comment-input">
-                                    <input type="text" placeholder="Your Name" name="full_name" id="full_name" value="<?= $getUser->full_name ?>" required readonly>
-                                </div>
-                            </div>
-                            <div class="col-xxl-6 col-xl-6 col-lg-6">
-                                <div class="blog__comment-input">
-                                    <input type="email" placeholder="Your Email" name="email" id="email" value="<?= $getUser->email ?>" required readonly>
-                                </div>
-                            </div>
-                            <div class="col-xxl-12">
-                                <div class="blog__comment-input">
-                                    <input type="text" placeholder="Website" name="website" id="website" value="">
-                                </div>
-                            </div>
-                            <div class="col-xxl-12">
-                                <div class="blog__comment-input">
-                                    <textarea placeholder="Enter your comment ..." name="comment" id="comment"></textarea>
-                                </div>
-                            </div>
-                            <!-- <div class="col-xxl-12">
-                                <div class="blog__comment-agree d-flex align-items-center mb-20">
-                                <input class="e-check-input" type="checkbox" id="e-agree">
-                                <label class="e-check-label" for="e-agree">Save my name, email, and website in this browser for the next time I comment.</label>
-                                </div>
-                            </div> -->
-                            <div class="col-xxl-12">
-                                <div class="blog__comment-btn">
-                                    <button type="button" class="e-btn" onclick="postComment()">Post Comment</button>
-                                    <input type="hidden" name="user_id" id="user_id" value="<?= $this->session->userdata('user_id') ?>">
-                                    <input type="hidden" name="community_id" id="community_id" value="<?= @$community_data->id ?>">
-                                    <input type="hidden" name="comment_id" id="comment_id" value="">
-                                </div>
-                            </div>
-                            <div class="success_msg" style="color: #db3636; margin-top: 20px;"></div>
-                        </div>
-                    </form>
-                </div>
-                <?php } else { ?>
-                <div class="blog__comment">Please <a href="<?= base_url() ?>login" style="font-size: 16px; color: #4853ff !important; cursor: pointer;">login</a> in to write comment</div>
-                <?php } ?>
             </div>
-            <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-12 mb-3">
-                        <div class="app__main">
-                            <div class="calendar">
-                                <div id="calendar"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="job-overview" id="job-overview1" style="margin-bottom: 10px;">
-                            <h3>All Events</h3>
-                            <ul id="filterEvent1">
-                                <?php
-                                $event_list = $this->db->query("SELECT * FROM events WHERE event_status = '1' and community_id= '".@$community_data->id."'")->result_array();
-                                if(!empty($event_list)) {
-                                foreach ($event_list as $evnt) { ?>
-                                <li>
-                                    <p>Event Title: <span><?= $evnt['event_title']?></span></p>
-                                    <p>Event Date: <span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <?php $this->load->view('leftbar_dash'); ?>
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold text-uppercase">Community</h2>
+                        <hr>
+                        <div class="container" style="padding: 0;">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="communityList  d-flex  p-3 mb-3">
+                                        <div class="userIcon-com me-3">
+                                            <?php
+                                            if (!empty(@$community_data->uploaded_by)) {
+                                                $userdetails = $this->db->query("SELECT * FROM users WHERE id = '" . @$community_data->uploaded_by . "'")->row();
+                                                $name = $userdetails->full_name;
+                                            } else {
+                                                $name = "Admin";
+                                            }
+                                            ?>
+                                            <a href="javascript:void(0)">
+                                                <?php if (!empty($userdetails->image)) { ?>
+                                                <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userdetails->image ?>" />
+                                                <?php } else { ?>
+                                                <img src="<?= base_url() ?>images/no-user.png" />
+                                                <?php } ?>
+                                            </a>
+                                        </div>
+                                        <div class="userComInfo">
+                                            <h6 class="fw-semibold mb-0"><a href="javascript:void(0)"><?= $name ?></a></h6>
+                                            <span class="post-meta mb-2 d-block text-secondary"><small><?= date('M j, Y', strtotime($community_data->created_at)) ?></small></span>
+                                            <h2 class="h4 fw-bold communitytitle"><?= @$community_data->title ?></h2>
+                                            <div><?= @$community_data->description ?></div>
+                                            <ul class="d-flex align-items-center mt-3">
+                                                <?php
+                                                $chechis_like = $this->db->query("SELECT * FROM community_like WHERE community_id = '" . $community_data->id . "' AND user_id = '" . $this->session->userdata('user_id') . "' AND is_liked = 1")->num_rows();
+                                                $countchechis_like = $this->db->query("SELECT COUNT(id) as count FROM community_like WHERE community_id = '" . $community_data->id . "' AND is_liked = 1")->row();
+                                                if ($chechis_like > 0) { ?>
+                                                <li class="me-4"><a href="javascript:void(0)"><i class="fas fa-thumbs-up text-secondary change-color" onclick="dislikecommunity()"></i> <sup style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
+                                                <?php } else { ?>
+                                                <li class="me-4"><a href="javascript:void(0)"><i class="fas fa-thumbs-up text-secondary" onclick="likecommunity()"></i> <sup style="top: -2px;"><?= $countchechis_like->count ?></sup></a></li>
+                                                <?php } ?>
+                                                <?php $commentCount = $this->db->query("SELECT count(id) as count FROM community_comment WHERE community_id = '" . $community_data->id . "'")->row(); ?>
+                                                <li><a href="javascript:void(0)"><i class="fas fa-comment text-secondary"></i> <sup style="top: -2px;"><?= $commentCount->count; ?></sup></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="latest-comments mb-95">
+                                        <h3><?= $commentCount->count; ?> Comments</h3>
+                                        <ul>
                                         <?php
-                                        $from_date = date('d-m-Y h:i a', strtotime($evnt['event_from_date']." ".$evnt['event_from_time']));
-                                        $to_date = date('d-m-Y h:i a', strtotime($evnt['event_to_date']." ".$evnt['event_to_time']));
-                                        echo $from_date." to ".$to_date." (".$evnt['event_repeat'].")";
-                                        ?>
-                                    </span></p>
-                                    <p>Organized By: <span>
-                                        <?php
-                                        if($evnt['uploaded_by'] != '0') {
-                                            $user_details = $this->db->query("SELECT * FROM users WHERE id = '".$evnt['uploaded_by']."'")->row();
-                                            echo $user_details->full_name;
-                                        } else {
-                                            echo "Admin";
-                                        }?></span>
-                                    </p>
-                                    <!-- <?php
-                                    if(!empty($this->session->userdata('user_id'))) {
-                                        $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$evnt['community_id']."'")->row();
-                                        $course_id = $getcourseId->course_id;
-                                        $userId = $this->session->userdata('user_id');
-                                        $checkpurchasedata = $this->db->query("SELECT * FROM course_enrollment WHERE course_id = '".$course_id."' AND user_id = '".$userId."'")->result();
-                                        if(!empty($checkpurchasedata)) { ?>
-                                            <a href="<?= $evnt['event_link']?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
-                                            <?php } else { ?>
-                                            <a href="javascript:void(0)" onclick='alertForSubscription()' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                        $commentList = $this->db->query("SELECT * FROM community_comment WHERE community_id = '" . $community_data->id . "' ORDER BY id DESC")->result_array();
+                                        if (!empty($commentList)) {
+                                            foreach ($commentList as $value) {
+                                            $userData = $this->db->query("SELECT * FROM users WHERE id = '" . $value['user_id'] . "'")->row(); ?>
+                                            <li>
+                                                <div class="comments-box grey-bg">
+                                                    <div class="comments-info d-flex">
+                                                        <div class="comments-avatar mr-20">
+                                                        <?php if (!empty($userData->image)) { ?>
+                                                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData->image ?>" />
+                                                        <?php } else { ?>
+                                                            <img src="<?= base_url() ?>images/no-user.png" />
+                                                        <?php } ?>
+                                                        </div>
+                                                        <div class="avatar-name">
+                                                            <h5><?= $value['full_name'] ?></h5>
+                                                            <span class="post-meta"><?= date('M j, Y', strtotime($value['created_at'])) ?></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="comments-text ml-65">
+                                                        <p><?= $value['comment'] ?></p>
+                                                        <div class="comments-replay">
+                                                            <a href="javascript:void(0)" onclick="replyComment(<?= $value['id'] ?>)">Reply</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <?php
+                                            $commentRply = $this->db->query("SELECT * FROM community_comment_rply WHERE community_id = '" . $community_data->id . "' AND comment_id = '" . $value['id'] . "'")->result_array();
+                                            if (!empty($commentRply)) {
+                                            foreach ($commentRply as $data) {
+                                            $userData1 = $this->db->query("SELECT * FROM users WHERE id = '" . $data['user_id'] . "'")->row(); ?>
+                                            <li class="children">
+                                                <div class="comments-box grey-bg">
+                                                    <div class="comments-info d-flex">
+                                                        <div class="comments-avatar mr-20">
+                                                            <?php if (!empty($userData1->image)) { ?>
+                                                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData1->image ?>" />
+                                                            <?php } else { ?>
+                                                            <img src="<?= base_url() ?>images/no-user.png" />
+                                                            <?php } ?>
+                                                        </div>
+                                                        <div class="avatar-name">
+                                                            <h5><?= $data['full_name'] ?></h5>
+                                                            <span class="post-meta"><?= date('M j, Y', strtotime($data['created_at'])) ?></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="comments-text ml-65">
+                                                        <p><?= $data['comment'] ?></p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <?php } } } } else { ?>
+                                            <li>No comment yet</li>
                                             <?php } ?>
+                                        </ul>
+                                        <input type="hidden" name="comm_id" id="comm_id" value="<?= @$community_data->id ?>">
+                                    </div>
+                                    <?php
+                                    if (!empty($this->session->userdata('user_id'))) {
+                                    $getUser = $this->db->query("SELECT * FROM users WHERE id = '" . $this->session->userdata('user_id') . "'")->row();
+                                    ?>
+                                    <div class="blog__comment">
+                                        <h3>Write a Comment</h3>
+                                        <form action="#" id="contact-form">
+                                            <div class="row">
+                                                <div class="col-xxl-6 col-xl-6 col-lg-6">
+                                                    <div class="blog__comment-input">
+                                                        <input type="text" placeholder="Your Name" name="full_name" id="full_name" value="<?= $getUser->full_name ?>" required readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl-6 col-xl-6 col-lg-6">
+                                                    <div class="blog__comment-input">
+                                                        <input type="email" placeholder="Your Email" name="email" id="email" value="<?= $getUser->email ?>" required readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl-12">
+                                                    <div class="blog__comment-input">
+                                                        <input type="text" placeholder="Website" name="website" id="website" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl-12">
+                                                    <div class="blog__comment-input">
+                                                        <textarea placeholder="Enter your comment ..." name="comment" id="comment"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl-12">
+                                                    <div class="blog__comment-btn">
+                                                        <button type="button" class="e-btn" onclick="postComment()">Post Comment</button>
+                                                        <input type="hidden" name="user_id" id="user_id" value="<?= $this->session->userdata('user_id') ?>">
+                                                        <input type="hidden" name="community_id" id="community_id" value="<?= @$community_data->id ?>">
+                                                        <input type="hidden" name="comment_id" id="comment_id" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="success_msg" style="color: #db3636; margin-top: 20px;"></div>
+                                            </div>
+                                        </form>
+                                    </div>
                                     <?php } else { ?>
-                                        <a href="<?= base_url('login') ?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
-                                    <?php } ?> -->
-                                </li>
-                                <?php } } else { ?>
-                                <li>No Event Created Yet</li>
-                                <?php } ?>
-                            </ul>
-                        </div>
-                        <div class="job-overview" id="job-overview">
-                            <h3>Todays Events</h3>
-                            <ul id="filterEvent">
-                                <?php
-                                $event_list = $this->db->query("SELECT * FROM events WHERE community_id = '".@$community_data->id."' AND event_status = '1'")->result_array();
-                                if(!empty($event_list)) {
-                                foreach ($event_list as $evnt) { ?>
-                                <li>
-                                    <p>Event Title: <span><?= $evnt['event_title']?></span></p>
-                                    <p>Event Date: <span>
-                                        <?php
-                                        $from_date = date('d-m-Y h:i a', strtotime($evnt['event_from_date']." ".$evnt['event_from_time']));
-                                        $to_date = date('d-m-Y h:i a', strtotime($evnt['event_to_date']." ".$evnt['event_to_time']));
-                                        echo $from_date." to ".$to_date." (".$evnt['event_repeat'].")";
-                                        ?>
-                                    </span></p>
-                                    <p>Organized By: <span>
-                                        <?php
-                                        if($evnt['uploaded_by'] != '0') {
-                                            $user_details = $this->db->query("SELECT * FROM users WHERE id = '".$evnt['uploaded_by']."'")->row();
-                                            echo $user_details->full_name;
-                                        } else {
-                                            echo "Admin";
-                                        }?></span>
-                                    </p>
-                                    <?php if(!empty($this->session->userdata('user_id'))) {
-                                        $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$evnt['community_id']."'")->row();
-                                        $course_id = $getcourseId->course_id;
-                                        $userId = $this->session->userdata('user_id');
-                                        $checkpurchasedata = $this->db->query("SELECT * FROM course_enrollment WHERE course_id = '".$course_id."' AND user_id = '".$userId."'")->result();
-                                        if(!empty($checkpurchasedata)) { ?>
-                                            <a href="<?= $evnt['event_link']?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
-                                            <?php } else { ?>
-                                            <a href="javascript:void(0)" onclick='alertForSubscription()' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
-                                            <?php } ?>
-                                    <?php } else { ?>
-                                        <a href="<?= base_url('login') ?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                    <div class="blog__comment">Please <a href="<?= base_url() ?>login" style="font-size: 16px; color: #4853ff !important; cursor: pointer;">login</a> in to write comment</div>
                                     <?php } ?>
-                                </li>
-                                <?php } } else { ?>
-                                <li>No Event Created Yet</li>
-                                <?php } ?>
-                            </ul>
+                                </div>
+                                <div class="col-lg-3" style="padding: 0;">
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <div class="app__main">
+                                                <div class="calendar">
+                                                    <div id="calendar"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="job-overview" id="job-overview1" style="margin-bottom: 10px;">
+                                                <h3>All Events</h3>
+                                                <ul id="filterEvent1">
+                                                    <?php
+                                                    $event_list = $this->db->query("SELECT * FROM events WHERE event_status = '1' and community_id= '".@$community_data->id."'")->result_array();
+                                                    if(!empty($event_list)) {
+                                                    foreach ($event_list as $evnt) { ?>
+                                                    <li>
+                                                        <p>Event Title: <span><?= $evnt['event_title']?></span></p>
+                                                        <p>Event Date: <span>
+                                                            <?php
+                                                            $from_date = date('d-m-Y h:i a', strtotime($evnt['event_from_date']." ".$evnt['event_from_time']));
+                                                            $to_date = date('d-m-Y h:i a', strtotime($evnt['event_to_date']." ".$evnt['event_to_time']));
+                                                            echo $from_date." to ".$to_date." (".$evnt['event_repeat'].")";
+                                                            ?>
+                                                        </span></p>
+                                                        <p>Organized By: <span>
+                                                            <?php
+                                                            if($evnt['uploaded_by'] != '0') {
+                                                                $user_details = $this->db->query("SELECT * FROM users WHERE id = '".$evnt['uploaded_by']."'")->row();
+                                                                echo $user_details->full_name;
+                                                            } else {
+                                                                echo "Admin";
+                                                            }?></span>
+                                                        </p>
+                                                        <!-- <?php
+                                                        if(!empty($this->session->userdata('user_id'))) {
+                                                            $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$evnt['community_id']."'")->row();
+                                                            $course_id = $getcourseId->course_id;
+                                                            $userId = $this->session->userdata('user_id');
+                                                            $checkpurchasedata = $this->db->query("SELECT * FROM course_enrollment WHERE course_id = '".$course_id."' AND user_id = '".$userId."'")->result();
+                                                            if(!empty($checkpurchasedata)) { ?>
+                                                                <a href="<?= $evnt['event_link']?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                                                <?php } else { ?>
+                                                                <a href="javascript:void(0)" onclick='alertForSubscription()' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                                                <?php } ?>
+                                                        <?php } else { ?>
+                                                            <a href="<?= base_url('login') ?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                                        <?php } ?> -->
+                                                    </li>
+                                                    <?php } } else { ?>
+                                                    <li>No Event Created Yet</li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                            <div class="job-overview" id="job-overview">
+                                                <h3>Todays Events</h3>
+                                                <ul id="filterEvent">
+                                                    <?php
+                                                    $event_list = $this->db->query("SELECT * FROM events WHERE community_id = '".@$community_data->id."' AND event_status = '1'")->result_array();
+                                                    if(!empty($event_list)) {
+                                                    foreach ($event_list as $evnt) { ?>
+                                                    <li>
+                                                        <p>Event Title: <span><?= $evnt['event_title']?></span></p>
+                                                        <p>Event Date: <span>
+                                                            <?php
+                                                            $from_date = date('d-m-Y h:i a', strtotime($evnt['event_from_date']." ".$evnt['event_from_time']));
+                                                            $to_date = date('d-m-Y h:i a', strtotime($evnt['event_to_date']." ".$evnt['event_to_time']));
+                                                            echo $from_date." to ".$to_date." (".$evnt['event_repeat'].")";
+                                                            ?>
+                                                        </span></p>
+                                                        <p>Organized By: <span>
+                                                            <?php
+                                                            if($evnt['uploaded_by'] != '0') {
+                                                                $user_details = $this->db->query("SELECT * FROM users WHERE id = '".$evnt['uploaded_by']."'")->row();
+                                                                echo $user_details->full_name;
+                                                            } else {
+                                                                echo "Admin";
+                                                            }?></span>
+                                                        </p>
+                                                        <?php if(!empty($this->session->userdata('user_id'))) {
+                                                            $getcourseId = $this->db->query("SELECT * FROM community WHERE id = '".$evnt['community_id']."'")->row();
+                                                            $course_id = $getcourseId->course_id;
+                                                            $userId = $this->session->userdata('user_id');
+                                                            $checkpurchasedata = $this->db->query("SELECT * FROM course_enrollment WHERE course_id = '".$course_id."' AND user_id = '".$userId."'")->result();
+                                                            if(!empty($checkpurchasedata)) { ?>
+                                                                <a href="<?= $evnt['event_link']?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                                                <?php } else { ?>
+                                                                <a href="javascript:void(0)" onclick='alertForSubscription()' style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                                                <?php } ?>
+                                                        <?php } else { ?>
+                                                            <a href="<?= base_url('login') ?>" style="font-size: 13px;margin-left: 75px; background: #83d893;padding: 0px 10px 0 10px;border-radius: 5px;">Join Event</a>
+                                                        <?php } ?>
+                                                    </li>
+                                                    <?php } } else { ?>
+                                                    <li>No Event Created Yet</li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </section>
 <style>
     .change-color:before {
