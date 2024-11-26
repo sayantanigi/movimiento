@@ -317,6 +317,19 @@ class Users extends CI_Controller {
 		$data['optionArray'] = $optionArray;
 		$this->load->view('ajax-quiz-result', $data);
 	}
+    public function community() {
+        $data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
+        $data['community'] = $this->db->query("SELECT * FROM community WHERE status = '1' AND is_delete = '1' ORDER BY id DESC")->result_array();
+        $this->load->view('header');
+        $this->load->view('community', $data);
+        $this->load->view('footer');
+    }
+    public function community_details($slug) {
+        $data['community_data'] = $this->db->query("SELECT * FROM community WHERE slug LIKE '%" . $slug . "%'")->row();
+        $this->load->view('header', $data);
+        $this->load->view('community-details', $data);
+        $this->load->view('footer');
+    }
 	public function eventBooked() {
 		$data = array(
 			'title' => 'Event List',

@@ -330,7 +330,7 @@ class Home extends CI_Controller
             $this->load->view('footer');
         }
     }
-    public function community() {
+    /*public function community() {
         $data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
         $data['community'] = $this->db->query("SELECT * FROM community WHERE status = '1' AND is_delete = '1' ORDER BY id DESC")->result_array();
         $this->load->view('header');
@@ -342,7 +342,7 @@ class Home extends CI_Controller
         $this->load->view('header', $data);
         $this->load->view('community-details', $data);
         $this->load->view('footer');
-    }
+    }*/
     public function contact() {
         $data = array(
             'title' => 'Contact Us',

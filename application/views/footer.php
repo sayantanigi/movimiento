@@ -27,8 +27,8 @@ $getSetting = $this->db->query("SELECT * from options")->result_array();
                             </div>
                             <div class="footer__link my-4">
                                 <ul>
-                                    <li><a href="<?= base_url()?>community">Community</a></li>
-                                    <!-- <li><a href="#">Affiliates</a></li>
+                                    <!-- <li><a href="<?= base_url()?>community">Community</a></li>
+                                    <li><a href="#">Affiliates</a></li>
                                     <li><a href="#">Careers</a></li> -->
                                     <li><a href="#">Privacy</a></li>
                                     <li><a href="<?= base_url()?>register">Become a Instructor</a></li>

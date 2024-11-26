@@ -56,8 +56,8 @@
                                     </div> -->
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Course <span style="color: red">*</span></label>
-                                            <select name="frm[course_id]" class="form-control" required>
+                                            <label for="exampleInputEmail1">Course </label>
+                                            <select name="frm[course_id]" class="form-control">
                                                 <option value="">Select option</option>
                                                 <?php
                                                 print_r($course_list);

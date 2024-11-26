@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <section class="content-header">
     <h1><?= $title ?></h1>
     <ol class="breadcrumb">
@@ -57,7 +59,7 @@
                         <?php } } ?>
                     </table>
                 </div>
-                <div class="box-footer clearfix"><?= $paginate ?></div>
+                <!-- <div class="box-footer clearfix"><?= $paginate ?></div> -->
             </div>
         </div>
     </div>
@@ -67,6 +69,9 @@
 .modal-close {background: none;border: none;float: right;}
 </style>
 <script>
+$(document).ready( function () {
+    $('#purchasedCourse').DataTable();
+});
 function deleteProduct(id) {
     swal({
         title: 'Are You sure want to delete this product?',

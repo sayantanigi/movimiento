@@ -52,6 +52,24 @@
                     <li>
                         <a href="
                         <?php if($userDetails->subscription_type == '1') {
+                            echo base_url('community');
+                        } else if($userDetails->subscription_type == '2') {
+                            $checksubscription = $this->db->query("SELECT * FROM user_subscription WHERE employer_id = '".$this->session->userdata('user_id')."' AND status = '1'")->result_array();
+                            if(!empty($checksubscription)) {
+                                echo base_url('community');
+                            } else {
+                                echo base_url('subscription');
+                            }
+                        } else {
+                            echo 'javascript:void(0)" onclick="show_err_msg()';
+                        } ?>">
+                            <i class="fa fa-calendar"></i>
+                            <span>Community</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="
+                        <?php if($userDetails->subscription_type == '1') {
                             echo base_url('event-booked');
                         } else if($userDetails->subscription_type == '2') {
                             $checksubscription = $this->db->query("SELECT * FROM user_subscription WHERE employer_id = '".$this->session->userdata('user_id')."' AND status = '1'")->result_array();

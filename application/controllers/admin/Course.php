@@ -61,7 +61,7 @@ class Course extends Admin_Controller {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
-        $show_per_page = 10;
+        $show_per_page = 1000000000000000000;
         $offset = ($page - 1) * $show_per_page;
         $this->data['title'] = 'All Course';
         $this->data['tab'] = 'comp_list';
@@ -290,7 +290,7 @@ class Course extends Admin_Controller {
                 $data = $this->upload->data();
                 $formdata['image'] = $data['file_name'];
             }
-            
+
             $id = $this->Course_model->save($formdata);
             //echo $this->db->last_query();die();
             $this->session->set_flashdata("success", "Course detail saved");
