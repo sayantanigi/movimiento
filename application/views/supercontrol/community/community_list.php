@@ -123,8 +123,9 @@
                                                         </td>
                                                         <td>
                                                             <div class="action-button">
-                                                                <a href="<?= base_url('supercontrol/community/add_community/' . $community_v->id) ?>" class="btn btn-xs btn-info"><span class="fa fa-pencil"></span></a>
-                                                                <a href="<?= base_url('supercontrol/community/delete/' . $community_v->id) ?>" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span></a>
+                                                                <a href="<?= base_url('supercontrol/community/community_details/' . $community_v->id) ?>" class="btn btn-xs btn-success delete" style="margin-bottom: 3px;"><span class="fa fa-eye"></span></a>
+                                                                <a href="<?= base_url('supercontrol/community/add_community/' . $community_v->id) ?>" class="btn btn-xs btn-info" style="margin-bottom: 3px;"><span class="fa fa-pencil"></span></a>
+                                                                <a href="<?= base_url('supercontrol/community/delete/' . $community_v->id) ?>" class="btn btn-xs btn-danger delete" style="margin-bottom: 3px;"><span class="fa fa-trash"></span></a>
                                                             </div>
                                                         </td>
                                                     </tr>

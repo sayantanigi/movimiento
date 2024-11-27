@@ -57,6 +57,14 @@ class Community extends CI_Controller {
 		$this->load->view('supercontrol/community/add_community', $data);
 		$this->load->view('supercontrol/footer');
     }
+    public function community_details($id = false){
+        $data['community_data'] = $this->db->query("SELECT * FROM community WHERE id = '".$id."'")->row();
+        $data['title'] = 'Community Details';
+        $data['tab'] = 'add_comm';
+        $this->load->view('supercontrol/header', $data);
+		$this->load->view('supercontrol/community/community_details', $data);
+		$this->load->view('supercontrol/footer');
+    }
     function activate($id = false) {
         $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : base_url('supercontrol/community/');
         if ($id) {
