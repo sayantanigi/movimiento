@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="signupForm">Submit</button>
                     </div>
                 </form>
             </div>
