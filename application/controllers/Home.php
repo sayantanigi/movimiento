@@ -645,8 +645,7 @@ class Home extends CI_Controller
         echo $html;
 
     }
-    public function reviewSave()
-    {
+    public function reviewSave() {
         $user_id = $this->session->userdata('user_id');
         $course_id = $this->input->post('course_id');
         $rating = $this->input->post('rating');
@@ -662,8 +661,7 @@ class Home extends CI_Controller
             echo "0";
         }
     }
-    public function getAllReviews()
-    {
+    public function getAllReviews() {
         $user_id = $this->session->userdata('user_id');
         $course_id = $this->input->post('course_id');
         $getAllReviewSql = "SELECT rev.*, usr.full_name from `course_reviews` as rev LEFT JOIN `users` as usr ON usr.id = rev.user_id WHERE `course_id` = '" . $course_id . "' ORDER BY `review_date` DESC";
@@ -671,6 +669,7 @@ class Home extends CI_Controller
         $this->load->view('ajax-reviews', $data);
     }
     public function postComment() {
+        $cat_id = implode(",",$_POST['cat_id']);
         if (!empty($_POST['comment_id'])) {
             $commentData = array(
                 'user_id' => @$this->session->userdata('user_id'),
@@ -687,6 +686,7 @@ class Home extends CI_Controller
             $commentData = array(
                 'user_id' => @$this->session->userdata('user_id'),
                 'community_id' => $_POST['community_id'],
+                'cat_id' => $cat_id,
                 'full_name' => $_POST['full_name'],
                 'email' => $_POST['email'],
                 'website' => $_POST['website'],
@@ -697,6 +697,116 @@ class Home extends CI_Controller
         }
         $insert_id = $this->db->insert_id();
         if ($insert_id > 0) {
+            $getCommunityData = $this->db->query("SELECT * FROM community WHERE id = '".$_POST['community_id']."'")->row();
+            if(!empty($getCommunityData)){
+                if(!empty($getCommunityData->uploaded_by)) {
+                    $getUser = $this->db->query("SELECT * FROM users WHERE userType IN (1,2) AND email_verified = '1' AND status = '1'")->result();
+                    $getOptionsSql = "SELECT * FROM `options`";
+                    $optionsList = $this->db->query($getOptionsSql)->result();
+                    $address = $optionsList[6]->option_value;
+                    $admEmail = $optionsList[8]->option_value;
+                    if(!empty($getUser)){
+                        foreach ($getUser as $value) {
+                            $to1 = $value->email; // Recipient's email address
+                            $subject1 = "New Comment posted for ".$getCommunityData->title;
+                            $boundary1 = md5(uniqid(time())); // Generate a unique boundary for separating email parts
+                            $headers1 = "From: <support@movimientolatinouniversity.com>\r\n";
+                            $headers1 .= "MIME-Version: 1.0\r\n";
+                            $headers1 .= "Content-Type: multipart/related; boundary=\"$boundary1\"\r\n";
+                            $message1 = "--$boundary1\r\n";
+                            $message1 .= "Content-Type: text/html; charset=UTF-8\r\n";
+                            $message1 .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+
+                            $message1 .= "
+                            <body>
+                                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
+                                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
+                                        <img src=\"cid:logo\" alt=\"Company Logo\" style='width: 220px; float: right; margin-top: 0'>
+                                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento Latino University</span></h3>
+                                        <p style='font-size: 14px;'>Dear User,</p>
+                                        <p style='font-size: 18px;'></p>
+                                        <p style='font-size: 18px; margin: 30px 0;'>New Comment posted for $getCommunityData->title</p>
+                                        <p style='font-size:20px;'></p>
+                                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b><span>$address</span></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b><span>$admEmail</span></p>
+                                    </div>
+                                    <table style='width: 100%;'>
+                                        <tr>
+                                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </body>\r\n";
+
+                            $message1 .= "--$boundary1\r\n";
+                            $message1 .= "Content-Type: image/png; name=\"logo.png\"\r\n";
+                            $message1 .= "Content-Transfer-Encoding: base64\r\n";
+                            $message1 .= "Content-Disposition: inline; filename=\"logo.png\"\r\n";
+                            $message1 .= "Content-ID: <logo>\r\n\r\n";
+                            $logoPath1 = "uploads/logo/logo2.png"; // Provide the correct path to your logo file
+                            $logoData1 = file_get_contents($logoPath1);
+                            $message1 .= chunk_split(base64_encode($logoData1)) . "\r\n";
+                            $message1 .= "--$boundary1--";
+                            mail($to1, $subject1, $message1, $headers1);
+                        }
+                    }
+                } else {
+                    $getUser = $this->db->query("SELECT * FROM users WHERE userType IN (1,2) AND email_verified = '1' AND status = '1'")->result();
+                    $getOptionsSql = "SELECT * FROM `options`";
+                    $optionsList = $this->db->query($getOptionsSql)->result();
+                    $address = $optionsList[6]->option_value;
+                    $admEmail = $optionsList[8]->option_value;
+                    if(!empty($getUser)){
+                        foreach ($getUser as $value) {
+                            $to1 = $value->email; // Recipient's email address
+                            $subject1 = "New Comment posted for ".$getCommunityData->title;
+                            $boundary1 = md5(uniqid(time())); // Generate a unique boundary for separating email parts
+                            $headers1 = "From: <support@movimientolatinouniversity.com>\r\n";
+                            $headers1 .= "MIME-Version: 1.0\r\n";
+                            $headers1 .= "Content-Type: multipart/related; boundary=\"$boundary1\"\r\n";
+                            $message1 = "--$boundary1\r\n";
+                            $message1 .= "Content-Type: text/html; charset=UTF-8\r\n";
+                            $message1 .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+
+                            $message1 .= "
+                            <body>
+                                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
+                                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
+                                        <img src=\"cid:logo\" alt=\"Company Logo\" style='width: 220px; float: right; margin-top: 0'>
+                                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento Latino University</span></h3>
+                                        <p style='font-size: 14px;'>Dear User,</p>
+                                        <p style='font-size: 18px;'></p>
+                                        <p style='font-size: 18px; margin: 30px 0;'>New Comment posted for $getCommunityData->title</p>
+                                        <p style='font-size:20px;'></p>
+                                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b><span>$address</span></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b><span>$admEmail</span></p>
+                                    </div>
+                                    <table style='width: 100%;'>
+                                        <tr>
+                                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </body>\r\n";
+
+                            $message1 .= "--$boundary1\r\n";
+                            $message1 .= "Content-Type: image/png; name=\"logo.png\"\r\n";
+                            $message1 .= "Content-Transfer-Encoding: base64\r\n";
+                            $message1 .= "Content-Disposition: inline; filename=\"logo.png\"\r\n";
+                            $message1 .= "Content-ID: <logo>\r\n\r\n";
+                            $logoPath1 = "uploads/logo/logo2.png"; // Provide the correct path to your logo file
+                            $logoData1 = file_get_contents($logoPath1);
+                            $message1 .= chunk_split(base64_encode($logoData1)) . "\r\n";
+                            $message1 .= "--$boundary1--";
+                            mail($to1, $subject1, $message1, $headers1);
+                        }
+                    }
+                }
+            }
             echo "Post comment successful.";
         } else {
             echo "Error while posting comment.";
@@ -716,6 +826,116 @@ class Home extends CI_Controller
         $this->Commonmodel->add_details('community_comment_rply', $commentData);
         $insert_id = $this->db->insert_id();
         if ($insert_id > 0) {
+            $getCommunityData = $this->db->query("SELECT * FROM community WHERE id = '".$_POST['community_id']."'")->row();
+            if(!empty($getCommunityData)){
+                if(!empty($getCommunityData->uploaded_by)) {
+                    $getUser = $this->db->query("SELECT * FROM users WHERE userType IN (1,2) AND email_verified = '1' AND status = '1'")->result();
+                    $getOptionsSql = "SELECT * FROM `options`";
+                    $optionsList = $this->db->query($getOptionsSql)->result();
+                    $address = $optionsList[6]->option_value;
+                    $admEmail = $optionsList[8]->option_value;
+                    if(!empty($getUser)){
+                        foreach ($getUser as $value) {
+                            $to1 = $value->email; // Recipient's email address
+                            $subject1 = "New Comment posted for ".$getCommunityData->title;
+                            $boundary1 = md5(uniqid(time())); // Generate a unique boundary for separating email parts
+                            $headers1 = "From: <support@movimientolatinouniversity.com>\r\n";
+                            $headers1 .= "MIME-Version: 1.0\r\n";
+                            $headers1 .= "Content-Type: multipart/related; boundary=\"$boundary1\"\r\n";
+                            $message1 = "--$boundary1\r\n";
+                            $message1 .= "Content-Type: text/html; charset=UTF-8\r\n";
+                            $message1 .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+
+                            $message1 .= "
+                            <body>
+                                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
+                                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
+                                        <img src=\"cid:logo\" alt=\"Company Logo\" style='width: 220px; float: right; margin-top: 0'>
+                                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento Latino University</span></h3>
+                                        <p style='font-size: 14px;'>Dear User,</p>
+                                        <p style='font-size: 18px;'></p>
+                                        <p style='font-size: 18px; margin: 30px 0;'>New Comment posted for $getCommunityData->title</p>
+                                        <p style='font-size:20px;'></p>
+                                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b><span>$address</span></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b><span>$admEmail</span></p>
+                                    </div>
+                                    <table style='width: 100%;'>
+                                        <tr>
+                                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </body>\r\n";
+
+                            $message1 .= "--$boundary1\r\n";
+                            $message1 .= "Content-Type: image/png; name=\"logo.png\"\r\n";
+                            $message1 .= "Content-Transfer-Encoding: base64\r\n";
+                            $message1 .= "Content-Disposition: inline; filename=\"logo.png\"\r\n";
+                            $message1 .= "Content-ID: <logo>\r\n\r\n";
+                            $logoPath1 = "uploads/logo/logo2.png"; // Provide the correct path to your logo file
+                            $logoData1 = file_get_contents($logoPath1);
+                            $message1 .= chunk_split(base64_encode($logoData1)) . "\r\n";
+                            $message1 .= "--$boundary1--";
+                            mail($to1, $subject1, $message1, $headers1);
+                        }
+                    }
+                } else {
+                    $getUser = $this->db->query("SELECT * FROM users WHERE userType IN (1,2) AND email_verified = '1' AND status = '1'")->result();
+                    $getOptionsSql = "SELECT * FROM `options`";
+                    $optionsList = $this->db->query($getOptionsSql)->result();
+                    $address = $optionsList[6]->option_value;
+                    $admEmail = $optionsList[8]->option_value;
+                    if(!empty($getUser)){
+                        foreach ($getUser as $value) {
+                            $to1 = $value->email; // Recipient's email address
+                            $subject1 = "New Comment posted for ".$getCommunityData->title;
+                            $boundary1 = md5(uniqid(time())); // Generate a unique boundary for separating email parts
+                            $headers1 = "From: <support@movimientolatinouniversity.com>\r\n";
+                            $headers1 .= "MIME-Version: 1.0\r\n";
+                            $headers1 .= "Content-Type: multipart/related; boundary=\"$boundary1\"\r\n";
+                            $message1 = "--$boundary1\r\n";
+                            $message1 .= "Content-Type: text/html; charset=UTF-8\r\n";
+                            $message1 .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+
+                            $message1 .= "
+                            <body>
+                                <div style='width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e6e6e6'>
+                                    <div style='padding: 30px 30px 15px 30px; box-sizing: border-box'>
+                                        <img src=\"cid:logo\" alt=\"Company Logo\" style='width: 220px; float: right; margin-top: 0'>
+                                        <h3 style='padding-top: 45px;line-height: 20px;'>Greetings from<span style='font-weight: 900;font-size: 25px;color: #F44C0D;display: block'> Movimiento Latino University</span></h3>
+                                        <p style='font-size: 14px;'>Dear User,</p>
+                                        <p style='font-size: 18px;'></p>
+                                        <p style='font-size: 18px; margin: 30px 0;'>New Comment posted for $getCommunityData->title</p>
+                                        <p style='font-size:20px;'></p>
+                                        <p style='font-size: 18px; margin: 0px; list-style: none'>Sincerly</p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Movimiento Latino University</b></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Visit us:</b><span>$address</span></p>
+                                        <p style='font-size: 12px; margin: 0px; list-style: none'><b>Email us:</b><span>$admEmail</span></p>
+                                    </div>
+                                    <table style='width: 100%;'>
+                                        <tr>
+                                            <td style='height:30px;width:100%; background: red;padding: 10px 0px; font-size:13px; color: #fff; text-align: center;'>Copyright &copy; <?=date('Y')?> Movimiento Latino University. All rights reserved.</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </body>\r\n";
+
+                            $message1 .= "--$boundary1\r\n";
+                            $message1 .= "Content-Type: image/png; name=\"logo.png\"\r\n";
+                            $message1 .= "Content-Transfer-Encoding: base64\r\n";
+                            $message1 .= "Content-Disposition: inline; filename=\"logo.png\"\r\n";
+                            $message1 .= "Content-ID: <logo>\r\n\r\n";
+                            $logoPath1 = "uploads/logo/logo2.png"; // Provide the correct path to your logo file
+                            $logoData1 = file_get_contents($logoPath1);
+                            $message1 .= chunk_split(base64_encode($logoData1)) . "\r\n";
+                            $message1 .= "--$boundary1--";
+                            mail($to1, $subject1, $message1, $headers1);
+                        }
+                    }
+                }
+            }
             echo "Post comment successfully.";
         } else {
             echo "Error while posting comment.";
@@ -749,6 +969,34 @@ class Home extends CI_Controller
     }
     public function dislikecommunity() {
         $this->db->query("UPDATE community_like SET is_liked = '0' WHERE user_id = '" . $this->session->userdata('user_id') . "' AND community_id = '" . $_POST['community_id'] . "'");
+    }
+   public function pinComment() {
+        $pinData = array(
+            'user_id' => $_POST['user_id'],
+            'community_id' => $_POST['comm_id'],
+            'comment_id' => $_POST['comment_id'],
+            'pinned' => $_POST['is_pined'],
+            'created_at' => date('Y-m-d h:i:s')
+        );
+        $isExistPinedSql = "SELECT * FROM pin_comment WHERE user_id = '".$_POST['user_id']. "' AND comment_id = '" . $_POST['comment_id'] . "'";
+        $isExist = $this->db->query($isExistPinedSql)->num_rows();
+        if ($isExist == 0) {
+            $this->Commonmodel->add_details('pin_comment', $pinData);
+            $insert_id = $this->db->insert_id();
+            if ($insert_id > 0) {
+                echo "Pined";
+            } else {
+                echo "Error";
+            }
+        } else {
+            $checkisPined = $this->db->query("SELECT * FROM pin_comment WHERE user_id = '".$_POST['user_id']."' AND comment_id = '" . $_POST['comment_id'] . "'")->row();
+            if ($checkisPined->pinned == '1') {
+                $this->db->query("UPDATE pin_comment SET pinned = '".$_POST['is_pined']."', created_at = '".date('Y-m-d h:i:s')."'  WHERE user_id = '".$_POST['user_id']."' AND comment_id = '" . $_POST['comment_id'] . "'");
+            } else {
+                $this->db->query("UPDATE pin_comment SET pinned = '".$_POST['is_pined']."', created_at = '".date('Y-m-d h:i:s')."' WHERE user_id = '".$_POST['user_id']."' AND comment_id = '" . $_POST['comment_id'] . "'");
+            }
+            echo "Pined";
+        }
     }
     public function about() {
         $data = array('title' => 'About Us', 'page' => 'about');
@@ -1595,5 +1843,149 @@ class Home extends CI_Controller
             $html = '<li>No Data found!</li>';
         }
         echo $html;
+    }
+    public function getCatwisecommentData(){
+        $cat_id = $_POST['cat_id'];
+        $comm_id = $_POST['comm_id'];
+        if($cat_id != '0'){
+            $commentCount = $this->db->query("SELECT count(id) as count FROM community_comment WHERE instr(concat(',', cat_id, ','), ',$cat_id,') AND community_id = '" .@$comm_id. "'")->row();
+            $getcommunity_comment = $this->db->query("SELECT * FROM community_comment WHERE instr(concat(',', cat_id, ','), ',$cat_id,') AND community_id = '".$comm_id."' ORDER BY created_at DESC")->result_array();
+        } else {
+            $commentCount = $this->db->query("SELECT count(id) as count FROM community_comment WHERE community_id = '" .@$comm_id. "'")->row();
+            $getcommunity_comment = $this->db->query("SELECT * FROM community_comment WHERE community_id = '".$comm_id."' ORDER BY created_at DESC")->result_array();
+        }
+        $getPinedData = $this->db->query("SELECT * FROM pin_comment WHERE community_id = '".@$comm_id."' AND pinned = '1' order by created_at DESC")->result();
+        if(!empty($getPinedData)) { ?>
+        <ul>
+        <?php
+        foreach ($getPinedData as $value) {
+            if($cat_id != '0'){
+                $commentData = $this->db->query("SELECT * FROM community_comment WHERE instr(concat(',', cat_id, ','), ',$cat_id,') AND community_id = '".$comm_id."' AND id = '".$value->comment_id."' ORDER BY created_at DESC")->row();
+            } else {
+                $commentData = $this->db->query("SELECT * FROM community_comment WHERE community_id = '".$comm_id."' AND id = '".$value->comment_id."' ORDER BY created_at DESC")->row();
+            }
+            if(!empty($commentData)){
+            $userData = $this->db->query("SELECT * FROM users WHERE id = '" . $commentData->user_id . "'")->row(); ?>
+            <li>
+                <div class="comments-box grey-bg" style="padding: 10px !important; border-radius: 15px;">
+                    <div class="comments-info d-flex">
+                        <div class="comments-avatar mr-10">
+                        <?php if (!empty($userData->image)) { ?>
+                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData->image ?>" />
+                        <?php } else { ?>
+                            <img src="<?= base_url() ?>images/no-user.png" />
+                        <?php } ?>
+                        </div>
+                        <div class="avatar-name" style="margin-bottom: 2px;">
+                            <h3 style="margin-top: 0px;font-weight: bold;margin-bottom: 2px;font-size: 16px;"><?= ucwords($commentData->full_name) ?></h3>
+                            <span class="post-meta" style="font-size: 12px;"><?= date('M j, Y', strtotime($commentData->created_at)) ?> in
+                            <?php
+                            $cat_data = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result();
+                            $cat_map = [];
+                            foreach ($cat_data as $cat) {
+                                $cat_map[$cat->id] = $cat->category_name;
+                            }
+                            if (!empty($commentData->cat_id)) {
+                                $category_id = explode(',', $commentData->cat_id);
+                                $category_name = array_map(function($id) use ($cat_map) {
+                                    return isset($cat_map[trim($id)]) ? $cat_map[trim($id)] : null;
+                                }, $category_id);
+                                $category_name = array_filter($category_name);
+                                $category_name_display = implode(', ', $category_name);
+                                echo "<b>".$category_name_display."</b>";
+                            }
+                            ?>
+                            </span>
+                        </div>
+                    </div>
+                    <p style="width: 60px;height: 20px;display: inline-block;float: right;position: relative;top: -55px;bottom: 0;font-weight: bold;">Pinned</p>
+                    <div class="comments-text ml-65" style="display: inline-block;margin-top: 0px;margin-left: 35px;">
+                        <p><?= $commentData->comment ?></p>
+                        <div class="comments-replay">
+                            <a href="javascript:void(0)" class="btn btn-info" onclick="replyComment(<?= $commentData->id ?>)">Reply</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        <?php } } ?>
+        </ul>
+        <?php } ?>
+        <h3><?= $commentCount->count; ?> Comments</h3>
+        <ul>
+        <?php
+        if (!empty($getcommunity_comment)) {
+            foreach ($getcommunity_comment as $value) {
+            $userData = $this->db->query("SELECT * FROM users WHERE id = '" . $value['user_id'] . "'")->row(); ?>
+            <li>
+                <div class="comments-box grey-bg" style="padding: 10px !important; border-radius: 15px;">
+                    <div class="comments-info d-flex">
+                        <div class="comments-avatar mr-10">
+                        <?php if (!empty($userData->image)) { ?>
+                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData->image ?>" />
+                        <?php } else { ?>
+                            <img src="<?= base_url() ?>images/no-user.png" />
+                        <?php } ?>
+                        </div>
+                        <div class="avatar-name" style="margin-bottom: 2px;">
+                            <h3 style="margin-top: 0px;font-weight: bold;margin-bottom: 2px;font-size: 16px;"><?= ucwords($value['full_name']) ?></h3>
+                            <span class="post-meta" style="font-size: 12px;"><?= date('M j, Y', strtotime($value['created_at'])) ?> in
+                            <?php
+                            $cat_data = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result();
+                            $cat_map = [];
+                            foreach ($cat_data as $cat) {
+                                $cat_map[$cat->id] = $cat->category_name;
+                            }
+                            if (!empty($value['cat_id'])) {
+                                $category_id = explode(',', $value['cat_id']);
+                                $category_name = array_map(function($id) use ($cat_map) {
+                                    return isset($cat_map[trim($id)]) ? $cat_map[trim($id)] : null;
+                                }, $category_id);
+                                $category_name = array_filter($category_name);
+                                $category_name_display = implode(', ', $category_name);
+                                echo "<b>".$category_name_display."</b>";
+                            }
+                            ?>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="comments-text ml-65" style="display: inline-block;margin-top: 0px;margin-left: 35px;">
+                        <p><?= $value['comment'] ?></p>
+                        <div class="comments-replay">
+                            <a href="javascript:void(0)" class="btn btn-info" onclick="replyComment(<?= $value['id'] ?>)">Reply</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <?php
+            $commentRply = $this->db->query("SELECT * FROM community_comment_rply WHERE community_id = '".@$comm_id. "' AND comment_id = '" . $value['id'] . "'")->result_array();
+            if (!empty($commentRply)) {
+            foreach ($commentRply as $data) {
+            $userData1 = $this->db->query("SELECT * FROM users WHERE id = '" . $data['user_id'] . "'")->row(); ?>
+            <li class="children">
+                <div class="comments-box grey-bg">
+                    <div class="comments-info d-flex">
+                        <div class="comments-avatar mr-20">
+                            <?php if (!empty($userData1->image)) { ?>
+                            <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData1->image ?>" />
+                            <?php } else { ?>
+                            <img src="<?= base_url() ?>images/no-user.png" />
+                            <?php } ?>
+                        </div>
+                        <div class="avatar-name">
+                            <h5><?= $data['full_name'] ?></h5>
+                            <span class="post-meta"><?= date('M j, Y', strtotime($data['created_at'])) ?></span>
+                        </div>
+                    </div>
+                    <div class="comments-text ml-65">
+                        <p><?= $data['comment'] ?></p>
+                    </div>
+                </div>
+            </li>
+            <?php } } } } else { ?>
+            <li>No comment yet</li>
+            <?php } ?>
+        </ul>
+        <input type="hidden" name="comm_id" id="comm_id" value="<?= @$comm_id ?>">
+        <?php
     }
 }

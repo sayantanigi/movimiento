@@ -54,26 +54,10 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                         <label id="errorBox"></label>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Type</b></label>
-                                                    <div class="col-md-8">
-                                                        <select name="frm[cat_id]" class="form-control">
-                                                            <option value="">Select option</option>
-                                                            <?php
-                                                            if(!empty($community_cat)) {
-                                                            foreach ($community_cat as $community_cat_v) { ?>
-                                                            <option value="<?= $community_cat_v['id']?>" <?php if($community_cat_v['id'] == $community->cat_id) { echo "selected"; }?>><?= $community_cat_v['category_name']?></option>
-                                                            <?php } } else { ?>
-                                                            <option value="">No Data</option>
-                                                            <?php } ?>
-                                                        </select>
-                                                        <label id="errorBox"></label>
-                                                    </div>
-                                                </div> -->
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label"><b>Courses *</b></label>
+                                                    <label class="col-md-3 control-label"><b>Courses </b></label>
                                                     <div class="col-md-8">
-                                                        <select name="frm[course_id]" class="form-control" required>
+                                                        <select name="frm[course_id]" class="form-control">
                                                             <option value="">Select option</option>
                                                             <?php
                                                             if(!empty($course_list)) {
@@ -84,6 +68,17 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
                                                             <?php } ?>
                                                         </select>
                                                         <label id="errorBox"></label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><b>Status </b></label>
+                                                    <div class="col-md-8">
+                                                        <select name="frm[status]" class="form-control" required>
+                                                            <option value="">Select option</option>
+                                                            <option value="1" <?php if ($community->status == 1) { echo 'selected';} ?>>Active</option>
+                                                            <option value="2" <?php if ($community->status == 2) { echo 'selected';} ?>>Inactive</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -112,8 +107,23 @@ label.active span:after { content: " "; position: absolute; left: 3px; right: 3p
 #tab_0 {display: block !important;}
 .courseTypefield {display: none;}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
 <!-- <script src="<?php echo base_url(); ?>js/jquery.datetimepicker.full.js"></script> -->
 <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
+
+<style>
+.select2-container--default .select2-selection--single {border: 1px solid #aaa; padding: 6px; height: 34px;}
+.select2-selection__choice{color: #000 !important;}
+</style>
+<script>
+$('#cat_id').select2({
+    //tags: true,
+    tokenSeparators: [','],
+    placeholder: "Select or Type Community Category",
+});
+</script>
 <script>
 $(document).ready(function () {
     var selectedCourseType = $('#course_fees').val();

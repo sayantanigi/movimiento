@@ -123,9 +123,11 @@
                                                         </td>
                                                         <td>
                                                             <div class="action-button">
-                                                                <a href="<?= base_url('supercontrol/community/community_details/' . $community_v->id) ?>" class="btn btn-xs btn-success delete" style="margin-bottom: 3px;"><span class="fa fa-eye"></span></a>
-                                                                <a href="<?= base_url('supercontrol/community/add_community/' . $community_v->id) ?>" class="btn btn-xs btn-info" style="margin-bottom: 3px;"><span class="fa fa-pencil"></span></a>
-                                                                <a href="<?= base_url('supercontrol/community/delete/' . $community_v->id) ?>" class="btn btn-xs btn-danger delete" style="margin-bottom: 3px;"><span class="fa fa-trash"></span></a>
+                                                                <a href="<?= base_url('supercontrol/community/add_community/' . $community_v->id) ?>" class="btn btn-xs btn-info"><span class="fa fa-pencil"></span></a>
+                                                                <a href="<?= base_url('supercontrol/community/delete/' . $community_v->id) ?>" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span></a>
+                                                            </div>
+                                                            <div class="action-button" style="width: 100%; margin-top: 7px;">
+                                                                <a href="<?= base_url('supercontrol/community/view_community_comment/' . $community_v->id) ?>" class="btn btn-xs btn-info" style="width: 100%;"><span class="fa fa-eye"></span> View Comments</a>
                                                             </div>
                                                         </td>
                                                     </tr>

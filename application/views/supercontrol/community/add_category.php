@@ -34,7 +34,7 @@
                                         </div>
                                     </div>
                                     <div class="portlet-body form">
-                                        <form action="<?php echo base_url().'supercontrol/community/category_add'?>" class="form-horizontal form-bordered" method="post" enctype="multipart/form-data" onsubmit="return check();">
+                                        <form action="<?php echo base_url().'supercontrol/community/add_community_cat'?>" class="form-horizontal form-bordered" method="post" enctype="multipart/form-data" onsubmit="return check();">
                                             <div class="form-body">
                                                 <div class="form-group">
                                                     <b><label class="col-md-3 control-label">Category Title *</label></b>
@@ -47,7 +47,7 @@
                                                     <?php echo validation_errors(); ?>
                                                 </div>
                                             </div>
-                                            <div class="form-body">
+                                            <!-- <div class="form-body">
                                                 <div class="form-group">
                                                     <b><label class="col-md-3 control-label">Category Sub Title</label></b>
                                                     <div class="col-md-4">
@@ -58,8 +58,8 @@
                                                 <div style="color:#f00;text-align:center;">
                                                     <?php echo validation_errors(); ?>
                                                 </div>
-                                            </div>
-                                            <div class="form-body">
+                                            </div> -->
+                                            <!-- <div class="form-body">
                                                 <div class="form-group">
                                                     <b><label class="col-md-3 control-label">Category Image</label></b>
                                                     <div class="col-md-4">
@@ -70,7 +70,7 @@
                                                 <div style="color:#f00;text-align:center;">
                                                     <?php echo validation_errors(); ?>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="form-actions">
                                                 <div class="row">
                                                     <div class="col-md-offset-3 col-md-9">

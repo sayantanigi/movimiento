@@ -68,15 +68,15 @@
                                                                 <th style="max-width:50%; text-align:center;">Action</th>
                                                             </thead>
                                                             <tbody>
-                                                                <?php if (is_array($eloca)): ?>
+                                                                <?php if (is_array($categories)): ?>
                                                                 <?php
                                                                 $ctn = 1;
-                                                                foreach ($eloca as $i) { ?>
+                                                                foreach ($categories as $i) { ?>
                                                                 <tr class="table table-striped table-bordered table-hover table-checkable order-column dt-responsive" id="sample_1">
                                                                     <td style="max-width:200px;"><?php echo $i->category_name; ?> </td>
                                                                     <td>
-                                                                        <a class="btn green sbold uppercase btn-xs" href="<?php echo base_url() ?>supercontrol/category/show_category_id/<?php echo $i->id; ?>">Edit</a> |
-                                                                        <a class="btn red sbold uppercase btn-xs" onclick="return confirm('Are you sure about this delete?');" href="<?php echo base_url() ?>supercontrol/category/delete_category/<?php echo $i->id; ?>">Delete</a>
+                                                                        <a class="btn green sbold uppercase btn-xs" href="<?php echo base_url() ?>supercontrol/community/show_community_cat_id/<?php echo $i->id; ?>">Edit</a> |
+                                                                        <a class="btn red sbold uppercase btn-xs" onclick="return confirm('Are you sure about this delete?');" href="<?php echo base_url() ?>supercontrol/community/delete_cominity_cat/<?php echo $i->id; ?>">Delete</a>
                                                                     </td>
                                                                 </tr>
                                                                 <?php $ctn++; } ?>

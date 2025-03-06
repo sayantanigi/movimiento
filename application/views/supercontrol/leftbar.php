@@ -71,6 +71,16 @@ $checkSudscriptionData = $this->db->query("SELECT * FROM user_subscription WHERE
             </a>
             <ul class="sub-menu">
                 <li class="nav-item <?php if ($nl == "add_comm") { ?> active open<?php } ?>">
+                    <a href="<?php if(!empty($checkSudscriptionData)) { echo base_url("supercontrol/community/add_community_cat");} else {echo "javascript:void(0)";} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>>
+                        <span class="title">Community Category Add</span>
+                    </a>
+                </li>
+                <li class="nav-item <?php if ($nl == "add_comm") { ?> active open<?php } ?>">
+                    <a href="<?php if(!empty($checkSudscriptionData)) { echo base_url("supercontrol/community/community_cat_list");} else {echo "javascript:void(0)";} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>>
+                        <span class="title">Community Category List</span>
+                    </a>
+                </li>
+                <li class="nav-item <?php if ($nl == "add_comm") { ?> active open<?php } ?>">
                     <a href="<?php if(!empty($checkSudscriptionData)) { echo base_url("supercontrol/community/add_community");} else {echo "javascript:void(0)";} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>>
                         <span class="title">Add Community</span>
                     </a>

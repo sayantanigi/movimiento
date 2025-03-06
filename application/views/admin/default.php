@@ -196,12 +196,12 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <!-- <li class="<?= ($tab == 'add_comcat') ? 'active' : ''; ?>">
+                            <li class="<?= ($tab == 'add_comcat') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/category_add') ?>"><i class="fa fa-circle"></i> Add Category </a>
                             </li>
                             <li class="<?= ($tab == 'comcat_list') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/category') ?>"><i class="fa fa-circle"></i> Category Lists</a>
-                            </li> -->
+                            </li>
                             <li class="<?= ($tab == 'add_comm') ? 'active' : ''; ?>">
                                 <a href="<?= admin_url('community/add_community') ?>"><i class="fa fa-circle"></i> Add Community</a>
                             </li>
