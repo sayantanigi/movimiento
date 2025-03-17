@@ -575,6 +575,9 @@
                                     <img src="<?php echo base_url()?>assets/img/course/payment/payment-1.png" alt="">
                                 </a>
                             </div>
+                            <?php
+                            $getSubscriptionPlan = $this->db->query("SELECT * FROM subscription WHERE subscription_user_type = '1' AND status = '1'")->row();
+                            ?>
                             <div class="course__enroll-btn">
                                 <?php
                                 if($this->session->userdata('userType') == '1') {
@@ -592,9 +595,19 @@
                                                         <div class="btn-part">
                                                             <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
                                                             <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                                            <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
+                                                            <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="e-btn e-btn-7 w-100">Buy Now</button>
                                                         </div>
                                                     </form>
+                                                    <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                                    <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                                    <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                                        <div>
+                                                            <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                                <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                            </div>
+                                                            <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
+                                                        </div>
+                                                    </div>
                                             <?php } else { ?>
                                                 <div class="btn-part">
                                                     <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
@@ -620,13 +633,23 @@
                                                 <?php }
                                             } else {
                                                 if (@$detail->course_fees != 'free') { ?>
-                                                    <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
-                                                        <div class="btn-part">
-                                                            <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
-                                                            <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                                            <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
+                                                <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
+                                                    <div class="btn-part">
+                                                        <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
+                                                        <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
+                                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
+                                                    </div>
+                                                </form>
+                                                <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                                <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                                <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                                    <div>
+                                                        <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                            <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
                                                         </div>
-                                                    </form>
+                                                        <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
+                                                    </div>
+                                                </div>
                                             <?php } else { ?>
                                                 <div class="btn-part">
                                                     <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
@@ -644,6 +667,16 @@
                                                     <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="btn readon2 orange-transparent">Buy Now</button>
                                                 </div>
                                             </form>
+                                            <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                            <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                            <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                            <div>
+                                                <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                    <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                </div>
+                                                <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
+                                            </div>
+                                        </div>
                                         <?php } else { ?>
                                             <div class="btn-part">
                                                 <button type="submit" name="enrollment" value="<?php echo @$detail->course_type; ?>" class="btn readon2 orange-transparent"><?php echo ucwords(@$detail->course_type); ?></button>
@@ -659,6 +692,16 @@
                                             <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
                                         </div>
                                     </form>
+                                    <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                    <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                    <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                        <div>
+                                            <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                            </div>
+                                            <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
+                                        </div>
+                                    </div>
                                 <?php } ?>
                             </div>
                         </div>
@@ -799,6 +842,23 @@
 .course__comment ::-webkit-scrollbar-track {box-shadow: inset 0 0 5px grey; border-radius: 10px;}
 .course__comment ::-webkit-scrollbar-thumb {background: #db3636; border-radius: 10px;}
 .course__comment ::-webkit-scrollbar-thumb:hover {background: #b30000;}
+.purchase-section-container--separator--G5qKO:not(:empty)::before {margin-right: 0.8rem;}
+.purchase-section-container--separator--G5qKO::before, .purchase-section-container--separator--G5qKO::after {content: ''; flex: 1; border-bottom: 1px solid #d1d2e0;}
+.purchase-section-container--separator--G5qKO {display: flex; align-items: center; text-align: center; color: #595c73; margin: 10px 0 10px 0;}
+.purchase-section-container--separator--G5qKO:not(:empty)::after {margin-left: 0.8rem;}
+.purchase-section-container--separator--G5qKO::before, .purchase-section-container--separator--G5qKO::after {content: ''; flex: 1; border-bottom: 1px solid #d1d2e0;}
+.subscription-cta-module--subtitle--WmzhN {
+    font-size: 12px;
+    color: #595c73;
+    margin-top: 10px;
+    text-align: center;
+}
+.plan-period-module--plan-period-multiline--R2iLQ {
+    margin-bottom: 0;
+}
+.plan-period-module--cancel-anytime-multiline--JbaRs {
+    margin-bottom: 0;
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.js"></script>
@@ -848,7 +908,6 @@ $(document).ready(function(){
                     if (revdata == "0") {
                         $('#error').show();
                         $('#error').text("Sorry! Not allowed to posting again!");
-
                     } else {
                         $("#review-txt").show();
                         $("#review-txt").text("Your review is posted successfully!");

@@ -307,7 +307,7 @@ class Community extends CI_Controller {
             <li class="children">
                 <div class="comments-box grey-bg">
                     <div class="comments-info d-flex">
-                        <div class="comments-avatar mr-20">
+                        <div class="comments-avatar mr-20" style="margin-right: 10px !important;">
                             <?php if (!empty($userData1->image)) { ?>
                             <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData1->image ?>" />
                             <?php } else { ?>
@@ -319,7 +319,7 @@ class Community extends CI_Controller {
                             <span class="post-meta"><?= date('M j, Y', strtotime($data['created_at'])) ?></span>
                         </div>
                     </div>
-                    <div class="comments-text ml-65">
+                    <div class="comments-text ml-65" style="margin-left: 35px !important;">
                         <p><?= $data['comment'] ?></p>
                     </div>
                 </div>

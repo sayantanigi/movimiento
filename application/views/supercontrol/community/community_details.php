@@ -127,7 +127,7 @@
                                                                     <li class="children">
                                                                         <div class="comments-box grey-bg">
                                                                             <div class="comments-info d-flex">
-                                                                                <div class="comments-avatar mr-20">
+                                                                                <div class="comments-avatar mr-10">
                                                                                     <?php if (!empty($userData1->image)) { ?>
                                                                                     <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData1->image ?>" />
                                                                                     <?php } else { ?>
