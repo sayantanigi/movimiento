@@ -54,7 +54,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div style="border: 1px solid #eee; padding: 10px; margin-top: 10px; border-radius: 20px !important;">
+                                                        <div class="communityList" style="border: 1px solid #eee; padding: 10px; margin-top: 10px; border-radius: 20px !important;">
                                                             <div style="width: 100%;display: inline-block;text-align: center;margin: 20px 0;">
                                                                 <?php
                                                                 $community_cat = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
@@ -65,6 +65,60 @@
                                                                 <?php } } ?>
                                                             </div>
                                                             <div class="latest-comments mb-95" id="latest-comments">
+                                                            <?php
+                                                                $getPinedData = $this->db->query("SELECT * FROM pin_comment WHERE community_id = '".@$comment_id."' AND pinned = '1' order by created_at DESC")->result();
+                                                                if(!empty($getPinedData)) { ?>
+                                                                <ul>
+                                                                <?php
+                                                                foreach ($getPinedData as $value) {
+                                                                    $commentData = $this->db->query("SELECT * FROM community_comment WHERE id = '" . $value->comment_id . "'")->row();
+                                                                    $userData = $this->db->query("SELECT * FROM users WHERE id = '" . $commentData->user_id . "'")->row(); ?>
+                                                                    <li>
+                                                                        <div class="comments-box grey-bg" style="padding: 10px !important; border-radius: 15px;">
+                                                                            <div class="comments-info d-flex">
+                                                                                <div class="comments-avatar mr-10">
+                                                                                <?php if (!empty($userData->image)) { ?>
+                                                                                    <img src="<?= base_url() ?>uploads/profile_pictures/<?= $userData->image ?>" />
+                                                                                <?php } else { ?>
+                                                                                    <img src="<?= base_url() ?>images/no-user.png" />
+                                                                                <?php } ?>
+                                                                                </div>
+                                                                                <div class="avatar-name" style="margin-bottom: 2px;">
+                                                                                    <h3 style="margin-top: 0px;font-weight: bold;margin-bottom: 2px;font-size: 16px;"><?= ucwords($commentData->full_name) ?></h3>
+                                                                                    <span class="post-meta" style="font-size: 12px;"><?= date('M j, Y', strtotime($commentData->created_at)) ?> in
+                                                                                    <?php
+                                                                                    $cat_data = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result();
+                                                                                    $cat_map = [];
+                                                                                    foreach ($cat_data as $cat) {
+                                                                                        $cat_map[$cat->id] = $cat->category_name;
+                                                                                    }
+                                                                                    if (!empty($commentData->cat_id)) {
+                                                                                        $category_id = explode(',', $commentData->cat_id);
+                                                                                        $category_name = array_map(function($id) use ($cat_map) {
+                                                                                            return isset($cat_map[trim($id)]) ? $cat_map[trim($id)] : null;
+                                                                                        }, $category_id);
+                                                                                        $category_name = array_filter($category_name);
+                                                                                        $category_name_display = implode(', ', $category_name);
+                                                                                        echo "<b>".$category_name_display."</b>";
+                                                                                    }
+                                                                                    ?>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p style="width: 60px;height: 20px;display: inline-block;float: right;position: relative;top: -55px;bottom: 0;font-weight: bold;">Pinned</p>
+                                                                            <div class="comments-text ml-65" style="display: inline-block;margin-top: 0px;margin-left: 35px;">
+                                                                                <p><?= $commentData->comment ?></p>
+                                                                                <div class="comments-replay">
+                                                                                    <a href="javascript:void(0)" class="btn btn-info" onclick="replyComment(<?= $commentData->id ?>)">Reply</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                <?php } ?>
+                                                                </ul>
+                                                                <?php } ?>
+                                                                <?php $commentCount = $this->db->query("SELECT count(id) as count FROM community_comment WHERE community_id = '" . $comment_id . "'")->row(); ?>
+                                                                <h3><?= $commentCount->count; ?> Comments</h3>
                                                                 <ul style="padding: 0px !important;">
                                                                 <?php
                                                                 $commentList = $this->db->query("SELECT * FROM community_comment WHERE community_id = '" . @$comment_id . "' ORDER BY id DESC")->result_array();
@@ -449,12 +503,13 @@ function replyComment(id) {
 
 function pinComment(id, status) {
     var user_id = $('#user_id').val();
+    var comm_id = $('#comm_id').val();
     var comment_id = id;
     var is_pined = status;
     $.ajax({
         url: "<?= base_url() ?>home/pinComment",
         type: "POST",
-        data: {user_id: user_id, comment_id: comment_id, is_pined: is_pined},
+        data: {user_id: user_id, comm_id: comm_id, comment_id: comment_id, is_pined: is_pined},
         success: function (data) {
             //console.log(data);
             $('.success_msg').text(data);

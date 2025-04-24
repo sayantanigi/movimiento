@@ -603,7 +603,7 @@
                                                     <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
                                                         <div>
                                                             <div class="plan-period-module--plan-period-multiline--R2iLQ">
-                                                                <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                                <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
                                                             </div>
                                                             <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
                                                         </div>
@@ -645,7 +645,7 @@
                                                 <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
                                                     <div>
                                                         <div class="plan-period-module--plan-period-multiline--R2iLQ">
-                                                            <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                            <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
                                                         </div>
                                                         <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
                                                     </div>
@@ -672,7 +672,7 @@
                                             <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
                                             <div>
                                                 <div class="plan-period-module--plan-period-multiline--R2iLQ">
-                                                    <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                    <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
                                                 </div>
                                                 <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
                                             </div>
@@ -697,7 +697,7 @@
                                     <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
                                         <div>
                                             <div class="plan-period-module--plan-period-multiline--R2iLQ">
-                                                <span>Starting at <span class="">₹<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
                                             </div>
                                             <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
                                         </div>
