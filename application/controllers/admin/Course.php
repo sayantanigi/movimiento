@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 error_reporting(0);
+require 'vendor/autoload.php';
+require_once APPPATH."third_party/stripe/init.php";
 class Course extends Admin_Controller {
     public function __construct() {
         parent::__construct();
@@ -10,53 +12,6 @@ class Course extends Admin_Controller {
         $this->load->model('Cms_model');
         $this->load->model('Commonmodel');
     }
-
-    // public function compliance_training($page = 1)
-    // {
-    //     if (isset($_GET['page'])) {
-    //         $page = $_GET['page'];
-    //     }
-    //     $show_per_page = 10;
-    //     $offset = ($page - 1) * $show_per_page;
-    //     $this->data['title'] = 'Compliance Training';
-    //     $this->data['tab'] = 'comp_list';
-    //     $this->data['main'] = admin_view('course/index');
-    //     $course = $this->Course_model->getAllcomp($offset, $show_per_page);
-    //     $this->data['course'] = $course['results'];
-    //     $config['base_url'] = admin_url('course/compliance_training');
-    //     $config['num_links'] = 2;
-    //     $config['uri_segment'] = 4;
-    //     $config['total_rows'] = $course['total'];
-    //     $config['per_page'] = $show_per_page;
-    //     $config['full_tag_open'] = '<ul class="pagination pagination-sm">';
-    //     $config['full_tag_close'] = '</ul>';
-    //     $config['num_tag_open'] = '<li>';
-    //     $config['num_tag_close'] = '</li>';
-    //     $config['first_link'] = 'First';
-    //     $config['first_tag_open'] = '<li>';
-    //     $config['first_tag_close'] = '</li>';
-    //     $config['last_link'] = 'Last';
-    //     $config['last_tag_open'] = '<li>';
-    //     $config['last_tag_close'] = '</li>';
-    //     $config['prev_link'] = 'Prev';
-    //     $config['prev_tag_open'] = '<li>';
-    //     $config['prev_tag_close'] = '</li>';
-    //     $config['next_link'] = 'Next';
-    //     $config['next_tag_open'] = '<li>';
-    //     $config['next_tag_close'] = '</li>';
-    //     $config['cur_tag_open'] = '<li class="active"><a href="#">';
-    //     $config['cur_tag_close'] = '</a></li>';
-    //     $config['use_page_numbers'] = true;
-    //     $config['use_page_numbers'] = true;
-    //     $config['page_query_string'] = true;
-    //     $config['query_string_segment'] = 'page';
-    //     $config['reuse_query_string'] = true;
-
-    //     $this->pagination->initialize($config);
-    //     $this->data['paginate'] = $this->pagination->create_links();
-    //     $this->load->view(admin_view('default'), $this->data);
-    // }
-
     public function course_list($page = 1) {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
@@ -215,7 +170,6 @@ class Course extends Admin_Controller {
         $this->data['main'] = admin_view('course/add');
         $this->data['course_cat'] = $this->db->get('sm_category')->result();
         $this->data['course'] = $this->Course_model->getNew();
-
         if ($id) {
             $this->data['course'] = $course = $this->Course_model->getRow($id);
             if (!isset($course)) {
@@ -234,7 +188,6 @@ class Course extends Admin_Controller {
             }
             $slug = strtolower(url_title($slug));
             $formdata['slug'] = $this->Cms_model->get_unique_url($slug, $id);
-            //$images = $this->input->post('image');
             if ($this->upload->do_upload('image')) {
                 $data = $this->upload->data();
                 $formdata['image'] = $data['file_name'];
@@ -250,8 +203,12 @@ class Course extends Admin_Controller {
         }
         $this->load->view(admin_view('default'), $this->data);
     }
-
-    public function add_course($id = false) {
+    public function checkduplicatecourse() {
+        $courseTitle = $this->input->post('course_name');
+        $exists = $this->db->where('title', $courseTitle)->get('courses')->num_rows() > 0;
+        echo json_encode(['exists' => $exists]);
+    }
+    /*public function add_course($id = false) {
         $this->data['title'] = 'Add Course';
         $this->data['tab'] = 'add_comp';
         $this->data['main'] = admin_view('course/add');
@@ -269,20 +226,15 @@ class Course extends Admin_Controller {
         }
         $this->form_validation->set_rules('frm[title]', 'Course title', 'required');
         $this->form_validation->set_rules('frm[description]', 'Course description', 'required');
-
         if ($this->form_validation->run()) {
             $formdata = $this->input->post('frm');
             $formdata['id'] = $id;
-            // $formdata['cat_id'] = 1;
             $slug = $formdata['title'];
-
             if (empty($slug) || $slug == '') {
                 $slug = $formdata['title'];
             }
-
             $slug = strtolower(url_title($slug));
             $formdata['slug'] = $this->Cms_model->get_unique_url($slug, $id);
-            //$images = $this->input->post('image');
             $config['upload_path'] = './assets/images/courses/';
             $config['allowed_types'] = 'jpg|jpeg|png|gif';
             $this->load->library('upload', $config);
@@ -290,22 +242,137 @@ class Course extends Admin_Controller {
                 $data = $this->upload->data();
                 $formdata['image'] = $data['file_name'];
             }
-
+            if($this->input->post('frm[course_fees]') == 'paid') {
+                $title = $this->input->post('frm[title]');
+                $title = $this->input->post('frm[title]');
+                $unit_amount = $this->input->post('frm[price]') * 100;
+                if($this->input->post('frm[payment_type]') == "1") {
+                    $parameter = array(
+                        'currency' => 'usd',
+                        'unit_amount' => $unit_amount,
+                        'product_data' => ['name' => $title]
+                    );
+                } else {
+                    $parameter = array(
+                        'currency' => 'usd',
+                        'unit_amount' => $unit_amount,
+                        'recurring' => ['interval' => 'month'],
+                        'product_data' => ['name' => $title]
+                    );
+                }
+                $stripe = new \Stripe\StripeClient('sk_test_51PMX1GK1Euj0OQwTx1jdmG0dBNTBDThgrYFeWI1kQ7WUx2Hdv41hDbY1NRGoGTERB2Yv9ZmIcyWXh7Sch12UX2c500DDt3DUdI');
+                $response = $stripe->prices->create($parameter);
+                $formdata['price_key'] = $response->id;
+                $formdata['product_key'] = $response->product;
+            }
             $id = $this->Course_model->save($formdata);
-            //echo $this->db->last_query();die();
             $this->session->set_flashdata("success", "Course detail saved");
             redirect(admin_url('course/course_list'));
         }
         $this->load->view(admin_view('default'), $this->data);
-    }
+    }*/
+    public function add_course($id = false) {
+        $this->data['title'] = $id ? 'Edit Course' : 'Add Course';
+        $this->data['tab'] = 'add_comp';
+        $this->data['main'] = admin_view('course/add');
+        $this->data['course_mode'] = $this->db->get('sm_mode')->result_array();
+        $this->data['course_level'] = $this->db->get('sm_levels')->result_array();
+        $this->data['course_cat'] = $this->db->get('sm_category')->result_array();
+        $this->data['course'] = $this->Course_model->getNew();
+        if ($id) {
+            $this->data['course'] = $course = $this->Course_model->getRow($id);
+            if (!isset($course)) {
+                show_404();
+                exit();
+            }
+        }
+        $this->form_validation->set_rules('frm[title]', 'Course title', 'required');
+        $this->form_validation->set_rules('frm[description]', 'Course description', 'required');
+        if ($this->form_validation->run()) {
+            $formdata = $this->input->post('frm');
+            $formdata['assign_student'] = implode(",",$this->input->post('frm[assign_student][]',TRUE));
+            $student = $this->input->post('frm[assign_student][]',TRUE);
+            $formdata['assigned_instrustor'] = $this->input->post('frm[assigned_instrustor]');
+            $formdata['id'] = $id;
+            $slug = $formdata['title'];
+            if (empty($slug)) {
+                $slug = $formdata['title'];
+            }
+            $slug = strtolower(url_title($slug));
+            $formdata['slug'] = $this->Cms_model->get_unique_url($slug, $id);
+            $config['upload_path'] = './assets/images/courses/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('image')) {
+                $data = $this->upload->data();
+                $formdata['image'] = $data['file_name'];
+            }
+            $stripe = new \Stripe\StripeClient ('sk_test_51PMX1GK1Euj0OQwTx1jdmG0dBNTBDThgrYFeWI1kQ7WUx2Hdv41hDbY1NRGoGTERB2Yv9ZmIcyWXh7Sch12UX2c500DDt3DUdI');
+            if ($this->input->post('frm[course_fees]') == 'paid') {
+                $title = $this->input->post('frm[title]');
+                $unit_amount = $this->input->post('frm[price]') * 100;
+                $interval = $this->input->post('frm[payment_type]');
 
+                if($interval == "1") {
+                    if ($id && !empty($course->price_key)) {
+                        $stripe->prices->update(
+                            $course->price_key,
+                            //['default_price' => $unit_amount]
+                        );
+                    } else {
+                        $parameter = array(
+                            'currency' => 'usd',
+                            'unit_amount' => $unit_amount,
+                            'product_data' => ['name' => $title]
+                        );
+                        $response = $stripe->prices->create($parameter);
+                        $formdata['price_key'] = $response->id;
+                        $formdata['product_key'] = $response->product;
+                    }
+                } else {
+                    if ($id && !empty($course->price_key)) {
+                        $stripe->prices->update(
+                            $course->price_key,
+                            //['unit_amount' => $unit_amount]
+                        );
+                    } else {
+                        $parameter = array(
+                            'currency' => 'usd',
+                            'unit_amount' => $unit_amount,
+                            'recurring' => ['interval' => $interval],
+                            'product_data' => ['name' => $title]
+                        );
+                        $response = $stripe->prices->create($parameter);
+                        $formdata['price_key'] = $response->id;
+                        $formdata['product_key'] = $response->product;
+                    }
+                }
+            }
+
+            $course_id = $this->Course_model->save($formdata);
+
+
+            $getCoursePrice = $this->db->query('select price from courses where id ="'.$course_id.'"')->result_array();
+            $enrollment_price = @$getCoursePrice[0]['price'];
+            $price_cents = number_format((float)$enrollment_price, 2, '.', '');;
+            $currency = 'USD';
+            $currency_symbol = '$';
+            for ($i=0; $i< count($student); $i++) {
+                $transaction_id = 'txn_'.rand();
+                $this->db->query("INSERT INTO course_enrollment (`course_id`, `user_id`, `enrollment_price`, `price_cents`, `currency`, `currency_symbol`, `payment_status`, `transaction_id`) VALUES ('$course_id', '$student[$i]', '$enrollment_price', '$price_cents', '$currency', '$currency_symbol', 'COMPLETED', '$transaction_id')");
+            }
+            $this->session->set_flashdata("success", "Course detail saved");
+            redirect(admin_url('course/course_list'));
+        }
+
+        $this->load->view(admin_view('default'), $this->data);
+    }
     public function add_certif_course($id = false) {
         $this->data['title'] = 'Add Course';
         $this->data['tab'] = 'add_cert';
         $this->data['main'] = admin_view('course/add_certificate_course');
         $this->data['course_cat'] = $this->db->get('sm_category')->result();
         $this->data['course'] = $this->Course_model->getNew();
-
         if ($id) {
             $this->data['course'] = $course = $this->Course_model->getRow($id);
             if (!isset($course)) {
@@ -344,7 +411,6 @@ class Course extends Admin_Controller {
         }
         $this->load->view(admin_view('default'), $this->data);
     }
-
     public function add_materials($id) {
         $this->data['title'] = 'Add Course Material';
         $this->data['tab'] = 'add_subscr';
@@ -354,14 +420,12 @@ class Course extends Admin_Controller {
         $this->data['module'] = $this->db->where('course_id', $crsid)->get('course_modules')->result();
         $this->load->view(admin_view('default'), $this->data);
     }
-
     public function testInput($data) {
         $data = trim($data);
         $data = stripcslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
-
     public function save_materials($id)  {
         if ($this->input->post('submit') && $this->input->post('module')) {
             $this->form_validation->set_rules('material_type', 'Material Type', 'required');
@@ -402,7 +466,6 @@ class Course extends Admin_Controller {
                     );
                     $this->db->update('course_materials', $dataOrdering, array('id' => $insert));
                 }
-
                 if (!empty($_FILES['files']['name']) && count(array_filter($_FILES['files']['name'])) > 0) {
                     // Count total files
                     $countfiles = count($_FILES['files']['name']);
@@ -442,7 +505,6 @@ class Course extends Admin_Controller {
                         $this->Commonmodel->insertBatch('course_resources', $uploadData);
                     }
                 }
-
                 if ($this->input->post('material_type') == 'quiz') {
                     $ques = $this->input->post('ques');
                     $ans1 = $this->input->post('ans1');
@@ -463,7 +525,6 @@ class Course extends Admin_Controller {
                             'status' => 1,
                             'created_at' => date("Y-m-d h:i:s")
                         );
-
                         $basicdata[$k]['quiz_file'] = '';
                         if (!empty($_FILES['file_name']['name'][$k])) {
                             // Define new $_FILES array - $_FILES['file']
@@ -490,7 +551,6 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['quiz_file'] = $fileData['file_name'];
                             }
                         }
-
                         $basicdata[$k]['ans1_file'] = '';
                         if (!empty($_FILES['option1_file_name']['name'][$k])) {
                             // Define new $_FILES array - $_FILES['file']
@@ -517,8 +577,6 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans1_file'] = $fileData['file_name'];
                             }
                         }
-
-
                         $basicdata[$k]['ans2_file'] = '';
                         if (!empty($_FILES['option2_file_name']['name'][$k])) {
                             // Define new $_FILES array - $_FILES['file']
@@ -545,7 +603,6 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans2_file'] = $fileData['file_name'];
                             }
                         }
-
                         $basicdata[$k]['ans3_file'] = '';
                         if (!empty($_FILES['option3_file_name']['name'][$k])) {
                             // Define new $_FILES array - $_FILES['file']
@@ -572,8 +629,6 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans3_file'] = $fileData['file_name'];
                             }
                         }
-
-
                         $basicdata[$k]['ans4_file'] = '';
                         if (!empty($_FILES['option4_file_name']['name'][$k])) {
                             // Define new $_FILES array - $_FILES['file']
@@ -600,15 +655,6 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans4_file'] = $fileData['file_name'];
                             }
                         }
-
-
-
-
-
-
-
-
-
                     }
                     // echo "<pre>";
                     //  print_r($basicdata);die;
@@ -625,7 +671,6 @@ class Course extends Admin_Controller {
         } else {
             $msg = '["Some error occured, Please try again!", "error", "#e50914"]';
             $this->session->set_flashdata('msg', $msg);
-
             redirect(admin_url('course/add_materials/' . $id), 'refresh');
         }
     }
@@ -652,7 +697,6 @@ class Course extends Admin_Controller {
         }
         redirect($redirect);
     }
-
     function deactivate($id = false) {
         $redirect = isset($_GET['redirect_to']) ? $_GET['redirect_to'] : admin_url('products');
         if ($id) {
@@ -663,7 +707,6 @@ class Course extends Admin_Controller {
         }
         redirect($redirect);
     }
-
     function delete_compliance($id) {
         if ($id > 0) {
             $this->Course_model->delete($id);
@@ -671,55 +714,40 @@ class Course extends Admin_Controller {
         }
         redirect(admin_url('course/course_list'));
     }
-
     public function deleteCourse($id = false) {
         $data = $this->db->get_where('courses', array('id' => $id))->row();
-
         if (@$data->image && file_exists('./assets/images/courses/' . @$data->image)) {
             @unlink('./assets/images/courses/' . @$data->image);
         }
-
         $this->Course_model->delete($id);
         $msg = '["Deleted successfully.", "success", "#36A1EA"]';
-
         $this->session->set_flashdata('msg', $msg);
-
         redirect(admin_url('course/course_list'));
     }
-
     public function deleteMaterialFile($id = false, $course_id = false, $material_id = false) {
         $data = $this->db->get_where('course_resources', array('id' => $id))->row();
-
         if (@$data->resource_file && file_exists('./uploads/materials/' . @$data->resource_file)) {
             @unlink('./uploads/materials/' . @$data->resource_file);
         }
-
         $this->Commonmodel->delete_single_con('course_resources', array('id' => $id));
         $msg = '["Deleted successfully.", "success", "#36A1EA"]';
-
         $this->session->set_flashdata('msg', $msg);
-
         redirect(admin_url('course/update_material/' . $course_id . "/" . $material_id));
     }
-
-    function delete_cert($id)
-    {
+    function delete_cert($id) {
         if ($id > 0) {
             $this->Course_model->delete($id);
             $this->session->set_flashdata('success', 'Course deleted successfully ');
         }
         redirect(admin_url('course/certificate_courses'));
     }
-
-    function delete_subscr($id)
-    {
+    function delete_subscr($id) {
         if ($id > 0) {
             $this->Course_model->delete($id);
             $this->session->set_flashdata('success', 'Course deleted successfully ');
         }
         redirect(admin_url('course/subscription_courses'));
     }
-
     public function mode() {
         $this->data['title'] = 'Course Mode List';
         $this->data['tab'] = 'mode_list';
@@ -1029,19 +1057,14 @@ class Course extends Admin_Controller {
         }
         $this->load->view(admin_view('default'), $this->data);
     }
-
-    public function view_cert_chapters($id = false)
-    {
-
+    public function view_cert_chapters($id = false) {
         $this->data['title'] = 'Course Chapter List';
         $this->data['tab'] = 'v_cert_chapter';
         $this->data['main'] = admin_view('course/chapter_index');
         $this->data['chap'] = $this->db->get_where('course_modules', array('course_id' => $id))->result();
         $this->load->view(admin_view('default'), $this->data);
     }
-
-    public function module_list($id = false)
-    {
+    public function module_list($id = false) {
         $this->data['title'] = 'Course Module List';
         $this->data['tab'] = 'v_chapter';
         $this->data['course_id'] = $id;
@@ -1049,42 +1072,27 @@ class Course extends Admin_Controller {
         $this->data['list'] = $this->db->order_by('position_order', 'ASC')->get_where('course_modules', array('course_id' => $id))->result();
         $this->load->view(admin_view('default'), $this->data);
     }
-
-    public function save_module_pref($crsid = false)
-    {
-        // echo $id;
-        // echo "<pre>";print_r($_POST);
+    public function save_module_pref($crsid = false) {
         $pref = $this->input->post('pref');
         $i = 1;
         foreach ($pref as $key => $value) {
             $formdata['preference'] = $i++;;
-
             $this->db->update('course_modules', $formdata, array('id' => $value));
         }
         redirect(admin_url('course/module_list/' . $crsid));
     }
-
-    public function save_module_ordering($course_id = false)
-    {
-
+    public function save_module_ordering($course_id = false) {
         $position = $this->input->post('position');
-
         $i = 1;
         foreach ($position as $k => $v) {
-
             $data = array(
                 'position_order' => $i
             );
-
             $this->db->update('course_modules', $data, array('id' => $v));
-
             $i++;
         }
     }
-
-    public function view_material_module($id, $module)
-    {
-
+    public function view_material_module($id, $module) {
         $this->data['title'] = 'Course Material Format';
         $this->data['tab'] = 'v_mat';
         $this->data['main'] = admin_view('course/module_material_view');
@@ -1092,15 +1100,11 @@ class Course extends Admin_Controller {
         $this->data['quesquz'] = $this->db->get_where('course_quiz', array('course_id' => $id))->result();
         $this->load->view(admin_view('default'), $this->data);
     }
-    public function save_chapter_pref($crsid = false, $module = false)
-    {
-        // echo $crsid;
-        // echo "<pre>";print_r($_POST);die;
+    public function save_chapter_pref($crsid = false, $module = false) {
         $pref = $this->input->post('pref');
         $i = 1;
         foreach ($pref as $key => $value) {
             $formdata['preference'] = $i++;;
-
             $this->db->update('course_materials', $formdata, array('id' => $value));
         }
         redirect(admin_url('course/view_material_module/' . $crsid . '/' . $module));
@@ -1112,21 +1116,8 @@ class Course extends Admin_Controller {
         $this->data['module_id'] = $id;
         $this->data['main'] = admin_view('course/module_update');
         $this->data['course'] = $this->db->get_where('course_modules', array('id' => $id))->row();
-        /*$this->form_validation->set_rules('frm[course_id]', 'Course Name', 'required');
-        $this->form_validation->set_rules('frm[name]', 'Chapter Name', 'required');
-
-        if ($this->form_validation->run()) {
-            $formdata = $this->input->post('frm');
-            $formdata['course_id'] = $course_id;
-
-            $this->db->update('course_modules', $formdata, array('id' => $id));
-
-            $this->session->set_flashdata("success", "Chapter detail Saved");
-            redirect(admin_url('course/module_list/' . $course_id));
-        }*/
         $this->load->view(admin_view('default'), $this->data);
     }
-
     public function update_save_module($course_id, $id) {
         $this->form_validation->set_rules('frm[name]', 'Chapter Name', 'required');
         if ($this->form_validation->run()) {
@@ -1161,74 +1152,51 @@ class Course extends Admin_Controller {
             redirect(admin_url('course/module_list/' . $course_id));
         }
     }
-
-    public function delete_module($course_id, $id)
-    {
-
+    public function delete_module($course_id, $id) {
         if ($course_id && $id) {
-
             $data = $this->db->get_where('course_modules', array('id' => $id))->row();
-
             if (@$data->module_image && file_exists('./uploads/modules/' . @$data->module_image)) {
                 @unlink('./uploads/modules/' . @$data->module_image);
             }
-
             $this->Course_model->delete($id, 'course_modules');
             $this->session->set_flashdata('success', 'Module deleted successfully!');
         } else {
             $this->session->set_flashdata('error', 'Sorry, Module is not deleted!');
         }
-
         redirect(admin_url('course/module_list/' . $course_id));
     }
-
-    public function update_material($corssid, $qid)
-    {
-
+    public function update_material($corssid, $qid) {
         $this->data['title'] = 'Update Course Material';
         $this->data['tab'] = 'products';
         $this->data['main'] = admin_view('course/edit_material');
         $this->data['course_str'] = $this->Course_model->getRow($qid, 'course_materials');
         $this->data['module'] = $this->db->where('course_id', $corssid)->get('course_modules')->result();
-
         $this->data['course_id'] = $corssid;
         $this->data['material_id'] = $qid;
-
         $this->load->view(admin_view('default'), $this->data);
     }
-
-    public function save_edit_material($course_id, $id)
-    {
-
+    public function save_edit_material($course_id, $id) {
         if ($this->input->post('submit')) {
             $this->form_validation->set_rules('module', 'Module', 'required');
-
             if ($this->form_validation->run()) {
-
                 $where = array('id' => $id);
                 $old_file = $this->input->post('old_file');
-
                 $mydata = array(
                     'module' => @$this->testInput($this->input->post('module')),
                     'video_url' => @$this->testInput($this->input->post('video_url')),
                     'material_description' => @$this->testInput($this->input->post('material_description')),
                     'status' => @$this->input->post('status')
                 );
-
                 if ($_FILES['video_file']['name'] != '') {
-
                     $config['upload_path'] = './uploads/materials/';
                     $config['allowed_types'] = '*';
                     $config['max_size'] = '*';
                     $config['overwrite'] = false;
                     $config['remove_spaces'] = TRUE;  //it will remove all spaces
                     $config['encrypt_name'] = true;   //it wil encrypte the original file name
-
                     $this->load->library('upload', $config);
                     $this->upload->initialize($config);
-
                     if (!$this->upload->do_upload('video_file')) {
-
                         $error = array('error' => $this->upload->display_errors());
                         $msg = '["' . $error['error'] . '", "error", "#e50914"]';
                     } else {
@@ -1237,31 +1205,24 @@ class Course extends Admin_Controller {
                         $mydata['video_file'] = $fileData['file_name'];
                     }
                 }
-
                 if ($old_file && $_FILES['video_file']['name'] != '') {
                     if (file_exists('./uploads/materials/' . $old_file)) {
                         @unlink('./uploads/materials/' . $old_file);
                     }
                 }
-
                 $update = $this->Commonmodel->update_row('course_materials', $mydata, $where);
-
                 if (!empty($_FILES['files']['name']) && count(array_filter($_FILES['files']['name'])) > 0) {
                     // Count total files
                     $countfiles = count($_FILES['files']['name']);
-
                     // Looping all files
                     for ($i = 0; $i < $countfiles; $i++) {
-
                         if (!empty($_FILES['files']['name'][$i])) {
-
                             // Define new $_FILES array - $_FILES['file']
                             $_FILES['file']['name'] = $_FILES['files']['name'][$i];
                             $_FILES['file']['type'] = $_FILES['files']['type'][$i];
                             $_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
                             $_FILES['file']['error'] = $_FILES['files']['error'][$i];
                             $_FILES['file']['size'] = $_FILES['files']['size'][$i];
-
                             // Set preference
                             $config['upload_path'] = 'uploads/materials/';
                             $config['allowed_types'] = '*';
@@ -1270,12 +1231,9 @@ class Course extends Admin_Controller {
                             $config['overwrite'] = false;
                             $config['remove_spaces'] = true;  //it will remove all spaces
                             $config['encrypt_name'] = false;   //it wil encrypte the original file name
-
                             //Load upload library
                             $this->load->library('upload', $config);
                             $this->upload->initialize($config);
-
-
                             // File upload
                             if ($this->upload->do_upload('file')) {
                                 // Get data about the file
@@ -1288,12 +1246,10 @@ class Course extends Admin_Controller {
                             }
                         }
                     }
-
                     if (!empty($uploadData)) {
                         $this->Commonmodel->insertBatch('course_resources', $uploadData);
                     }
                 }
-
                 $ques = $this->input->post('ques');
                 $ans1 = $this->input->post('ans1');
                 $ans2 = $this->input->post('ans2');
@@ -1305,13 +1261,9 @@ class Course extends Admin_Controller {
                 $ans2_old_image = $this->input->post('ans2_old_image');
                 $ans3_old_image = $this->input->post('ans3_old_image');
                 $ans4_old_image = $this->input->post('ans4_old_image');
-
                 // echo $old_image."--";
-
-
                 if (!empty($ques)) {
                     $this->Commonmodel->delete_single_con('course_quiz', array('material_id' => $id));
-
                     for ($k = 0; $k < count($ques); $k++) {
                         $basicdata[] = array(
                             'course_id'         => $course_id,
@@ -1325,7 +1277,6 @@ class Course extends Admin_Controller {
                             'status'            => 1,
                             'created_at'        => date("Y-m-d h:i:s")
                         );
-
                         // echo $old_image[$k];die;
                         if (empty($old_image[$k])) {
                             $basicdata[$k]['quiz_file'] = '';
@@ -1357,17 +1308,11 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['quiz_file'] = $fileData['file_name'];
                             }
                         }
-
-
                         if ($old_image[$k] && $_FILES['file_name']['name'][$k] != '') {
                             if (file_exists('./uploads/quizs/'.$old_image[$k])) {
                                 @unlink('./uploads/quizs/'.$old_image[$k]);
                             }
                         }
-
-
-
-
                         if (empty($ans1_old_image[$k])) {
                             $basicdata[$k]['ans1_file'] = '';
                         } else {
@@ -1398,16 +1343,11 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans1_file'] = $fileData['file_name'];
                             }
                         }
-
-
                         if ($ans1_old_image[$k] && $_FILES['option1_file_name']['name'][$k] != '') {
                             if (file_exists('./uploads/quizs/answer_files/'.$ans1_old_image[$k])) {
                                 @unlink('./uploads/quizs/answer_files/'.$ans1_old_image[$k]);
                             }
                         }
-
-
-
                         if (empty($ans2_old_image[$k])) {
                             $basicdata[$k]['ans2_file'] = '';
                         } else {
@@ -1438,15 +1378,11 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans2_file'] = $fileData['file_name'];
                             }
                         }
-
-
                         if ($ans2_old_image[$k] && $_FILES['option2_file_name']['name'][$k] != '') {
                             if (file_exists('./uploads/quizs/answer_files/'.$ans2_old_image[$k])) {
                                 @unlink('./uploads/quizs/answer_files/'.$ans2_old_image[$k]);
                             }
                         }
-
-
                         if (empty($ans3_old_image[$k])) {
                             $basicdata[$k]['ans3_file'] = '';
                         } else {
@@ -1477,15 +1413,11 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans3_file'] = $fileData['file_name'];
                             }
                         }
-
-
                         if ($ans3_old_image[$k] && $_FILES['option3_file_name']['name'][$k] != '') {
                             if (file_exists('./uploads/quizs/answer_files/'.$ans3_old_image[$k])) {
                                 @unlink('./uploads/quizs/answer_files/'.$ans3_old_image[$k]);
                             }
                         }
-
-
                         if (empty($ans4_old_image[$k])) {
                             $basicdata[$k]['ans4_file'] = '';
                         } else {
@@ -1516,27 +1448,16 @@ class Course extends Admin_Controller {
                                 $basicdata[$k]['ans4_file'] = $fileData['file_name'];
                             }
                         }
-
-
                         if ($ans4_old_image[$k] && $_FILES['option4_file_name']['name'][$k] != '') {
                             if (file_exists('./uploads/quizs/answer_files/'.$ans4_old_image[$k])) {
                                 @unlink('./uploads/quizs/answer_files/'.$ans4_old_image[$k]);
                             }
                         }
-
-
-
-
-
                     }
-
-
                     $this->db->insert_batch('course_quiz', $basicdata);
                 }
-
                 $msg = '["Course Material updated successfully!", "success", "#36A1EA"]';
                 $this->session->set_flashdata('msg', $msg);
-
                 redirect(admin_url('course/material_list/' . $course_id));
             } else {
                 redirect(admin_url('course/update_material/' . "/" . $course_id . "/" . $id), 'refresh');
@@ -1544,14 +1465,10 @@ class Course extends Admin_Controller {
         } else {
             $msg = '["Some error occured, Please try again!", "error", "#e50914"]';
             $this->session->set_flashdata('msg', $msg);
-
             redirect(admin_url('course/update_material/' . "/" . $course_id . "/" . $id), 'refresh');
         }
     }
-
-    public function edit_question($corssid, $qid)
-    {
-
+    public function edit_question($corssid, $qid) {
         $this->data['title'] = 'Update Question';
         $this->data['tab'] = 'add_products';
         $this->data['main'] = admin_view('course/question_edit');
@@ -1560,7 +1477,6 @@ class Course extends Admin_Controller {
         if ($this->form_validation->run()) {
             $formdata = $this->input->post('frm');
             //print_r($_POST);die;
-
             $this->db->update('course_quiz', $formdata, array('id' => $qid));
             //echo $this->db->last_query();die();
             $this->session->set_flashdata("success", "Question detail saved");
@@ -1568,12 +1484,9 @@ class Course extends Admin_Controller {
         }
         $this->load->view(admin_view('default'), $this->data);
     }
-
-    function delete_material($id, $course_id)
-    {
+    function delete_material($id, $course_id) {
         if ($id > 0) {
             $result = $this->db->get_where('course_resources', array('material_id' => $id))->result();
-
             if (!empty($result)) {
                 foreach ($result as $key => $value) {
                     if (@$value->resource_file && file_exists('./uploads/materials/' . @$value->resource_file)) {
@@ -1581,24 +1494,18 @@ class Course extends Admin_Controller {
                     }
                 }
             }
-
             $data = $this->db->get_where('course_materials', array('id' => $id))->row();
-
             if (@$data->video_file && file_exists('./uploads/materials/' . @$data->video_file)) {
                 @unlink('./uploads/materials/' . @$data->video_file);
             }
-
             $this->Commonmodel->delete_single_con('course_resources', array('material_id' => $id));
             $this->Commonmodel->delete_single_con('course_quiz', array('material_id' => $id));
-
             $this->Course_model->delete($id, 'course_materials');
             $this->session->set_flashdata('success', 'Course Material deleted successfully');
         }
         redirect(admin_url('course/material_list/' . $course_id));
     }
-
     public function purchaseCourse() {
-        //print_r($_POST); die();
         $member = $this->input->post('member');
         $course_id = $this->input->post('assigncourseID');
         $getCoursePrice = $this->db->query('select price from courses where id ="'.$course_id.'"')->result_array();
@@ -1606,23 +1513,13 @@ class Course extends Admin_Controller {
         $price_cents = number_format((float)$enrollment_price, 2, '.', '');;
         $currency = 'USD';
         $currency_symbol = '$';
-        //$transaction_id	= $randomString;
         for ($i=0; $i< count($member); $i++) {
-            // $n=29;
-            // $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            // $randomString = '';
-            // for ($j = 0; $j < $n; $j++) {
-            //     $index = rand(0, strlen($characters) - 1);
-            //     $randomString .= $characters[$index];
-            // }
             $transaction_id = 'txn_'.rand();
-            //echo "INSERT INTO course_enrollment (`course_id`, `user_id`, `enrollment_price`, `price_cents`, `currency`, `currency_symbol`, `payment_status`, `transaction_id`) VALUES ('$course_id', '$member[$i]', '$enrollment_price', '$price_cents', '$currency', '$currency_symbol', 'COMPLETED', '$randomString')"; die();
             $this->db->query("INSERT INTO course_enrollment (`course_id`, `user_id`, `enrollment_price`, `price_cents`, `currency`, `currency_symbol`, `payment_status`, `transaction_id`) VALUES ('$course_id', '$member[$i]', '$enrollment_price', '$price_cents', '$currency', '$currency_symbol', 'COMPLETED', '$transaction_id')");
         }
         echo '1';
     }
     public function assignInstructortoCourse() {
-        //print_r($_POST); die();
         $member = $this->input->post('member');
         $course_id = $this->input->post('assigncourseID');
         if(!empty($member) || !empty($course_id)) {
@@ -1632,7 +1529,6 @@ class Course extends Admin_Controller {
             echo "2";
         }
     }
-
     public function purchased_course($page=1) {
         if(isset($_GET['page'])){
             $page = $_GET['page'];
@@ -1676,6 +1572,3 @@ class Course extends Admin_Controller {
         $this->load->view(admin_view('default'),$this->data);
     }
 }
-
-/* End of file Products.php */
-/* Location: ./application/controllers/admin/Products.php */

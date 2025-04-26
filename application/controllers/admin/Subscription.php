@@ -177,6 +177,3 @@ class Subscription extends Admin_Controller {
         }
     }
 }
-
-/* End of file Subscription.php */
-/* Location: ./application/controllers/admin/Subscription.php */

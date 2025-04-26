@@ -42,7 +42,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 $route['404_override'] = 'Override';
 $route['translate_uri_dashes'] = TRUE;
-/*------------FrontEnd Routes----------*/
 $route['home'] = 'Home/index';
 $route['register'] = 'Home/register';
 $route['email-verification/(:any)'] = 'Home/emailVerification/$1';
@@ -53,8 +52,8 @@ $route['stripe/(:any)'] = 'Users/stripe/$1';
 $route['thank_you/(:any)'] = "Users/thank_you/$1";
 $route['search_data'] = 'Home/searchData';
 $route['showCategoryWiseData/(:any)'] = 'Home/categoryWisesearchData/$1';
-// $route['community'] = 'Home/community';
-// $route['community_details'] = 'Home/community_details';
+/*$route['community'] = 'Home/community';
+$route['community_details'] = 'Home/community_details';*/
 $route['contact'] = 'Home/contact';
 $route['checkout'] = 'Home/checkout';
 $route['course-detail/(:any)'] = 'Home/courseDetail/$1';

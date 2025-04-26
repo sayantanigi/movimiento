@@ -60,8 +60,12 @@
                     foreach ($category_list as $value) { ?>
                         <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="category__item mb-30 transition-3 d-flex align-items-center">
-                                <div class="category__icon mr-30">
+                                <div class="category__icon" style="margin-right: 18px;">
+                                    <?php if(!empty($value['category_image']) && file_exists('uploads/category/'.$value['category_image'])) { ?>
                                     <img src="<?= base_url() ?>uploads/category/<?= $value['category_image'] ?>" style="width: 45px; height: 45px;">
+                                    <?php } else { ?>
+                                    <img src="<?= base_url() ?>images/no_category.png" style="width: 45px; height: 45px;">
+                                    <?php } ?>
                                 </div>
                                 <div class="category__content">
                                     <h4 class="category__title"><a href="<?= base_url()?>showCategoryWiseData/<?= $value['category_link'] ?>"><?= $value['category_name'] ?></a></h4>
@@ -71,7 +75,7 @@
                         </div>
                     <?php }
                 } else { ?>
-                    <p style="font-size: larger; color: #d3e0d4; text-align: center;">No category added yet</p>
+                    <p style="font-size: larger; color: #7c7e7d; text-align: center;">No category added yet</p>
                 <?php } ?>
             </div>
         </div>
@@ -96,8 +100,8 @@
                         <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 grid-item cat1 cat2 cat4">
                             <div class="course__item white-bg mb-30 fix">
                                 <div class="course__thumb w-img p-relative fix">
-                                    <a href="<?= base_url('course-detail/' . @$value->id) ?>">
-                                        <?php if (!empty($value->image)) { ?>
+                                    <a href="<?= base_url('course-detail/'.@$value->id) ?>">
+                                        <?php if (!empty($value->image) && file_exists('')) { ?>
                                             <img src="<?= base_url() ?>assets/images/courses/<?= $value->image ?>" alt="" style="width: 100%; height: 300px;">
                                         <?php } else { ?>
                                             <img src="<?= base_url() ?>assets/images/no-image.png" alt="">
@@ -147,24 +151,24 @@
                                     </div>
                                     <h3 class="course__title"><a href="<?= base_url('course-detail/' . @$value->id) ?>"><?= $value->title ?></a></h3>
                                     <?php if (!empty($value->user_id)) {
-                                        $user_details = $this->db->query("SELECT id, full_name, image FROM users WHERE id = '" . $value->user_id . "' AND email_verified = '1' AND status = '1'")->row(); ?>
-                                        <div class="course__teacher d-flex align-items-center">
-                                            <div class="course__teacher-thumb mr-15">
-                                                <?php if (!empty($user_details->image)) { ?>
-                                                    <img src="<?= base_url() ?>uploads/users/<?= $user_details->image ?>" alt="">
-                                                <?php } else { ?>
-                                                    <img src="<?= base_url() ?>images/no-user.png" alt="">
-                                                <?php } ?>
-                                            </div>
-                                            <h6><a href="javascript:void(0)"><?= $user_details->full_name ?></a></h6>
+                                    $user_details = $this->db->query("SELECT id, full_name, image FROM users WHERE id = '" . $value->user_id . "' AND email_verified = '1' AND status = '1'")->row(); ?>
+                                    <div class="course__teacher d-flex align-items-center">
+                                        <div class="course__teacher-thumb mr-15">
+                                            <?php if (!empty($user_details->image)) { ?>
+                                                <img src="<?= base_url() ?>uploads/users/<?= $user_details->image ?>" alt="">
+                                            <?php } else { ?>
+                                                <img src="<?= base_url() ?>images/no-user.png" alt="">
+                                            <?php } ?>
                                         </div>
+                                        <h6><a href="javascript:void(0)"><?= $user_details->full_name ?></a></h6>
+                                    </div>
                                     <?php } else { ?>
-                                        <div class="course__teacher d-flex align-items-center">
-                                            <div class="course__teacher-thumb mr-15">
-                                                <img src="<?= base_url() ?>assets/img/favicon.png" alt="">
-                                            </div>
-                                            <h6><a href="javascript:void(0)">Admin</a></h6>
+                                    <div class="course__teacher d-flex align-items-center">
+                                        <div class="course__teacher-thumb mr-15">
+                                            <img src="<?= base_url() ?>assets/img/favicon.png" alt="">
                                         </div>
+                                        <h6><a href="javascript:void(0)">Admin</a></h6>
+                                    </div>
                                     <?php } ?>
                                 </div>
                                 <div class="course__more d-flex justify-content-between align-items-center">
@@ -187,7 +191,7 @@
                         </div>
                     <?php }
                 } else { ?>
-                    <p style="font-size: larger; color: #d3e0d4; text-align: center;">No course added yet</p>
+                    <p style="font-size: larger; color: #7c7e7d; text-align: center;">No course added yet</p>
                 <?php } ?>
             </div>
             <?php

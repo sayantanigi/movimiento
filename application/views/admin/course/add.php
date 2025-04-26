@@ -1,4 +1,3 @@
-<!-- Main content -->
 <section class="content-header">
     <h1><?= $title ?></h1>
     <ol class="breadcrumb">
@@ -13,7 +12,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <!-- <h3 class="box-title">Add Service</h3> -->
+                    <h3 class="box-title"><?= $title ?></h3>
                 </div>
                 <form action="<?= admin_url('course/add_course/' . $course->id) ?>" id="form_validation" method="post" enctype="multipart/form-data">
                     <div class="box-body">
@@ -31,32 +30,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Mode <span style="color:red">*</span></label>
-                                            <select name="frm[mode_id]" class="form-control">
-                                                <option value="">Choose</option>
-                                                <?php foreach ($course_mode as $mode) { ?>
-                                                <option <?php if (@$course->mode_id == $mode['id']) { echo "selected"; } ?> value="<?= $mode['id'] ?>"><?= $mode['mode_title'] ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Level <span style="color:red">*</span></label>
-                                            <select name="frm[level_id]" class="form-control">
-                                                <option value="">Choose</option>
-                                                <?php foreach ($course_level as $level) { ?>
-                                                <option <?php if (@$course->level_id == $level['id']) { echo "selected"; } ?> value="<?= $level['id'] ?>"> <?= $level['level_title'] ?> </option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div> -->
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Course Name <span style="color:red">*</span></label>
-                                            <input type="text" name="frm[title]" value="<?= $course->title ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter Course Name">
+                                            <input type="text" name="frm[title]" value="<?= $course->title ?>" class="form-control course_title" id="exampleInputEmail1" placeholder="Enter Course Name">
+                                            <p class="course_name_error" style="display:none;"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -76,14 +54,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="col-sm-10">
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                        <label for="exampleInputEmail1">Course Benefits</label>
-                                        <textarea name="frm[meta_descr]" class="form-control" rows="3"><?= $course->meta_descr ?></textarea>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
@@ -129,7 +99,6 @@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Duration</label>
                                             <input type="text" name="frm[duration]" value="<?= $course->duration ?>" class="form-control" id="exampleInputEmaila1" placeholder="Enter Course Duration">
-                                            <!-- <textarea name="frm[duration]" id="editor5" rows="3"><?= $course->duration ?></textarea> -->
                                         </div>
                                     </div>
                                 </div>
@@ -147,34 +116,42 @@
                                 </div>
                                 <div class="courseTypefield">
                                     <div class="col-sm-10">
-                                        <div class="col-sm-6">
+                                        <div class="<?php if(!empty($course->price_key)) { echo "col-sm-3"; } else { echo "col-sm-4"; } ?>">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Course Price(In $) <span style="color:red">*</span></label>
+                                                <label for="exampleInputEmail1">Payment Type <span style="color:red">*</span></label>
+                                                <select class="form-control" name="frm[payment_type]" id="payment_type" required>
+                                                    <option value="">Choose</option>
+                                                    <option value="1" <?php if ($course->payment_type == '1') { echo "selected"; } ?>>One-Time</option>
+                                                    <option value="2" <?php if ($course->payment_type == '2') { echo "selected"; } ?>>Recurring</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="<?php if(!empty($course->price_key)) { echo "col-sm-3"; } else { echo "col-sm-4"; } ?>">
+                                            <div class="form-group">
+                                                <label for="exampleInputPrice1" id="exampleInputRecurring1">Recurring Type</label>
+                                                <select class="form-control" name="frm[recurring_type]" id="recurring_type" disabled>
+                                                    <option value="">Choose</option>
+                                                    <option value="1" <?php if ($course->recurring_type == '1') { echo "selected"; } ?>>Monthly</option>
+                                                    <option value="2" <?php if ($course->recurring_type == '2') { echo "selected"; } ?>>Yearly</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="<?php if(!empty($course->price_key)) { echo "col-sm-3"; } else { echo "col-sm-4"; } ?>">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Course Price (In $) <span style="color:red">*</span></label>
                                                 <input type="text" name="frm[price]" value="<?= @$course->price ?>" class="form-control price" id="exampleInputEmail1" placeholder="Enter Price">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <div class="col-sm-6">
+                                        <?php if(!empty($course->price_key)) { ?>
+                                        <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Price ID (Stripe Price ID) <span style="color:red">*</span></label>
-                                                <input type="text" name="frm[price_key]" value="<?= $course->price_key ?>" class="form-control price_key" id="exampleInputEmaila1" placeholder="Price ID (Stripe Price ID)" required>
+                                                <label for="exampleInputPrice1">Price ID (Stripe Price ID)</label>
+                                                <input type="text" name="frm[price_key]" value="<?= $course->price_key ?>" class="form-control price_key" id="exampleInputPrice1" placeholder="Price ID (Stripe Price ID)" disabled>
                                             </div>
                                         </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
-                                <!-- <div class="col-sm-10">
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Course Type<span style="color:red">*</span></label>
-                                            <select class="form-control" name="frm[course_type]" id="course_type" required>
-                                                <option value="">Choose</option>
-                                                <option value="Upcoming Courses" <?php if ($course->course_type == 'Upcoming Courses') { echo "selected"; } ?>>Upcoming Courses</option>
-                                                <option value="Coming Soon Courses" <?php if ($course->course_type == 'Coming Soon Courses') { echo "selected"; } ?>>Coming Soon Courses</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
                                         <div class="form-group">
@@ -204,6 +181,55 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-sm-10">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Assign Student</label>
+                                            <select class="form-control" name="frm[assign_student][]" id="assign_student" multiple>
+                                                <option value="">Choose Student</option>
+                                                <?php
+                                                $getStudentList = $this->db->query("SELECT * FROM users where email_verified = '1' AND status = '1' AND userType = '1'")->result_array();
+                                                if(!empty($getStudentList)) {
+                                                    foreach ($getStudentList as $ins) { ?>
+                                                    <option value = "<?= $ins['id']; ?>"
+                                                    <?php if(!empty(@$course->assign_student)) {
+                                                        $student = explode(",", @$course->assign_student);
+                                                        for($i=0; $i<count($student); $i++) {
+                                                            if($student[$i] == $ins['id']){
+                                                                echo "selected";
+                                                            }
+                                                        }
+                                                    } ?>><?= $ins['full_name'] ?></option>
+                                                <?php }
+                                                } else { ?>
+                                                <option value="">No Instructor Found</option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-10">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Assign Instructor</label>
+                                            <select class="form-control" name="frm[assigned_instrustor]" id="assigned_instrustor">
+                                                <option value="">Choose Instructor</option>
+                                                <?php
+                                                $getInstructorList = $this->db->query("SELECT * FROM users where email_verified = '1' AND status = '1' AND userType = '2'")->result_array();
+                                                if(!empty($getInstructorList)) {
+                                                    foreach ($getInstructorList as $ins) { ?>
+                                                    <option value = "<?= $ins['id']; ?>" <?php if ($ins['id'] == @$course->assigned_instrustor) { echo "selected"; } ?>><?= $ins['full_name'] ?></option>
+                                                <?php }
+                                                } else { ?>
+                                                <option value="">No Instructor Found</option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-10">
                                     <div class="col-sm-6">
                                         <div class="form-group">
@@ -231,18 +257,17 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
                     </div>
                 </form>
             </div>
-            <!-- /.box -->
         </div>
     </div>
 </section>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
 <style>
-.courseTypefield {
-    display: none;
-}
+.courseTypefield {display: none;}
 </style>
 <script>
 $(document).ready(function () {
@@ -258,6 +283,12 @@ $(document).ready(function () {
     } else {
         $('.courseTypefield').hide();
     }
+
+    $('#assign_student').select2({
+        //tags: true,
+        tokenSeparators: [','],
+        placeholder: "Choose Student",
+    });
 });
 
 $('#course_fees').change(function () {
@@ -266,12 +297,58 @@ $('#course_fees').change(function () {
         $('.courseTypefield').hide();
         $('.price').val('');
         $('.price_key').val('');
-        $('.price_key').prop('required', false);
+        $('#payment_type').prop('required', false);
+        $('#recurring_type').prop('required', false);
     } else if (selectedOption == 'paid') {
         $('.courseTypefield').show();
-        $('.price_key').prop('required', true);
+        $('#payment_type').prop('required', true);
+        $('#recurring_type').prop('required', true);
+        $('.price').prop('required', true);
     } else {
         $('.courseTypefield').hide();
+        $('#payment_type').prop('required', false);
+        $('#recurring_type').prop('required', false);
+        $('.price').prop('required', false);
     }
-})
+});
+
+$('#payment_type').change(function () {
+    var selectedOption = $(this).val(); //alert(selectedOption);
+    if (selectedOption == '1') {
+        $('#recurring_type').prop('disabled', true);
+        $("#exampleInputRecurring1").html('Recurring Type');
+    } else if (selectedOption == '2') {
+        $('#recurring_type').prop('disabled', false);
+        $("#exampleInputRecurring1").html('Recurring Type <span style="color:red">*</span>');
+        $('#recurring_type').prop('required', true);
+    } else {
+        $('#recurring_type').prop('disabled', true);
+        $("#exampleInputRecurring1").html('Recurring Type');
+    }
+});
+
+$('.course_title').keyup(function() {
+    var course_name = $(this).val();
+    $.ajax({
+        url: '<?= admin_url("course/checkduplicatecourse") ?>', // Replace with your server-side endpoint
+        type: 'POST',
+        data: { course_name: course_name },
+        success: function(response) {
+            var data = JSON.parse(response);
+            if (data.exists) {
+                $('.course_name_error').text('Course name already exists. Please choose a different name.').show();
+                $('.course_name_error').css('color', 'red');
+                $('#btnSubmit').prop('disabled', true); // Disable the submit button
+            } else {
+                $('.course_name_error').text('Course name availabe.').show();
+                $('.course_name_error').css('color', 'green');
+                $('#btnSubmit').prop('disabled', false); // Enable the submit button
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+        }
+    });
+});
+
 </script>

@@ -9,9 +9,7 @@ class Users extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Apimodel');
 		$this->load->model('Commonmodel');
-		// $this->isLoggedIn();
 		require 'vendor/autoload.php';
-		//if (!$this->session->has_userdata('isLoggedIn') || !$this->session->has_userdata('user_id')) {
 		if($this->session->userdata('isLoggedIn') != 1){
 			$redirectto = urlencode(current_url());
 			redirect(base_url('login?redirectto=' . $redirectto), 'refresh');
@@ -26,8 +24,6 @@ class Users extends CI_Controller {
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
 		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
-		//$getEnrolmentSql = "SELECT COUNT(DISTINCT `enrollment_id`) AS activeCourse FROM `course_enrollment_status` WHERE `user_id` = '" . $user_id . "'";
-		//$data['active_data'] = $this->db->query($getEnrolmentSql)->row();
 		$this->load->view('header', $data);
 		$this->load->view('dashboard');
 		$this->load->view('footer');
@@ -114,12 +110,10 @@ class Users extends CI_Controller {
 		return $data;
 	}
 	public function profileUpdate() {
-		//echo "test"; die();
 		$user_id = $this->session->userdata('user_id');
 		$oldImage = $this->input->post('old_image');
 		$email = $this->input->post('email');
 		$full_name = $this->testInput($this->input->post('first_name'));
-		//$last_name = $this->testInput($this->input->post('last_name'));
 		$phone_full = $this->input->post('phone_full');
 		$phone_code = $this->input->post('phone_code');
 		$phone_country = $this->input->post('phone_country');
@@ -143,7 +137,6 @@ class Users extends CI_Controller {
             'subscription_type' => $subscription_type,
 			'user_bio' => $this->input->post('user_bio')
 		);
-		//print_r($mydata); die();
 		if ($_FILES['profile_image']['name'] != '') {
 			$config['upload_path'] = './uploads/profile_pictures/';
 			$config['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -254,7 +247,6 @@ class Users extends CI_Controller {
 		$user_id = $this->session->userdata('user_id');
 		$enrollment_id = $this->input->post('enrollment_id');
 		$id = $this->input->post('id');
-		// Get Material Details
 		$getMaterialSql = "SELECT `course_id`, `module`, `material_type` FROM `course_materials` WHERE `id` = '" . @$id . "'";
 		$materialData = $this->Commonmodel->fetch_single_join($getMaterialSql);
 		$course_id = @$materialData->course_id;
@@ -320,7 +312,6 @@ class Users extends CI_Controller {
     public function community() {
         $user_id = $this->session->userdata('user_id');
         $data['community_cat'] = $this->db->query("SELECT * FROM community_cat WHERE status = '1' AND is_delete = '1'")->result_array();
-        //$data['community'] = $this->db->query("SELECT * FROM community WHERE status = '1' AND is_delete = '1' ORDER BY id DESC")->result_array();
         $getcourseIDSql = $this->db->query("SELECT GROUP_CONCAT(course_id) AS course_id FROM course_enrollment WHERE user_id = '".$user_id."'")->row();
 		if(!empty($getcourseIDSql->course_id)) {
             $getuserIDsql = $this->db->query("SELECT GROUP_CONCAT(user_id) AS user_id FROM courses WHERE id IN ($getcourseIDSql->course_id)")->row();
@@ -332,7 +323,6 @@ class Users extends CI_Controller {
             } else {
                 $userid = '0';
             }
-		    //$data['event'] = $this->db->query("SELECT * FROM events WHERE uploaded_by IN ($userid) AND event_status = '1'")->result_array();
             $data['community'] = $this->db->query("SELECT * FROM community WHERE uploaded_by IN ($userid,0) AND status = '1'")->result_array();
         }
         $getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
@@ -374,11 +364,8 @@ class Users extends CI_Controller {
                 $userid = '0';
             }
 		    $data['event'] = $this->db->query("SELECT * FROM events WHERE uploaded_by IN ($userid, 0) AND event_status = '1'")->result_array();
-            //$commdata = $this->db->query("SELECT * FROM community WHERE course_id = '".$getcourseIDSql->course_id."' AND status = '1'")->row();
-            //$data['event'] = $this->db->query("SELECT * FROM events WHERE community_id = '".$commdata->id."' AND event_status = '1'")->result_array();
 		}
 
-		//$getBookedSql = "SELECT * FROM `event_booked` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$getEnrolmentSql = "SELECT * FROM `course_enrollment` WHERE `user_id` = '" . $user_id . "' and `payment_status` = 'COMPLETED'";
 		$data['ctn_enrolment'] = $this->db->query($getEnrolmentSql)->num_rows();
 		$data['enrolments'] = $this->db->query($getEnrolmentSql)->result();
@@ -420,27 +407,11 @@ class Users extends CI_Controller {
 		}
 	}
 	public function updateCart() {
-		//echo "<pre>"; print_r($_POST);
 		$checkCart = $this->db->query("SELECT * FROM cart WHERE product_id = '".$_POST['pId']."'")->row();
 		if(!empty($checkCart)) {
 			$updateprc = $_POST['qnty'] * $_POST['price'];
 			$updateCart = $this->db->query("UPDATE cart SET quantity = '".$_POST['qnty']."', price = '".$updateprc."' WHERE `id` = '".$_POST['cartId']."'");
-			// if($updateCart > 0) {
-			// 	$cartItems = $this->db->query("SELECT * FROM cart WHERE user_id = '".$this->session->userdata('user_id')."'")->result_array();
-			// 	$html = '';
-			// 	$i = 1;
-			// 	foreach ($cartItems as $item) {
-			// 		$product_details = $this->db->query("SELECT * FROM product WHERE id = '".$item['product_id']."'")->row();
-			// 		$price = number_format((float)$product_details->sale_price, 2, '.', '');
-			// 		$total_price = $price * $item['quantity'];
-			// 		$html .="<tr><td class='product-thumbnail'><a href='#' class='cartProductimg'><img src=".base_url()."uploads/products/".$product_details->product_image." alt=''></a></td><td class='product-name'><a href='javascript:void(0)'>$product_details->product_name</a></td><td class='product-price'><span class='amount'>$".number_format((float)$product_details->sale_price, 2, '.', '')."</span></td><td class='product-quantity text-center'><div class='product-quantity mt-10 mb-10'><div class='product-quantity-form'><form action='#'><button class='cart-minus' id='qntyminus_$i'><i class='far fa-minus'></i></button><input class='cart-input' id='qntyinput_$i' type='text' value=".$item['quantity']." readonly><button class='cart-plus' id='qntyplus_$i'><i class='far fa-plus'></i></button><p class='d-none' id='pId_$i'>".$item['product_id']."</p><p class='d-none' id='prodprice_$i'>".number_format((float)$product_details->sale_price, 2, '.', '')."</p><p class='d-none' id='cartId_$i'>".$item['id']."</p></form></div></div></td><td class='product-subtotal'><span class='amount'>$".number_format((float)$total_price, 2, '.', '')."</span></td><td class='product-remove'><a href='#' class='text-danger'><i class='fa fa-times'></i></a></td></tr>";
-			// 		$i++;
-			// 	}
-			// } else {
-			// 	$html .= "No data found";
-			// }
 		}
-		//echo $html;
 	}
 	public function removeFromCart() {
 		$cartId = $_POST['cartId'];

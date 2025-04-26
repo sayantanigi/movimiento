@@ -1,4 +1,3 @@
-<!-- Main content -->
 <section class="content-header">
     <h1><?= $title ?></h1>
     <ol class="breadcrumb">
@@ -13,9 +12,10 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <!-- <h3 class="box-title">Add Service</h3> -->
+                    <h3 class="box-title"><?= $title ?></h3>
                 </div>
-                <?php if(@$subscription->id) {
+                <?php
+                if(@$subscription->id) {
                     $url = admin_url('subscription/subscribeUpdate/'.@$subscription->id);
                 } else {
                     $url = admin_url('subscription/add');
@@ -39,7 +39,7 @@
                                             <label for="exampleInputEmail1">Subscription Plan for Specific User Type <span style="color: red">*</span></label>
                                             <select class="form-control" name="subscription_user_type" id="subscription_user_type" required>
                                                 <option value="">Choose</option>
-                                                <option value="1" <?php if (@$subscription->subscription_user_type == '1') { echo "selected"; } ?>>Student</option>
+                                                <!-- <option value="1" <?php if (@$subscription->subscription_user_type == '1') { echo "selected"; } ?>>Student</option> -->
                                                 <option value="2" <?php if (@$subscription->subscription_user_type == '2') { echo "selected"; } ?>>Instructor</option>
                                             </select>
                                         </div>
@@ -74,14 +74,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-10">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Payment Link (Stripe Payment Link) <span style="color: red">*</span></label>
-                                                <input type="text" name="payment_link" value="<?= @$subscription->payment_link ?>" class="form-control payment_link" id="exampleInputEmaila1" placeholder="https://buy.stripe.com/****_******************" required>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
@@ -128,15 +120,15 @@
 </style>
 <script>
 $(document).ready(function () {
-    var selectedCourseType = $('#subscription_type').val();
-    if (selectedCourseType == 'free') {
+    var selectedOption = $('#subscription_type').val();
+    if (selectedOption == 'free') {
         $('.courseTypefield').hide();
         $('.subscription_amount').val('');
         $('.price_key').val('');
         $('.price_key').prop('required', false);
         $('.payment_link').val('');
         $('.payment_link').prop('required', false);
-    } else if (selectedCourseType == 'paid') {
+    } else if (selectedOption == 'paid') {
         $('.courseTypefield').show();
         $('.price_key').prop('required', true);
         $('.payment_link').prop('required', true);
@@ -146,7 +138,7 @@ $(document).ready(function () {
 });
 
 $('#subscription_type').change(function () {
-    var selectedOption = $(this).val(); //alert(selectedOption);
+    var selectedOption = $(this).val();
     if (selectedOption == 'free') {
         $('.courseTypefield').hide();
         $('.subscription_amount').val('');

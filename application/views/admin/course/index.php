@@ -126,11 +126,9 @@
                                         } else {
                                             $price = '$' . number_format($course_v->price, 2);
                                         } ?>
+                                        <p style="margin:0px;"><b>Payment Type </b>: <?php echo ($course_v->payment_type == 1) ? "One-Time" : "Recurring"; ?></p>
                                         <p style="margin:0px;"><b>Price </b>: <?php echo $price; ?></p>
-                                        <p style="margin:0px;"><b>Certification </b>:
-                                            <?php echo $course_v->course_certificate; ?></p>
-                                        <!-- <p style="margin:0px;"><b>Requirement </b>: <?php echo $course_v->requirement; ?></p>
-                                        <p style="margin:0px;"><b>Who should Attend </b>: <?php echo $course_v->attended; ?></p> -->
+                                        <p style="margin:0px;"><b>Certification </b>: <?php echo $course_v->course_certificate; ?></p>
                                     </td>
                                     <td>
                                         <p style="margin:0px;"><b>Course Duration </b>: <?php echo $course_v->duration; ?></p>

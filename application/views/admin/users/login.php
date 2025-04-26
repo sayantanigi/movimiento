@@ -1,5 +1,7 @@
-<?php $getOptionsSql = "SELECT * FROM `options`";
-$optionsList = $this->db->query($getOptionsSql)->result(); ?>
+<?php
+$getOptionsSql = "SELECT * FROM `options`";
+$optionsList = $this->db->query($getOptionsSql)->result();
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,21 +11,16 @@ $optionsList = $this->db->query($getOptionsSql)->result(); ?>
     <link href="<?php echo base_url('assets/admin/admin_style.css'); ?>" rel="stylesheet">
     <link rel="icon" href="<?= base_url('assets/img/favicon.png') ?>" type="image/jpg" sizes="16x16">
     <style>
-        body {background: #0c0e27;}
-        .box-header {background: #0c0e27;}
-        .box-title {color: #fff; }
-        button.btn.btn-primary.btn-sm {background: #db3636; border: 1px solid #db3636;}
-        .start {font-weight: bold; text-align: center; color: #fff; font-size: 40px; margin-bottom: 20px;}
+        .box-title,.start{color:#fff}.box-header,body{background:#0c0e27}button.btn.btn-primary.btn-sm{background:#db3636;border:1px solid #db3636}.start{font-weight:700;text-align:center;font-size:40px;margin-bottom:20px}
     </style>
 </head>
-
 <body>
     <div class="container" style="margin-top:100px;">
         <div class="col-sm-6 col-sm-offset-3">
             <h2 class="start"><img src="<?= base_url() ?>uploads/logo/<?php echo $optionsList[0]->option_value ?>" alt="logo" style="width : 100% !important; background: #fff;"></h2>
             <div class="box">
                 <div class="box-header">
-                    <h4 class="box-title"><b>Secure Login</b></h4>
+                    <h4 class="box-title"><b>Secur
                 </div>
                 <div class="box-p">
                     <?php $this->load->view('alert'); ?>
@@ -55,7 +52,8 @@ $optionsList = $this->db->query($getOptionsSql)->result(); ?>
         </div>
     </div>
     </div>
-    <div class="footer text-center" style="position: fixed; bottom: 0; width: 100%;"> Copyright &copy; <?php echo date('Y'); ?> Movimiento Latino University. All Rights Reserved.
+    <div class="footer text-center" style="position: fixed; bottom: 0; width: 100%;"> Copyright &copy;
+        <?php echo date('Y'); ?> Movimiento Latino University. All Rights Reserved.
     </div>
 </body>
 </html>

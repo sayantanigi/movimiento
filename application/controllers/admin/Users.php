@@ -1,24 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Users extends admin_Controller {
-
-	public function __construct()
-    {
+	public function __construct() {
         parent::__construct();
         $this->form_validation->set_error_delimiters('<div>', '</div>');
         $this->load->model('Admin_model');
     }
-
-	public function index()
-	{
+	public function index() {
 		$this->load->view(admin_view('users/login'));
 	}
-
-	public function login()
-    {
+	public function login() {
         $data = array('main' => admin_view('users/login'));
-        
         if ($this->input->post('submit')) {
             $validate = array(array('field' => 'username', 'label' => 'Username/Email ID', 'rules' => 'required'), array('field' => 'password', 'label' => 'Password', 'rules' => 'required'));
             $this->form_validation->set_rules($validate);
@@ -40,9 +32,7 @@ class Users extends admin_Controller {
             $this->load->view(admin_view('users/login'), $data);
         }
     }
-
-	public function logout()
-    {
+	public function logout() {
         $newdata = array('userid' => '', 'username' => '', 'role' => '');
         $this->session->unset_userdata($newdata);
         $this->session->sess_destroy();
@@ -51,6 +41,3 @@ class Users extends admin_Controller {
     }
 
 }
-
-/* End of file Users.php */
-/* Location: ./application/controllers/admin/Users.php */

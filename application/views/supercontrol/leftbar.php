@@ -26,7 +26,7 @@ $checkSudscriptionData = $this->db->query("SELECT * FROM user_subscription WHERE
                 <span class="arrow addindividual"></span>
             </a>
             <ul class="sub-menu">
-                <li class="nav-item <?php if ($nl2 == "category") { ?>active open<?php } ?>">
+                <!-- <li class="nav-item <?php if ($nl2 == "category") { ?>active open<?php } ?>">
                     <a href="<?php if(!empty($checkSudscriptionData)) { echo base_url("supercontrol/category");} else {echo "javascript:void(0)";} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>>
                     <span class="title">Add Category</span> </a>
                 </li>
@@ -39,7 +39,7 @@ $checkSudscriptionData = $this->db->query("SELECT * FROM user_subscription WHERE
                     <a href="<?php if(!empty($checkSudscriptionData)) { echo base_url("supercontrol/course/add_course");} else {echo "javascript:void(0)";} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>>
                         <span class="title">Add Course</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item <?php if ($nl == "show_course") { ?>active open<?php } ?>">
                     <a href="<?php if(!empty($checkSudscriptionData)) { echo base_url("supercontrol/course/show_all_courses");} else {echo "javascript:void(0)";} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>>
                         <span class="title">All Courses </span>
