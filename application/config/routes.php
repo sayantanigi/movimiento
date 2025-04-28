@@ -49,6 +49,7 @@ $route['login'] = 'Home/login';
 $route['login/(:any)'] = 'Home/login/$1';
 $route['subscription'] = 'Home/subscription';
 $route['stripe/(:any)'] = 'Users/stripe/$1';
+$route['stripe_sub/(:any)'] = 'Users/stripe_sub/$1';
 $route['thank_you/(:any)'] = "Users/thank_you/$1";
 $route['search_data'] = 'Home/searchData';
 $route['showCategoryWiseData/(:any)'] = 'Home/categoryWisesearchData/$1';

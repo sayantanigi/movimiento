@@ -1215,7 +1215,6 @@ class Home extends CI_Controller
     public function checkout() {
         $data['user_id'] = $this->input->post('user_id');
         $data['price_key'] = $this->input->post('enrollment');
-        $data['payment_type'] = $this->input->post('payment_type');
         $this->session->set_userdata('course_id', $this->input->post('course_id'));
         $this->load->view('header', $data);
 		$this->load->view('checkout');

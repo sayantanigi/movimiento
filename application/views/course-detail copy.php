@@ -570,92 +570,134 @@
                                     <img src="<?php echo base_url()?>assets/img/course/payment/payment-1.png" alt="">
                                 </a>
                             </div>
+                            <?php
+                            $getSubscriptionPlan = $this->db->query("SELECT * FROM subscription WHERE subscription_user_type = '1' AND status = '1'")->row();
+                            ?>
                             <div class="course__enroll-btn">
-                            <?php if($this->session->userdata('userType') == '1') {
-                                if(@$detail->payment_type == '1') {
-                                    $checkUserEnrolledSql = "SELECT `courses`.`id`, `course_enrollment`.`enrollment_id`, `course_enrollment`.`course_id`, `course_enrollment`.`user_id`,`course_enrollment`.`payment_status` FROM `course_enrollment` JOIN `courses` ON `courses`.`id` = `course_enrollment`.`course_id` WHERE `courses`.`id` = '" . @$detail->id . "' AND `course_enrollment`.`payment_status` = 'COMPLETED' and `course_enrollment`.`user_id` = '".@$user_id."'";
-                                    $checkUserenrollment = $this->db->query($checkUserEnrolledSql)->result_array();
-                                    if(@$checkUserenrollment[0]['user_id'] == @$user_id) { ?>
-                                    <a href="<?php echo base_url()?>enrolled-courses" class="e-btn e-btn-7 w-100">Go to Dashboard <i class="far fa-arrow-right"></i></a>
-                                    <?php } else { ?>
+                                <?php
+                                if($this->session->userdata('userType') == '1') {
+                                    if(!empty($isLoggedIn)) {
+                                        $checksubscriptiontype = $this->db->query("SELECT * FROM users WHERE id = '".@$user_id."'")->row();
+                                        if(empty($checksubscriptiontype->subscription_type) || $checksubscriptiontype->subscription_type == '1') {
+                                            $checkUserEnrolledSql = "SELECT `courses`.`id`, `course_enrollment`.`enrollment_id`, `course_enrollment`.`course_id`, `course_enrollment`.`user_id`,`course_enrollment`.`payment_status` FROM `course_enrollment` JOIN `courses` ON `courses`.`id` = `course_enrollment`.`course_id` WHERE `courses`.`id` = '" . @$detail->id . "' AND `course_enrollment`.`payment_status` = 'COMPLETED' and `course_enrollment`.`user_id` = '".@$user_id."'";
+                                            $checkUserenrollment = $this->db->query($checkUserEnrolledSql)->result_array();
+                                            //print_r($checkUserenrollment);
+                                            if(@$checkUserenrollment[0]['user_id'] == @$user_id) { ?>
+                                                <a href="<?php echo base_url()?>enrolled-courses" class="e-btn e-btn-7 w-100">Go to Dashboard <i class="far fa-arrow-right"></i></a>
+                                            <?php } else {
+                                                if (@$detail->course_fees != 'free') { ?>
+                                                    <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
+                                                        <div class="btn-part">
+                                                            <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
+                                                            <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
+                                                            <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="e-btn e-btn-7 w-100">Buy Now</button>
+                                                        </div>
+                                                    </form>
+                                                    <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                                    <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                                    <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                                        <div>
+                                                            <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                                <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                            </div>
+                                                            <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
+                                                        </div>
+                                                    </div>
+                                            <?php } else { ?>
+                                                <div class="btn-part">
+                                                    <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
+                                                    <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
+                                                    <p name="enrollment" id="course_activation"  class="e-btn e-btn-7 w-100">Activate</p>
+                                                </div>
+                                            <?php }
+                                            }
+                                        } else {
+                                            $checksubscription = $this->db->query("SELECT * FROM user_subscription WHERE employer_id = '".$this->session->userdata('user_id')."' AND status = '1'")->result_array();
+                                            if(!empty($checksubscription)) {
+                                                $checkUserEnrolledSql = "SELECT `courses`.`id`, `course_enrollment`.`enrollment_id`, `course_enrollment`.`course_id`, `course_enrollment`.`user_id`,`course_enrollment`.`payment_status` FROM `course_enrollment` JOIN `courses` ON `courses`.`id` = `course_enrollment`.`course_id` WHERE `courses`.`id` = '" . @$detail->id . "' AND `course_enrollment`.`payment_status` = 'COMPLETED' and `course_enrollment`.`user_id` = '".@$user_id."'";
+                                                $checkUserenrollment = $this->db->query($checkUserEnrolledSql)->result_array();
+                                                //print_r($checkUserenrollment);
+                                                if(@$checkUserenrollment[0]['user_id'] == @$user_id) { ?>
+                                                    <a href="<?php echo base_url()?>enrolled-courses" class="e-btn e-btn-7 w-100">Go to Dashboard <i class="far fa-arrow-right"></i></a>
+                                                <?php } else { ?>
+                                                    <div class="btn-part">
+                                                        <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
+                                                        <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
+                                                        <p name="enrollment" id="course_activation"  class="e-btn e-btn-7 w-100">Activate</p>
+                                                    </div>
+                                                <?php }
+                                            } else {
+                                                if (@$detail->course_fees != 'free') { ?>
+                                                <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
+                                                    <div class="btn-part">
+                                                        <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
+                                                        <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
+                                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
+                                                    </div>
+                                                </form>
+                                                <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                                <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                                <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                                    <div>
+                                                        <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                            <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                        </div>
+                                                        <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
+                                                    </div>
+                                                </div>
+                                            <?php } else { ?>
+                                                <div class="btn-part">
+                                                    <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
+                                                    <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
+                                                    <p name="enrollment" id="course_activation"  class="e-btn e-btn-7 w-100">Activate</p>
+                                                </div>
+                                            <?php }
+                                            }
+                                        }
+                                    } else {
+                                        if (@$detail->course_fees != 'free') { ?>
+                                            <form action="<?= base_url('login/') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
+                                                <div class="btn-part">
+                                                    <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="btn readon2 orange-transparent">$<?php echo number_format(@$detail->price,2); ?></button>
+                                                    <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="btn readon2 orange-transparent">Buy Now</button>
+                                                </div>
+                                            </form>
+                                            <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                            <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                            <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                            <div>
+                                                <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                    <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                                </div>
+                                                <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
+                                            </div>
+                                        </div>
+                                        <?php } else { ?>
+                                            <div class="btn-part">
+                                                <button type="submit" name="enrollment" value="<?php echo @$detail->course_type; ?>" class="btn readon2 orange-transparent"><?php echo ucwords(@$detail->course_type); ?></button>
+                                                <a href="<?= base_url('login/') ?>" name="enrollment" id="course_activation1" class="btn readon2 orange-transparent">Activate</a>
+                                            </div>
+                                        <?php }
+                                    }
+                                } else if(empty($this->session->userdata('userType'))) { ?>
                                     <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
                                         <div class="btn-part">
                                             <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
                                             <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                            <input type="hidden" id="payment_type" name ="payment_type" value="1">
                                             <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
                                         </div>
                                     </form>
-                                    <?php } ?>
-                                <?php } else if(@$detail->payment_type == '2') {
-                                $checkUserEnrolledSql = "SELECT `courses`.`id`, `course_enrollment`.`enrollment_id`, `course_enrollment`.`course_id`, `course_enrollment`.`user_id`,`course_enrollment`.`payment_status` FROM `course_enrollment` JOIN `courses` ON `courses`.`id` = `course_enrollment`.`course_id` WHERE `courses`.`id` = '" . @$detail->id . "' AND `course_enrollment`.`payment_status` = 'COMPLETED' and `course_enrollment`.`user_id` = '".@$user_id."'";
-                                $checkUserenrollment = $this->db->query($checkUserEnrolledSql)->result_array();
-                                if(@$checkUserenrollment[0]['user_id'] == @$user_id) { ?>
-                                <a href="<?php echo base_url()?>enrolled-courses" class="e-btn e-btn-7 w-100">Go to Dashboard <i class="far fa-arrow-right"></i></a>
-                                <?php } else { ?>
-                                <!-- <a href="<?= base_url('stripe/'.base64_encode(@$detail->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a> -->
-                                <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
-                                    <div class="btn-part">
-                                        <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
-                                        <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                        <input type="hidden" id="payment_type" name ="payment_type" value="2">
-                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="e-btn e-btn-7 w-100">Subscribe</button>
-                                    </div>
-                                </form>
-                                <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
-                                    <div>
-                                        <div class="plan-period-module--plan-period-multiline--R2iLQ">
-                                            <span>Starting at <span class="">$<?= $detail->price; ?></span> per month</span>
+                                    <div class="ud-text-xs dark-bg-text purchase-section-separator purchase-section-container--separator--G5qKO">or</div>
+                                    <a href="<?= base_url('stripe/'.base64_encode(@$getSubscriptionPlan->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a>
+                                    <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
+                                        <div>
+                                            <div class="plan-period-module--plan-period-multiline--R2iLQ">
+                                                <span>Starting at <span class="">$<?= $getSubscriptionPlan->subscription_amount; ?></span> per month</span>
+                                            </div>
+                                            <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
                                         </div>
-                                        <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
                                     </div>
-                                </div>
-                                <?php } } else {
-                                $checkUserEnrolledSql = "SELECT `courses`.`id`, `course_enrollment`.`enrollment_id`, `course_enrollment`.`course_id`, `course_enrollment`.`user_id`,`course_enrollment`.`payment_status` FROM `course_enrollment` JOIN `courses` ON `courses`.`id` = `course_enrollment`.`course_id` WHERE `courses`.`id` = '" . @$detail->id . "' AND `course_enrollment`.`payment_status` = 'COMPLETED' and `course_enrollment`.`user_id` = '".@$user_id."'";
-                                $checkUserenrollment = $this->db->query($checkUserEnrolledSql)->result_array();
-                                if(@$checkUserenrollment[0]['user_id'] == @$user_id) { ?>
-                                <a href="<?php echo base_url()?>enrolled-courses" class="e-btn e-btn-7 w-100">Go to Dashboard <i class="far fa-arrow-right"></i></a>
-                                <?php } else { ?>
-                                <div class="btn-part">
-                                    <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
-                                    <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                    <p name="enrollment" id="course_activation"  class="e-btn e-btn-7 w-100">Activate</p>
-                                </div>
-                                <?php } } ?>
-                            <?php } else if(empty($this->session->userdata('userType'))) {
-                                if(@$detail->payment_type == '1') { ?>
-                                <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
-                                    <div class="btn-part">
-                                        <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
-                                        <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                        <input type="hidden" id="payment_type" name ="payment_type" value="1">
-                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>"  class="e-btn e-btn-7 w-100">Buy Now</button>
-                                    </div>
-                                </form>
-                                <?php } else if(@$detail->payment_type == '2') { ?>
-                                <!-- <a href="<?= base_url('stripe/'.base64_encode(@$detail->price_key))?>" class="e-btn e-btn-7 w-100">Subscribe</a> -->
-                                <form action="<?= base_url('checkout') ?>" method="post" id="form_validation33" enctype="multipart/form-data">
-                                    <div class="btn-part">
-                                        <input type="hidden" id="course_id" name ="course_id" value="<?php echo @$detail->id?>">
-                                        <input type="hidden" id="user_id" name ="user_id" value="<?php echo @$user_id?>">
-                                        <input type="hidden" id="payment_type" name ="payment_type" value="2">
-                                        <button type="submit" name="enrollment" value="<?php echo @$detail->price_key; ?>" class="e-btn e-btn-7 w-100">Subscribe</button>
-                                    </div>
-                                </form>
-                                <div class="subscription-cta-module--subtitle--WmzhN dark-bg-text">
-                                    <div>
-                                        <div class="plan-period-module--plan-period-multiline--R2iLQ">
-                                            <span>Starting at <span class="">$<?= $detail->price; ?></span> per month</span>
-                                        </div>
-                                        <div class="plan-period-module--cancel-anytime-multiline--JbaRs">Cancel anytime</div>
-                                    </div>
-                                </div>
-                                <?php } else { ?>
-                                <div class="btn-part">
-                                    <button type="submit" name="enrollment" value="<?php echo @$detail->course_type; ?>" class="btn readon2 orange-transparent"><?php echo ucwords(@$detail->course_type); ?></button>
-                                    <a href="<?= base_url('login/') ?>" name="enrollment" id="course_activation1" class="btn readon2 orange-transparent e-btn e-btn-7 w-100">Activate</a>
-                                </div>
-                            <?php } } ?>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
