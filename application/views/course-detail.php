@@ -690,7 +690,7 @@
                                     <div class="course__item course__item-3 swiper-slide white-bg mb-30 fix">
                                         <div class="course__thumb w-img p-relative fix">
                                             <a href="<?=base_url('course-detail/'.@$value['id'])?>">
-                                                <img src="<?= $image ?>" alt="">
+                                                <img src="<?= $image ?>" alt="" style="height: 340px !important;">
                                             </a>
                                             <div class="course__tag">
                                                 <a href="#"><?= $catname->category_name?></a>

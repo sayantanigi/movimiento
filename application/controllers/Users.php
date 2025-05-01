@@ -118,7 +118,8 @@ class Users extends CI_Controller {
 		$phone_code = $this->input->post('phone_code');
 		$phone_country = $this->input->post('phone_country');
 		$phone_st_country = $this->input->post('phone_st_country');
-        $subscription_type = $this->input->post('subscription_type');
+        //$subscription_type = $this->input->post('subscription_type');
+        $subscription_type = '1';
 		$check_email = $this->db->get_where('users', array('email' => $email, 'id !=' => $user_id))->num_rows();
 		if ($check_email > 0) {
 			$this->session->set_flashdata('error', 'The email id you are trying to use is already registered. Please try unique email address!');

@@ -132,7 +132,7 @@
                                                 <select class="form-control" name="frm[recurring_type]" id="recurring_type" disabled>
                                                     <option value="">Choose</option>
                                                     <option value="1" <?php if ($course->recurring_type == '1') { echo "selected"; } ?>>Monthly</option>
-                                                    <option value="2" <?php if ($course->recurring_type == '2') { echo "selected"; } ?>>Yearly</option>
+                                                    <!-- <option value="2" <?php if ($course->recurring_type == '2') { echo "selected"; } ?>>Yearly</option> -->
                                                 </select>
                                             </div>
                                         </div>

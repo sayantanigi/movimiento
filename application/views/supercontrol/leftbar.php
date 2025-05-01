@@ -101,7 +101,8 @@ $checkSudscriptionData = $this->db->query("SELECT * FROM user_subscription WHERE
             </a>
             <ul class="sub-menu">
                 <li class="nav-item <?php if ($nl == "comm") { ?>active open<?php } ?>">
-                    <a href="<?php if(!empty($checkSudscriptionData)) {echo "javascript:void(0)"; } else { echo base_url("supercontrol/subscription");} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>>
+                    <!-- <a href="<?php if(!empty($checkSudscriptionData)) {echo "javascript:void(0)"; } else { echo base_url("supercontrol/subscription");} ?>" class="nav-link" <?php if (empty($checkSudscriptionData)) { echo "onclick='alertForSubscription()'"; } ?>> -->
+                    <a href="<?php echo base_url("supercontrol/subscription"); ?>" class="nav-link">
                         <span class="title">Subscription List </span>
                     </a>
                 </li>

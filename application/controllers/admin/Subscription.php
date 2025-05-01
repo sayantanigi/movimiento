@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 //error_reporting(0);
+require 'vendor/autoload.php';
+require_once APPPATH."third_party/stripe/init.php";
 class Subscription extends Admin_Controller {
     public function __construct() {
         parent::__construct();
@@ -82,11 +84,22 @@ class Subscription extends Admin_Controller {
             $subscription_type = $this->input->post('subscription_type');
             $subscription_amount = $this->input->post('subscription_amount');
             $payment_link = $this->input->post('payment_link');
-            $price_key = $this->input->post('price_key');
+            //$price_key = $this->input->post('price_key');
             $subscription_duration = $this->input->post('subscription_duration');
             $subscription_description = $this->input->post('subscription_description');
             $status = $this->input->post('status');
 
+            $stripe = new \Stripe\StripeClient ('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');
+            $unit_amount = $subscription_amount * 100;
+            $parameter = array(
+                'currency' => 'usd',
+                'unit_amount' => $unit_amount,
+                'recurring' => ['interval' => 'month'],
+                'product_data' => ['name' => $subscription_name]
+            );
+            $response = $stripe->prices->create($parameter);
+            $price_key = $response->id;
+            $product_key = $response->product;
             $mydata = array(
                 'subscription_name' => $subscription_name,
                 'subscription_user_type' => $subscription_user_type,
@@ -94,6 +107,7 @@ class Subscription extends Admin_Controller {
                 'subscription_amount' => $subscription_amount,
                 'payment_link' => $payment_link,
                 'price_key' => $price_key,
+                'product_key' => $product_key,
                 'subscription_duration' => $subscription_duration,
                 'subscription_description' => $subscription_description,
                 'status' => $status,
@@ -177,3 +191,6 @@ class Subscription extends Admin_Controller {
         }
     }
 }
+
+/* End of file Subscription.php */
+/* Location: ./application/controllers/admin/Subscription.php */

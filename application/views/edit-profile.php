@@ -163,7 +163,7 @@ $data = array(
                                         <label class="Heading">Skill/Occupation</label>
                                         <input type="text" class="form-control" name="skills" placeholder="Skill/Occupation" value="<?php echo @$user->skills; ?>">
                                     </div>
-                                    <div class="col-lg-6">
+                                    <!-- <div class="col-lg-6">
                                         <label class="Heading">Subscription Type <span style="color: red">*</span></label>
                                         <select name="subscription_type" id="subscription_type" class="form-control" style="width: 100%;" required="">
                                             <option value="">Select option</option>
@@ -172,7 +172,7 @@ $data = array(
                                         </select>
                                         <p style="color: red; margin-top: 10px" class="free_sub"><b>Note:</b> Each course need to purchase for free subscribers.</p>
                                         <p style="color: red; margin-top: 10px" class="paid_sub"><b>Note:</b> One time payment, No need to purchase each course for paid subscribers.</p>
-                                    </div>
+                                    </div> -->
                                     <div class="col-lg-12">
                                         <label class="Heading">Bio</label>
                                         <textarea class="form-control" style="min-height: 150px;" name="user_bio"><?php echo @$user->user_bio; ?></textarea>

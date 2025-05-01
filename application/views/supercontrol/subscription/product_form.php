@@ -17,16 +17,16 @@ $checkout_session = \Stripe\Checkout\Session::create([
     ]],
     'subscription_data' => [
       'trial_settings' => ['end_behavior' => ['missing_payment_method' => 'cancel']],
-      'trial_period_days' => 15,
+      //'trial_period_days' => 15,
     ],
     'payment_method_collection' => 'always',
     'phone_number_collection' => [
         'enabled' => true,
     ],
     'billing_address_collection' => 'required',
-    'subscription_data' => [
-        'trial_end' => strtotime('+16 days'), // Set trial period (e.g., 14 days)
-    ],
+    // 'subscription_data' => [
+    //     'trial_end' => strtotime('+16 days'), // Set trial period (e.g., 14 days)
+    // ],
 ]);
 
 $session = \Stripe\Checkout\Session::retrieve($checkout_session['id']);

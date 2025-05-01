@@ -1,3 +1,4 @@
+<!-- Main content -->
 <section class="content-header">
     <h1><?= $title ?></h1>
     <ol class="breadcrumb">
@@ -12,10 +13,9 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= $title ?></h3>
+                    <!-- <h3 class="box-title">Add Service</h3> -->
                 </div>
-                <?php
-                if(@$subscription->id) {
+                <?php if(@$subscription->id) {
                     $url = admin_url('subscription/subscribeUpdate/'.@$subscription->id);
                 } else {
                     $url = admin_url('subscription/add');
@@ -51,7 +51,7 @@
                                             <label for="exampleInputEmail1">Subscription Type <span style="color: red">*</span></label>
                                             <select class="form-control" name="subscription_type" id="subscription_type" required>
                                                 <option value="">Choose</option>
-                                                <option value="free" <?php if (@$subscription->subscription_type == 'free') { echo "selected"; } ?>>Free</option>
+                                                <!-- <option value="free" <?php if (@$subscription->subscription_type == 'free') { echo "selected"; } ?>>Free</option> -->
                                                 <option value="paid" <?php if (@$subscription->subscription_type == 'paid') { echo "selected"; } ?>>Paid</option>
                                             </select>
                                         </div>
@@ -69,11 +69,19 @@
                                     <div class="col-sm-10">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Price ID (Stripe Price ID) <span style="color: red">*</span></label>
-                                                <input type="text" name="price_key" value="<?= @$subscription->price_key ?>" class="form-control price_key" id="exampleInputEmaila1" placeholder="Price ID (Stripe Price ID)" required>
+                                                <label for="exampleInputEmail1">Price ID (Stripe Price ID)</label>
+                                                <input type="text" value="<?= @$subscription->price_key ?>" class="form-control price_key" id="exampleInputEmaila1" placeholder="Price ID (Stripe Price ID)" readonly>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- <div class="col-sm-10">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Payment Link (Stripe Payment Link) <span style="color: red">*</span></label>
+                                                <input type="text" name="payment_link" value="<?= @$subscription->payment_link ?>" class="form-control payment_link" id="exampleInputEmaila1" placeholder="https://buy.stripe.com/****_******************" required>
+                                            </div>
+                                        </div>
+                                    </div> -->
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="col-sm-12">
@@ -120,25 +128,25 @@
 </style>
 <script>
 $(document).ready(function () {
-    var selectedOption = $('#subscription_type').val();
-    if (selectedOption == 'free') {
+    var selectedCourseType = $('#subscription_type').val();
+    if (selectedCourseType == 'free') {
         $('.courseTypefield').hide();
         $('.subscription_amount').val('');
         $('.price_key').val('');
         $('.price_key').prop('required', false);
         $('.payment_link').val('');
         $('.payment_link').prop('required', false);
-    } else if (selectedOption == 'paid') {
+    } else if (selectedCourseType == 'paid') {
         $('.courseTypefield').show();
-        $('.price_key').prop('required', true);
-        $('.payment_link').prop('required', true);
+        $('.price_key').prop('required', false);
+        $('.payment_link').prop('required', false);
     } else {
         $('.courseTypefield').hide();
     }
 });
 
 $('#subscription_type').change(function () {
-    var selectedOption = $(this).val();
+    var selectedOption = $(this).val(); //alert(selectedOption);
     if (selectedOption == 'free') {
         $('.courseTypefield').hide();
         $('.subscription_amount').val('');
@@ -148,8 +156,8 @@ $('#subscription_type').change(function () {
         $('.payment_link').prop('required', false);
     } else if (selectedOption == 'paid') {
         $('.courseTypefield').show();
-        $('.price_key').prop('required', true);
-        $('.payment_link').prop('required', true);
+        $('.price_key').prop('required', false);
+        $('.payment_link').prop('required', false);
     } else {
         $('.courseTypefield').hide();
     }

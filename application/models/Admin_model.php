@@ -20,11 +20,13 @@ class Admin_model extends CI_Model {
 		}
 	}
 
-	public function checkpass($pass) {
+	public function checkpass($pass)
+	{
 		$res = $this->db->get_where('admin',array('password'=>md5($pass)));
 		if($res->num_rows()>0){
 			return true;
-		} else {
+		}
+		else{
 			return false;
 		}
 	}
